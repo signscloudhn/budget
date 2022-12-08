@@ -14,7 +14,7 @@ interface division {
   residuo: number
 }
 
-interface storeWeeks {
+export interface storeWeeks {
   weekId: string
   presupuestoInicial: number
   presupuestoTotal: number

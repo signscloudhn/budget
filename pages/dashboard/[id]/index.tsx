@@ -1,7 +1,8 @@
+// 'use client';
 import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { useEffect, useState } from 'react';
 import { data } from "../../../data/tiendas"
-import { useNewStore } from "../../../hooks/useNewStore"
+import { useStoreData } from "../../../hooks/useStoreData"
 import WeeksBar from "./components/WeeksBar"
 import Tienda from "./components/Tienda"
 import WeekInfo from "./components/WeekInfo"
@@ -11,15 +12,28 @@ import styles from "./styles/index.module.scss"
 /*eslint-disable */
 
 const index = () => {
-  const { createNewStore } = useNewStore()
+  const { createNewStore } = useStoreData()
 
-  useEffect(() => {
+  const [datos, setDatos] = useState(data)
+
+  const [renderizar, setRenderizar] = useState(false)
+
+  const [show, setShow] = useState(false)
+
+  const handleShow = ()=>{
+    setShow(!show)
+  }
+
+  useEffect( () => {
+    createNewStore("Nueva Tienda supermarket 1", 110, 1)
+    createNewStore("Nueva Tienda supermarket 14 broadway, NY 11234", 130, 2)
+    createNewStore("Nueva Tienda supermarket 32-80 broadway, NY 11234", 100, 2)
     createNewStore("Nueva Tienda supermarket 12 broadway, NY 11234", 120, 4)
+    setDatos(data)
   }, [])
 
-  const router = useRouter()
 
-  const datos = data
+  const router = useRouter()
 
   const { id } = router.query
 
@@ -36,17 +50,36 @@ const index = () => {
             residuoGlobal={t.residuoGlobal}
           >
             {t.weeks.map((w) => {
+
+              const lastIndex = t.weeks.findIndex((i)=>{
+                return i === w
+              }) - 1
+              const residuoLast = ()=>{
+                if(!t.weeks[lastIndex]?.residuoGastado && t.weeks[lastIndex]?.residuo > 0){
+                  return t.weeks[lastIndex]?.residuo
+                } else {
+                  return undefined
+                }
+              }
+
               if (w.weekId === id)
                 return (
                   <WeekInfo
+                    tienda={t}
+                    week={w}
+                    update={()=>{
+                      setRenderizar(!renderizar)
+                    }}
                     key={w.weekId}
                     presupuestoTotal={w.presupuestoTotal}
                     publicaciones={w.publicaciones}
+                    open={()=>{handleShow()}}
                     residuo={w.residuo}
+                    residuoAnterior={residuoLast()}
                   >
-                    {w.division.map((d) => (
+                    {show && w.division.map((d) => (
                       <DivisionInfo
-                        key={d.residuo}
+                        key={d.residuo + Math.random()}
                         presupuesto={d.presupuesto}
                         distribucion={d.distribucion}
                         residuo={d.residuo}
