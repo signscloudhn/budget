@@ -8,7 +8,7 @@ interface dist {
   facebook: social | null
 }
 
-interface division {
+export interface division {
   presupuesto: number
   distribucion: dist
   residuo: number

@@ -1,24 +1,30 @@
-import { WeekInfoProps } from "../interfaces/WeekInfo"
-import styles from "../styles/WeekInfo.module.scss"
+import { WeekProps } from "../interfaces/Week"
+import styles from "../styles/Week.module.scss"
 import Icon from "@mui/material/Icon"
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn"
 import PriceChangeIcon from "@mui/icons-material/PriceChange"
 import BurstModeIcon from "@mui/icons-material/BurstMode"
-import ChevronRightIcon from "@mui/icons-material/ChevronRight"
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange"
 import { useStoreData } from '../../../../hooks/useStoreData';
 
-const WeekInfo = ({
+const Week = ({
   tienda,
   week,
-  presupuestoTotal,
   update,
-  open,
-  publicaciones,
-  residuo,
-  residuoAnterior,
   children,
-}: WeekInfoProps) => {
+}: WeekProps) => {
+
+  const lastIndex = tienda.weeks.findIndex((i)=>{
+    return i === week
+  }) - 1
+
+  const residuoLast = ()=>{
+    if(!tienda.weeks[lastIndex]?.residuoGastado && tienda.weeks[lastIndex]?.residuo > 0){
+      return tienda.weeks[lastIndex]?.residuo
+    } else {
+      return undefined
+    }
+  }
 
   const {updatePublication}= useStoreData()
 
@@ -26,33 +32,32 @@ const WeekInfo = ({
     <>
       <div className={styles.week_item}>
         <Icon component={KeyboardReturnIcon} className={styles.bottom}  />
-        <p>{residuoAnterior}</p>
+        <p>{residuoLast()}</p>
       </div>
       <div className={`${styles.week_item} ${styles.input_field}`}>
         <Icon component={PriceChangeIcon} color="success" />
-        <input type="number" name="" id="" defaultValue={presupuestoTotal} onChange={(e)=>{
-          presupuestoTotal = +e.target.value
+        <input type="number" name="" id="" defaultValue={week.presupuestoTotal} onChange={(e)=>{
+          week.presupuestoTotal = +e.target.value
         }} />
       </div>
       <div
         className={`${styles.week_item} ${styles.input_field} ${styles.pubs}`}
       >
         <Icon component={BurstModeIcon} />
-        <input type="number" name="" id="" defaultValue={publicaciones} onChange={(e)=>{
+        <input type="number" name="" defaultValue={week.publicaciones} onChange={(e)=>{
           updatePublication(tienda, week, +e.target.value)
           update()
         }} />
-        <Icon component={ChevronRightIcon} className={styles.bottom} onClick={()=>{open()}} />
         <div className={styles.publications} >
           {children}
         </div>
       </div>
       <div className={styles.week_item}>
         <Icon component={CurrencyExchangeIcon} color="error" />
-        <p style={{ padding: "0px 3px 0px 3px" }}>{residuo}</p>
+        <p style={{ padding: "0px 3px 0px 3px" }}>{week.residuo}</p>
       </div>
     </>
   )
 }
 
-export default WeekInfo
+export default Week

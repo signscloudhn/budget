@@ -1,15 +1,5 @@
-interface social {
-  in: number
-  out: number
-}
-
-interface dist {
-  instagram: social | null
-  facebook: social | null
-}
+import { division } from "../../../../interfaces/tienda"
 
 export interface DivisionProps {
-  presupuesto: number
-  distribucion: dist
-  residuo: number
+  division: Array<division>
 }
