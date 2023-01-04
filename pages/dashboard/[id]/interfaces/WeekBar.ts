@@ -1,5 +1,5 @@
 interface weeks {
-  id: string
+  id: number
 }
 
 export interface WeekBarProps {

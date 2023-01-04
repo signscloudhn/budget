@@ -15,7 +15,7 @@ export interface division {
 }
 
 export interface storeWeeks {
-  weekId: string
+  weekId: number
   presupuestoInicial: number
   presupuestoTotal: number
   publicaciones: number
@@ -31,10 +31,10 @@ export interface tienda {
 }
 
 interface weeks {
-  id: string
+  id: number
 }
 
-export interface tiendasInter {
+export interface tiendas {
   weeks: Array<weeks>
   tiendas: Array<tienda>
 }

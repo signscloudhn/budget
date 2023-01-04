@@ -5,7 +5,7 @@ import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn"
 import PriceChangeIcon from "@mui/icons-material/PriceChange"
 import BurstModeIcon from "@mui/icons-material/BurstMode"
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange"
-import { useStoreData } from '../../../../hooks/useStoreData';
+import { useStoreData } from '../../../../hooks/useStores';
 
 const Week = ({
   tienda,

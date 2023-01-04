@@ -1,12 +1,12 @@
-import { tiendasInter } from "../interfaces/tienda"
+import { tiendas } from "../interfaces/tienda"
 
 export const tiendaEjemplo = {
   weeks: [
     {
-      id: "001",
+      id: 1,
     },
     {
-      id: "002",
+      id: 2,
     },
   ],
 
@@ -82,15 +82,15 @@ export const tiendaEjemplo = {
   ],
 }
 
-export const data: tiendasInter = {
-  weeks: [{ id: "001" }, { id: "002" }, { id: "003" }],
+export const data: tiendas = {
+  weeks: [{ id: 1 }, { id: 2 }, { id: 3 }],
   tiendas: [
     {
       nombre: "Villana Antillana 333 Seneca",
       residuoGlobal: 0,
       weeks: [
         {
-          weekId: "001",
+          weekId: 1,
           // Editable
           presupuestoInicial: 100,
           presupuestoTotal: 100,
@@ -151,7 +151,7 @@ export const data: tiendasInter = {
           residuoGastado: false,
         },
         {
-          weekId: "002",
+          weekId: 2,
           // Editable
           presupuestoInicial: 100,
           presupuestoTotal: 120,
@@ -198,7 +198,7 @@ export const data: tiendasInter = {
           residuoGastado: false,
         },
         {
-          weekId: "003",
+          weekId: 3,
           // Editable
           presupuestoInicial: 100,
           presupuestoTotal: 120,
