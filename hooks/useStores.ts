@@ -1,15 +1,20 @@
-import { data } from "../data/tiendas"
+// import { data } from '../data/tiendas';
+import { useDispatch, useSelector } from "react-redux"
 import { tienda, storeWeeks } from "../interfaces/tienda"
+import { createNewStore } from "../redux/slices/dataSlice"
 
-export const useStoreData = () => {
-  const dividirPresupuesto = (p: number, w: storeWeeks) => {
-    for (let i = 0; i < p; i++) {
-      const presupuestoPost = w.presupuestoTotal / p
+export const useStores = () => {
+  const data = useSelector((state: any) => state.data)
+  const dispatch = useDispatch()
 
-      const presupuestoSocial = presupuestoPost / 2
+  const dividirPresupuesto = (publicaciones: number, week: storeWeeks) => {
+    for (let i = 0; i < publicaciones; i++) {
+      const presupuestoPublicacion = week.presupuestoTotal / publicaciones
 
-      w.division.push({
-        presupuesto: presupuestoPost,
+      const presupuestoSocial = presupuestoPublicacion / 2
+
+      week.division.push({
+        presupuesto: presupuestoPublicacion,
         distribucion: {
           instagram: {
             in: presupuestoSocial,
@@ -25,14 +30,14 @@ export const useStoreData = () => {
     }
   }
 
-  const createNewStore = (
+  const createStore = (
     nombre: string,
     presupuesto: number,
     publicaciones: number
   ) => {
     const lastWeek = data.weeks[data.weeks.length - 1].id
 
-    let tienda: tienda = {
+    const tienda: tienda = {
       nombre: nombre,
       residuoGlobal: 0,
       weeks: [
@@ -50,7 +55,9 @@ export const useStoreData = () => {
 
     dividirPresupuesto(publicaciones, tienda.weeks[0])
 
-    data.tiendas.push(tienda)
+    dispatch(createNewStore(tienda))
+
+    // data.tiendas.push(tienda)
   }
 
   const updatePublication = (
@@ -72,7 +79,8 @@ export const useStoreData = () => {
   }
 
   return {
-    createNewStore,
+    createStore,
     updatePublication,
+    dividirPresupuesto,
   }
 }

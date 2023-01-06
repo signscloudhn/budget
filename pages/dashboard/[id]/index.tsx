@@ -1,45 +1,45 @@
 // 'use client';
 import { useRouter } from "next/router"
-import { useEffect, useState } from 'react';
-import { data } from "../../../data/tiendas"
-import { useStoreData } from "../../../hooks/useStores"
+import { useEffect, useState } from "react"
+// import { data } from "../../../data/tiendas"
+import { useStores } from "../../../hooks/useStores"
 import WeeksBar from "./components/WeeksBar"
 import Tienda from "./components/Tienda"
 import Week from "./components/Week"
 import DivisionInfo from "./components/DivisionInfo"
 import styles from "./styles/index.module.scss"
-import useWeeks from "../../../hooks/useWeeks";
-
+import MasterTienda from "./components/MasterTienda"
+import { useSelector, shallowEqual } from "react-redux"
+import { tiendas } from '../../../interfaces/tienda';
 /*eslint-disable */
 
-const index = () => {
-  const { createNewStore } = useStoreData()
+const TiendasList = () => {
+  const { createStore } = useStores()
 
   const [renderizar, setRenderizar] = useState(false)
 
-  // Generar data
-  useEffect( () => {
-    createNewStore("Nueva Tienda supermarket 1", 110, 1)
-    createNewStore("Food Fair Supermarket 14 broadway, NY 11234", 130, 2)
-    createNewStore("Meat Market 32-80 broadway, NY 11234", 100, 2)
-    createNewStore("Cherry Valley 12 broadway, NY 11234", 120, 4)
+  const router = useRouter()
+  const { id } = router.query
+
+  const datos: tiendas = useSelector((state) => state.data)
+
+  const tiendas = datos.tiendas
+
+  // * Generar data
+  useEffect(() => {
+    createStore("Nueva Tienda supermarket 1", 110, 1)
+    createStore("Food Fair Supermarket 14 broadway, NY 11234", 130, 2)
+    createStore("Meat Market 32-80 broadway, NY 11234", 100, 2)
+    createStore("Cherry Valley 12 broadway, NY 11234", 120, 4)
     setRenderizar(!renderizar)
   }, [])
 
-
-  const router = useRouter()
-
-  const { id } = router.query
-
-  const datos = data
-
-  const tiendas = datos.tiendas
+  // console.log(datos.tiendas)
 
   return (
     <div className={styles.container}>
       <WeeksBar weeks={datos.weeks} />
       <div className={styles.tiendas_lista}>
-
         {tiendas.map((tienda) => (
           <Tienda
             key={tienda.nombre}
@@ -54,7 +54,7 @@ const index = () => {
                     key={tienda.nombre}
                     tienda={tienda}
                     week={week}
-                    update={()=>{
+                    update={() => {
                       setRenderizar(!renderizar)
                     }}
                   >
@@ -64,10 +64,9 @@ const index = () => {
             })}
           </Tienda>
         ))}
-
       </div>
     </div>
   )
 }
 
-export default index
+export default TiendasList

@@ -5,12 +5,12 @@
   position: relative;
 }
 .publications {
-  z-index: 9999;
   display: flex;
   position: absolute;
   top: 32px;
   left: 0;
   background-color: aliceblue;
+  z-index: 1;
 }
 .button {
   @include button;

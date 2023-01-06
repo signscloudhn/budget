@@ -5,7 +5,7 @@ import useWeeks from "../../../../hooks/useWeeks"
 
 const WeeksBar = ({ weeks }: WeekBarProps) => {
 
-  const {addWeek, lastWeek} = useWeeks()
+  const {addWeek, lastWeekId} = useWeeks()
 
   return (
     <ul className={styles.container}>
@@ -13,7 +13,7 @@ const WeeksBar = ({ weeks }: WeekBarProps) => {
         <li key={w.id}>{<Link href={`/dashboard/${w.id}`}>{w.id}</Link>}</li>
       ))}
       <li>
-        <Link href={`/dashboard/${lastWeek + 1}`} onClick={addWeek} >+</Link>
+        <Link href={`/dashboard/${lastWeekId + 1}`} onClick={addWeek} >+</Link>
       </li>
     </ul>
   )
