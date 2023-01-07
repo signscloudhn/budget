@@ -1,11 +1,22 @@
 import { Formik, Form, Field, ErrorMessage } from "formik"
+import { useStores } from "../../hooks/useStores";
 
-const index = () => {
+const AddStore = () => {
+
+
+  const { createStore } = useStores()
+
   return (
     <div>
       <h1>Add New Store</h1>
 
-      <Formik initialValues={{}} onSubmit={() => {}}>
+      <Formik initialValues={{
+         nombre: "",
+         presupuesto: 0,
+         publicaciones: 1,
+      }} onSubmit={(values) => {
+        createStore(values.nombre, values.presupuesto, values.publicaciones)
+      }}>
         {(formik) => (
           <Form>
 
@@ -21,6 +32,8 @@ const index = () => {
             <Field name="publicaciones" type="number" />
             <ErrorMessage name="publicaciones" component="p" />
 
+            <button type="submit">Crear</button>
+
           </Form>
         )}
       </Formik>
@@ -28,4 +41,4 @@ const index = () => {
   )
 }
 
-export default index
+export default AddStore

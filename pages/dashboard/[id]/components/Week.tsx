@@ -10,7 +10,6 @@ import { useStores } from '../../../../hooks/useStores';
 const Week = ({
   tienda,
   week,
-  update,
   children,
 }: WeekProps) => {
 
@@ -26,7 +25,7 @@ const Week = ({
     }
   }
 
-  const {updatePublication}= useStores()
+  const {updatePublications}= useStores()
 
   return (
     <>
@@ -45,8 +44,7 @@ const Week = ({
       >
         <Icon component={BurstModeIcon} />
         <input type="number" name="" defaultValue={week.publicaciones} onChange={(e)=>{
-          updatePublication(tienda, week, +e.target.value)
-          update()
+          updatePublications(tienda, week, +e.target.value)
         }} />
         <div className={styles.publications} >
           {children}

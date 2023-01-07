@@ -1,34 +1,15 @@
 // import { data } from '../data/tiendas';
 import { useDispatch, useSelector } from "react-redux"
-import { tienda, storeWeeks } from "../interfaces/tienda"
-import { createNewStore } from "../redux/slices/dataSlice"
+import { tienda, storeWeeks, tiendas } from "../interfaces/tienda"
+import {
+  createNewStore,
+  updatePublicationsDist,
+} from "../redux/slices/dataSlice"
+import { dividirPresupuesto } from "../utils/calculations"
 
 export const useStores = () => {
-  const data = useSelector((state: any) => state.data)
+  const data: tiendas = useSelector((state: any) => state.data)
   const dispatch = useDispatch()
-
-  const dividirPresupuesto = (publicaciones: number, week: storeWeeks) => {
-    for (let i = 0; i < publicaciones; i++) {
-      const presupuestoPublicacion = week.presupuestoTotal / publicaciones
-
-      const presupuestoSocial = presupuestoPublicacion / 2
-
-      week.division.push({
-        presupuesto: presupuestoPublicacion,
-        distribucion: {
-          instagram: {
-            in: presupuestoSocial,
-            out: 0,
-          },
-          facebook: {
-            in: presupuestoSocial,
-            out: 0,
-          },
-        },
-        residuo: 0,
-      })
-    }
-  }
 
   const createStore = (
     nombre: string,
@@ -56,31 +37,30 @@ export const useStores = () => {
     dividirPresupuesto(publicaciones, tienda.weeks[0])
 
     dispatch(createNewStore(tienda))
-
-    // data.tiendas.push(tienda)
   }
 
-  const updatePublication = (
+  const updatePublications = (
     tienda: tienda,
     week: storeWeeks,
     publicaciones: number
   ) => {
-    const index = data.tiendas.findIndex((i) => i === tienda)
+    const tiendaIndex = data.tiendas.findIndex((i) => i === tienda)
 
-    const indexW = data.tiendas[index].weeks.findIndex((i) => i === week)
+    const weekIndex = data.tiendas[tiendaIndex].weeks.findIndex(
+      (i) => i === week
+    )
 
-    const divisionWeek = data.tiendas[index].weeks[indexW]
-
-    divisionWeek.division = []
-
-    divisionWeek.publicaciones = publicaciones
-
-    dividirPresupuesto(publicaciones, divisionWeek)
+    dispatch(
+      updatePublicationsDist({
+        tiendaIndex: tiendaIndex,
+        weekIndex: weekIndex,
+        publicaciones: publicaciones,
+      })
+    )
   }
 
   return {
     createStore,
-    updatePublication,
-    dividirPresupuesto,
+    updatePublications,
   }
 }

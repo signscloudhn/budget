@@ -1,6 +1,6 @@
 // 'use client';
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useEffect} from "react"
 // import { data } from "../../../data/tiendas"
 import { useStores } from "../../../hooks/useStores"
 import WeeksBar from "./components/WeeksBar"
@@ -9,32 +9,26 @@ import Week from "./components/Week"
 import DivisionInfo from "./components/DivisionInfo"
 import styles from "./styles/index.module.scss"
 import MasterTienda from "./components/MasterTienda"
-import { useSelector, shallowEqual } from "react-redux"
+import { useSelector } from "react-redux"
 import { tiendas } from '../../../interfaces/tienda';
-/*eslint-disable */
 
 const TiendasList = () => {
   const { createStore } = useStores()
 
-  const [renderizar, setRenderizar] = useState(false)
-
   const router = useRouter()
   const { id } = router.query
 
-  const datos: tiendas = useSelector((state) => state.data)
+  const datos: tiendas = useSelector((state: any) => state.data)
 
   const tiendas = datos.tiendas
 
-  // * Generar data
+  //! Generar data
   useEffect(() => {
     createStore("Nueva Tienda supermarket 1", 110, 1)
     createStore("Food Fair Supermarket 14 broadway, NY 11234", 130, 2)
     createStore("Meat Market 32-80 broadway, NY 11234", 100, 2)
     createStore("Cherry Valley 12 broadway, NY 11234", 120, 4)
-    setRenderizar(!renderizar)
   }, [])
-
-  // console.log(datos.tiendas)
 
   return (
     <div className={styles.container}>
@@ -54,9 +48,6 @@ const TiendasList = () => {
                     key={tienda.nombre}
                     tienda={tienda}
                     week={week}
-                    update={() => {
-                      setRenderizar(!renderizar)
-                    }}
                   >
                     <DivisionInfo division={week.division} />
                   </Week>

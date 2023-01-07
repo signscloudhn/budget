@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { tiendas } from "../../interfaces/tienda"
+import { storeWeeks, tiendas } from "../../interfaces/tienda"
+import { dividirPresupuesto } from "../../utils/calculations"
 
 const initialState: tiendas = {
   weeks: [{ id: 1 }, { id: 2 }, { id: 3 }],
@@ -174,12 +175,47 @@ const dataSlice = createSlice({
   reducers: {
     createNewStore: (state, action) => {
       state.tiendas.push(action.payload)
-      console.log("reducer in action")
-      return state
+    },
+    updatePublicationsDist: (state, action) => {
+      const tiendaIndex = action.payload.tiendaIndex
+      const weekIndex = action.payload.weekIndex
+      const weekToUpdate = state.tiendas[tiendaIndex].weeks[weekIndex]
+
+      state.tiendas[tiendaIndex].weeks[weekIndex].division = []
+      state.tiendas[tiendaIndex].weeks[weekIndex].publicaciones =
+        action.payload.publicaciones
+
+      dividirPresupuesto(action.payload.publicaciones, weekToUpdate)
+    },
+
+    createWeek: (state) => {
+      const lastWeekId = state.weeks[state.weeks.length - 1].id
+      const newWeekId = lastWeekId + 1
+
+      state.weeks.push({ id: newWeekId })
+
+      state.tiendas.forEach((tienda) => {
+        const lastWeek = tienda.weeks[tienda.weeks.length - 1]
+
+        const newWeek = {
+          weekId: newWeekId,
+          presupuestoInicial: lastWeek.presupuestoInicial,
+          presupuestoTotal: lastWeek.presupuestoInicial,
+          publicaciones: lastWeek.publicaciones,
+          division: [],
+          residuo: 0,
+          residuoGastado: false,
+        }
+
+        dividirPresupuesto(lastWeek.publicaciones, newWeek)
+
+        tienda.weeks.push(newWeek)
+      })
     },
   },
 })
 
-export const { createNewStore } = dataSlice.actions
+export const { createNewStore, updatePublicationsDist, createWeek } =
+  dataSlice.actions
 
 export default dataSlice.reducer
