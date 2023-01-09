@@ -30,11 +30,18 @@ export interface tienda {
   weeks: Array<storeWeeks>
 }
 
-interface weeks {
+export interface weeks {
   id: number
 }
 
 export interface tiendas {
   weeks: Array<weeks>
   tiendas: Array<tienda>
+}
+
+export interface state {
+  data: tiendas
+  ui: {
+    loading: boolean
+  }
 }

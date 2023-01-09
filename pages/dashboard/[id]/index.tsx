@@ -1,7 +1,6 @@
 // 'use client';
 import { useRouter } from "next/router"
 import { useEffect} from "react"
-// import { data } from "../../../data/tiendas"
 import { useStores } from "../../../hooks/useStores"
 import WeeksBar from "./components/WeeksBar"
 import Tienda from "./components/Tienda"
@@ -10,25 +9,26 @@ import DivisionInfo from "./components/DivisionInfo"
 import styles from "./styles/index.module.scss"
 import MasterTienda from "./components/MasterTienda"
 import { useSelector } from "react-redux"
-import { tiendas } from '../../../interfaces/tienda';
+import { state, tiendas } from '../../../interfaces/tienda';
 
 const TiendasList = () => {
-  const { createStore } = useStores()
+  // const { createStore } = useStores()
 
   const router = useRouter()
   const { id } = router.query
 
-  const datos: tiendas = useSelector((state: any) => state.data)
+  const datos: tiendas = useSelector((state: state) => state.data)
 
   const tiendas = datos.tiendas
 
-  //! Generar data
-  useEffect(() => {
-    createStore("Nueva Tienda supermarket 1", 110, 1)
-    createStore("Food Fair Supermarket 14 broadway, NY 11234", 130, 2)
-    createStore("Meat Market 32-80 broadway, NY 11234", 100, 2)
-    createStore("Cherry Valley 12 broadway, NY 11234", 120, 4)
-  }, [])
+
+  // ! Generar data
+  // useEffect(() => {
+  //   createStore("Nueva Tienda supermarket 1", 110, 1)
+  //   createStore("Food Fair Supermarket 14 broadway, NY 11234", 130, 2)
+  //   createStore("Meat Market 32-80 broadway, NY 11234", 100, 2)
+  //   createStore("Cherry Valley 12 broadway, NY 11234", 120, 4)
+  // }, [])
 
   return (
     <div className={styles.container}>
@@ -55,6 +55,11 @@ const TiendasList = () => {
             })}
           </Tienda>
         ))}
+        <div onClick={()=> {
+          router.push("/add-store")
+        }}>
+          <h4>Nueva tienda</h4>
+        </div>
       </div>
     </div>
   )

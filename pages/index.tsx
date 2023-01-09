@@ -1,9 +1,14 @@
 import Head from 'next/head'
 // import Image from 'next/image'
 import Link from 'next/link'
+import { useSelector } from 'react-redux'
 import styles from '../styles/Home.module.css'
+import { state } from '../interfaces/tienda';
 
 export default function Home() {
+
+  const lastWeekId: number = useSelector((state: state) => state.data.weeks[state.data.weeks.length - 1].id)
+
   return (
     <div className={styles.container}>
       <Head>
@@ -18,7 +23,7 @@ export default function Home() {
         </h1>
         <nav>
           <ul>
-            <li><Link href={`/dashboard`} >Dashboard</Link></li>
+            <li><Link href={`/dashboard/${lastWeekId}`} >Dashboard</Link></li>
             <li><Link href={`/add-store`} >Nueva Tienda</Link></li>
           </ul>
         </nav>

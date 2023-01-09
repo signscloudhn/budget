@@ -27,6 +27,8 @@ const Week = ({
 
   const {updatePublications}= useStores()
 
+  console.log(week.publicaciones)
+
   return (
     <>
       <div className={styles.week_item}>
@@ -35,9 +37,7 @@ const Week = ({
       </div>
       <div className={`${styles.week_item} ${styles.input_field}`}>
         <Icon component={PriceChangeIcon} color="success" />
-        <input type="number" name="" id="" defaultValue={week.presupuestoTotal} onChange={(e)=>{
-          week.presupuestoTotal = +e.target.value
-        }} />
+        <p>{week.presupuestoTotal}</p>
       </div>
       <div
         className={`${styles.week_item} ${styles.input_field} ${styles.pubs}`}

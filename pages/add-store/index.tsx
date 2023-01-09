@@ -1,8 +1,14 @@
 import { Formik, Form, Field, ErrorMessage } from "formik"
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 import { useStores } from "../../hooks/useStores";
+import { state } from "../../interfaces/tienda";
 
 const AddStore = () => {
 
+  const lastWeekId: number = useSelector((state: state) => state.data.weeks[state.data.weeks.length - 1].id)
+
+  const router = useRouter()
 
   const { createStore } = useStores()
 
@@ -16,6 +22,7 @@ const AddStore = () => {
          publicaciones: 1,
       }} onSubmit={(values) => {
         createStore(values.nombre, values.presupuesto, values.publicaciones)
+        router.push(`/dashboard/${lastWeekId}`)
       }}>
         {(formik) => (
           <Form>

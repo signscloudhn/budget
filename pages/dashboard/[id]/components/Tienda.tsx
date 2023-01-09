@@ -24,7 +24,7 @@ const Tienda = ({nombre, residuoGlobal, children }: TiendaProps) => {
         <Icon component={LanguageIcon} sx={{ color: "#16b0df" }} className={styles.bottom} />
         <p>{residuoGlobal}</p>
       </div>
-      {showMaster && <MasterTienda handle={handleShow} />}
+      {showMaster && <MasterTienda handle={handleShow} nombre={nombre}/>}
       {children}
       <div className={styles.item} >
         <Icon component={CheckCircleIcon} color="success" />

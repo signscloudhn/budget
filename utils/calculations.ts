@@ -1,6 +1,8 @@
 import { storeWeeks } from "../interfaces/tienda"
 
 export const dividirPresupuesto = (publicaciones: number, week: storeWeeks) => {
+  week.division = []
+
   for (let i = 0; i < publicaciones; i++) {
     const presupuestoPublicacion = week.presupuestoTotal / publicaciones
 
