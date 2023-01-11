@@ -1,173 +1,9 @@
-import { createSlice, current } from "@reduxjs/toolkit"
-import { tiendas } from "../../interfaces/tienda"
-import { dividirPresupuesto } from "../../utils/calculations"
-
-const initialState: tiendas = {
-  weeks: [{ id: 1 }, { id: 2 }, { id: 3 }],
-  tiendas: [
-    {
-      nombre: "Villana Antillana 333 Seneca",
-      residuoGlobal: 13,
-      weeks: [
-        {
-          weekId: 1,
-          // Editable
-          presupuestoInicial: 100,
-          presupuestoTotal: 100,
-          // Editable
-          publicaciones: 3,
-          division: [
-            {
-              // Editable y recalculable
-              presupuesto: 33,
-              distribucion: {
-                instagram: {
-                  // Editable
-                  in: 13,
-                  // Asignado por usuario
-                  out: 12,
-                },
-                facebook: {
-                  // Editable
-                  in: 13,
-                  // Asignado por usuario
-                  out: 12,
-                },
-              },
-              // Se calcula de lo que sobro en la distribucion
-              residuo: 6,
-            },
-            {
-              presupuesto: 33,
-              distribucion: {
-                instagram: {
-                  in: 13,
-                  out: 12,
-                },
-                facebook: {
-                  in: 13,
-                  out: 12,
-                },
-              },
-              residuo: 6,
-            },
-            {
-              presupuesto: 33,
-              distribucion: {
-                instagram: {
-                  in: 13,
-                  out: 12,
-                },
-                facebook: {
-                  in: 13,
-                  out: 12,
-                },
-              },
-              residuo: 6,
-            },
-          ],
-          // Se calcula sumando los residuos de cada publicacion
-          residuo: 0,
-          residuoGastado: false,
-        },
-        {
-          weekId: 2,
-          // Editable
-          presupuestoInicial: 100,
-          presupuestoTotal: 120,
-          // Editable
-          publicaciones: 2,
-          division: [
-            {
-              // Editable y recalculable
-              presupuesto: 33,
-              distribucion: {
-                instagram: {
-                  // Editable
-                  in: 13,
-                  // Asignado por usuario
-                  out: 12,
-                },
-                facebook: {
-                  // Editable
-                  in: 13,
-                  // Asignado por usuario
-                  out: 12,
-                },
-              },
-              // Se calcula de lo que sobro en la distribucion
-              residuo: 6,
-            },
-            {
-              presupuesto: 33,
-              distribucion: {
-                instagram: {
-                  in: 13,
-                  out: 12,
-                },
-                facebook: {
-                  in: 13,
-                  out: 12,
-                },
-              },
-              residuo: 6,
-            },
-          ],
-          // Se calcula sumando los residuos de cada publicacion
-          residuo: 234,
-          residuoGastado: false,
-        },
-        {
-          weekId: 3,
-          // Editable
-          presupuestoInicial: 100,
-          presupuestoTotal: 120,
-          // Editable
-          publicaciones: 2,
-          division: [
-            {
-              // Editable y recalculable
-              presupuesto: 33,
-              distribucion: {
-                instagram: {
-                  // Editable
-                  in: 13,
-                  // Asignado por usuario
-                  out: 12,
-                },
-                facebook: {
-                  // Editable
-                  in: 13,
-                  // Asignado por usuario
-                  out: 12,
-                },
-              },
-              // Se calcula de lo que sobro en la distribucion
-              residuo: 6,
-            },
-            {
-              presupuesto: 33,
-              distribucion: {
-                instagram: {
-                  in: 13,
-                  out: 12,
-                },
-                facebook: {
-                  in: 13,
-                  out: 12,
-                },
-              },
-              residuo: 6,
-            },
-          ],
-          // Se calcula sumando los residuos de cada publicacion
-          residuo: 24,
-          residuoGastado: false,
-        },
-      ],
-    },
-  ],
-}
+import { createSlice } from "@reduxjs/toolkit"
+import {
+  dividirPresupuesto,
+  recalcularResiduoGlobal,
+} from "../../utils/calculations"
+import { initialDataState as initialState } from "../initialStates"
 
 const dataSlice = createSlice({
   name: "data",
@@ -226,7 +62,13 @@ const dataSlice = createSlice({
       const lastWeek =
         state.tiendas[currentStoreIndex].weeks[currentWeekIndex - 1]
 
-      state.tiendas[currentStoreIndex].residuoGlobal = residuoGlobal
+      if (state.tiendas[currentStoreIndex].residuoGlobal != residuoGlobal) {
+        state.tiendas[currentStoreIndex].residuoGlobal = residuoGlobal
+
+        state.tiendas[currentStoreIndex].weeks.forEach((week) => {
+          week.residuoGastado = true
+        })
+      }
 
       currentWeek.presupuestoInicial = presupuestoInicial
 
@@ -234,12 +76,70 @@ const dataSlice = createSlice({
         currentWeek.presupuestoTotal =
           currentWeek.presupuestoInicial + lastWeek.residuo
         lastWeek.residuoGastado = true
+
+        recalcularResiduoGlobal(state.tiendas[currentStoreIndex])
       } else {
         currentWeek.presupuestoTotal = presupuestoInicial
       }
 
       dividirPresupuesto(currentWeek.publicaciones, currentWeek)
     },
+
+    addLastResidue: (state, action) => {
+      const nombre = action.payload.nombre
+      const id = action.payload.id
+
+      const storeIndex = state.tiendas.findIndex(
+        (tienda) => tienda.nombre === nombre
+      )
+
+      const weekIndex = state.tiendas[storeIndex].weeks.findIndex(
+        (week) => week.weekId === id
+      )
+
+      if (!state.tiendas[storeIndex].weeks[weekIndex - 1].residuoGastado) {
+        state.tiendas[storeIndex].weeks[weekIndex].presupuestoTotal =
+          state.tiendas[storeIndex].weeks[weekIndex].presupuestoTotal +
+          state.tiendas[storeIndex].weeks[weekIndex - 1].residuo
+
+        state.tiendas[storeIndex].weeks[weekIndex - 1].residuoGastado = true
+      }
+
+      recalcularResiduoGlobal(state.tiendas[storeIndex])
+      dividirPresupuesto(
+        state.tiendas[storeIndex].weeks[weekIndex].publicaciones,
+        state.tiendas[storeIndex].weeks[weekIndex]
+      )
+    },
+
+    addGlobalResidue: (state, action) => {
+      const nombre = action.payload.nombre
+      const id = action.payload.id
+
+      const storeIndex = state.tiendas.findIndex(
+        (tienda) => tienda.nombre === nombre
+      )
+
+      const weekIndex = state.tiendas[storeIndex].weeks.findIndex(
+        (week) => week.weekId === id
+      )
+
+      state.tiendas[storeIndex].weeks[weekIndex].presupuestoTotal =
+        state.tiendas[storeIndex].weeks[weekIndex].presupuestoTotal +
+        state.tiendas[storeIndex].residuoGlobal
+
+      state.tiendas[storeIndex].weeks.forEach((week) => {
+        week.residuoGastado = true
+      })
+      recalcularResiduoGlobal(state.tiendas[storeIndex])
+
+      dividirPresupuesto(
+        state.tiendas[storeIndex].weeks[weekIndex].publicaciones,
+        state.tiendas[storeIndex].weeks[weekIndex]
+      )
+    },
+
+    updatePublication: (state, action) => {},
   },
 })
 
@@ -248,6 +148,8 @@ export const {
   updatePublicationsDist,
   createWeek,
   updateMasterTienda,
+  addLastResidue,
+  addGlobalResidue,
 } = dataSlice.actions
 
 export default dataSlice.reducer

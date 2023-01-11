@@ -22,6 +22,16 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
     (week) => week.weekId == weekId
   )
 
+    const residuoLast = ()=>{
+    if(!currentStore.weeks[currentWeekIndex - 1]?.residuoGastado && currentStore.weeks[currentWeekIndex - 1]?.residuo > 0){
+      return currentStore.weeks[currentWeekIndex - 1]?.residuo
+    } else {
+      return 0
+    }
+  }
+
+
+
   const submit = (
     presupuestoInicial: number,
     residuoGlobal: number,
@@ -69,7 +79,7 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
               <label htmlFor="residuo-global">Residuo global:</label>
               <Field type="number" name="residuoGlobal" />
 
-              <label htmlFor="residuoAnterior">Sumar residuo anterior ({tiendas[currentStoreIndex].weeks[currentWeekIndex - 1]?.residuo}):</label>
+              <label htmlFor="residuoAnterior">Sumar residuo anterior ({residuoLast()}):</label>
               <Field type="checkbox" name="sumarResiduoAnterior" />
 
               <button type="submit" >

@@ -9,6 +9,7 @@ interface dist {
 }
 
 export interface division {
+  // id: number
   presupuesto: number
   distribucion: dist
   residuo: number

@@ -1,8 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-
-const initialState = {
-  loading: false,
-}
+import { initialUiState as initialState } from "../initialStates"
 
 const uiSlice = createSlice({
   name: "ui",

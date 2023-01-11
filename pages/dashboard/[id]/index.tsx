@@ -12,7 +12,7 @@ import { useSelector } from "react-redux"
 import { state, tiendas } from '../../../interfaces/tienda';
 
 const TiendasList = () => {
-  // const { createStore } = useStores()
+  const { createStore } = useStores()
 
   const router = useRouter()
   const { id } = router.query
@@ -23,12 +23,12 @@ const TiendasList = () => {
 
 
   // ! Generar data
-  // useEffect(() => {
-  //   createStore("Nueva Tienda supermarket 1", 110, 1)
-  //   createStore("Food Fair Supermarket 14 broadway, NY 11234", 130, 2)
-  //   createStore("Meat Market 32-80 broadway, NY 11234", 100, 2)
-  //   createStore("Cherry Valley 12 broadway, NY 11234", 120, 4)
-  // }, [])
+  useEffect(() => {
+    createStore("Nueva Tienda supermarket 1", 110, 1)
+    createStore("Food Fair Supermarket 14 broadway, NY 11234", 130, 2)
+    createStore("Meat Market 32-80 broadway, NY 11234", 100, 2)
+    createStore("Cherry Valley 12 broadway, NY 11234", 120, 4)
+  }, [])
 
   return (
     <div className={styles.container}>
