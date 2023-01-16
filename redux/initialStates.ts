@@ -17,6 +17,7 @@ export const initialDataState: tiendas = {
           division: [
             {
               // Editable y recalculable
+              id: 1,
               presupuesto: 33,
               distribucion: {
                 instagram: {
@@ -36,6 +37,7 @@ export const initialDataState: tiendas = {
               residuo: 6,
             },
             {
+              id: 2,
               presupuesto: 33,
               distribucion: {
                 instagram: {
@@ -50,6 +52,7 @@ export const initialDataState: tiendas = {
               residuo: 6,
             },
             {
+              id: 3,
               presupuesto: 33,
               distribucion: {
                 instagram: {
@@ -78,6 +81,7 @@ export const initialDataState: tiendas = {
           division: [
             {
               // Editable y recalculable
+              id: 1,
               presupuesto: 33,
               distribucion: {
                 instagram: {
@@ -97,6 +101,7 @@ export const initialDataState: tiendas = {
               residuo: 6,
             },
             {
+              id: 2,
               presupuesto: 33,
               distribucion: {
                 instagram: {
@@ -125,6 +130,7 @@ export const initialDataState: tiendas = {
           division: [
             {
               // Editable y recalculable
+              id: 1,
               presupuesto: 33,
               distribucion: {
                 instagram: {
@@ -144,6 +150,7 @@ export const initialDataState: tiendas = {
               residuo: 6,
             },
             {
+              id: 2,
               presupuesto: 33,
               distribucion: {
                 instagram: {

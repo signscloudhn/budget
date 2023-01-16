@@ -4,12 +4,12 @@ interface social {
 }
 
 interface dist {
-  instagram: social | null
-  facebook: social | null
+  instagram: social
+  facebook: social
 }
 
 export interface division {
-  // id: number
+  id: number
   presupuesto: number
   distribucion: dist
   residuo: number
