@@ -1,4 +1,4 @@
-import { storeWeeks, tienda, weeks, division } from "../interfaces/tienda"
+import { storeWeeks, tienda, division } from "../interfaces/tienda"
 
 export const dividirPresupuesto = (publicaciones: number, week: storeWeeks) => {
   week.division = []

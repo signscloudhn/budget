@@ -11,6 +11,21 @@
   left: 0;
   background-color: aliceblue;
   z-index: 1;
+  .post {
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .in {
+      border-bottom: 1px solid rgb(15 175 9);
+    }
+    .out {
+      border-bottom: 1px solid rgb(175, 9, 9);
+    }
+    .residuo {
+      font-size: 14px;
+    }
+  }
 }
 .button {
   @include button;

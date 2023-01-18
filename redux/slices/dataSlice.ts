@@ -14,6 +14,7 @@ const dataSlice = createSlice({
   reducers: {
     createNewStore: (state, action) => {
       state.tiendas.push(action.payload)
+      window.localStorage.setItem("data", JSON.stringify(state))
     },
 
     createWeek: (state) => {
@@ -38,21 +39,22 @@ const dataSlice = createSlice({
         dividirPresupuesto(lastWeek.publicaciones, newWeek)
 
         tienda.weeks.push(newWeek)
+
+        recalcularResiduoGlobal(tienda)
       })
     },
 
     updatePublicationsDist: (state, action) => {
       const tiendaIndex = action.payload.tiendaIndex
       const weekIndex = action.payload.weekIndex
-      const weekToUpdate = state.tiendas[tiendaIndex].weeks[weekIndex]
 
-      state.tiendas[tiendaIndex].weeks[weekIndex].division = []
-      state.tiendas[tiendaIndex].weeks[weekIndex].publicaciones =
-        action.payload.publicaciones
+      const currentWeek = state.tiendas[tiendaIndex].weeks[weekIndex]
 
-      dividirPresupuesto(action.payload.publicaciones, weekToUpdate)
+      currentWeek.division = []
+      currentWeek.publicaciones = action.payload.publicaciones
 
-      calcularResiduoActual(state.tiendas[tiendaIndex].weeks[weekIndex])
+      dividirPresupuesto(action.payload.publicaciones, currentWeek)
+      calcularResiduoActual(currentWeek)
     },
 
     updateMasterTienda: (state, action) => {
@@ -103,20 +105,17 @@ const dataSlice = createSlice({
         (week) => week.weekId === id
       )
 
-      if (!state.tiendas[storeIndex].weeks[weekIndex - 1].residuoGastado) {
-        state.tiendas[storeIndex].weeks[weekIndex].presupuestoTotal =
-          state.tiendas[storeIndex].weeks[weekIndex].presupuestoTotal +
-          state.tiendas[storeIndex].weeks[weekIndex - 1].residuo
+      const currentWeek = state.tiendas[storeIndex].weeks[weekIndex]
+      const lastWeek = state.tiendas[storeIndex].weeks[weekIndex - 1]
 
-        state.tiendas[storeIndex].weeks[weekIndex - 1].residuoGastado = true
+      if (!lastWeek?.residuoGastado && lastWeek !== undefined) {
+        currentWeek.presupuestoTotal =
+          currentWeek.presupuestoTotal + lastWeek.residuo
+        lastWeek.residuoGastado = true
       }
 
       recalcularResiduoGlobal(state.tiendas[storeIndex])
-      dividirPresupuesto(
-        state.tiendas[storeIndex].weeks[weekIndex].publicaciones,
-        state.tiendas[storeIndex].weeks[weekIndex]
-      )
-
+      dividirPresupuesto(currentWeek.publicaciones, currentWeek)
       calcularResiduoActual(state.tiendas[storeIndex].weeks[weekIndex])
     },
 
@@ -132,20 +131,21 @@ const dataSlice = createSlice({
         (week) => week.weekId === id
       )
 
-      state.tiendas[storeIndex].weeks[weekIndex].presupuestoTotal =
-        state.tiendas[storeIndex].weeks[weekIndex].presupuestoTotal +
-        state.tiendas[storeIndex].residuoGlobal
+      const currentWeek = state.tiendas[storeIndex].weeks[weekIndex]
+
+      currentWeek.presupuestoTotal =
+        currentWeek.presupuestoTotal + state.tiendas[storeIndex].residuoGlobal
 
       state.tiendas[storeIndex].weeks.forEach((week) => {
-        week.residuoGastado = true
+        if (week.weekId !== currentWeek.weekId) week.residuoGastado = true
       })
       recalcularResiduoGlobal(state.tiendas[storeIndex])
 
       dividirPresupuesto(
-        state.tiendas[storeIndex].weeks[weekIndex].publicaciones,
+        currentWeek.publicaciones,
         state.tiendas[storeIndex].weeks[weekIndex]
       )
-      calcularResiduoActual(state.tiendas[storeIndex].weeks[weekIndex])
+      calcularResiduoActual(currentWeek)
     },
 
     updatePublication: (state, action) => {
@@ -165,12 +165,10 @@ const dataSlice = createSlice({
         weekIndex
       ].division.findIndex((publicacion) => publicacion.id === id)
 
-      recalcularPublicaciones(
-        state.tiendas[storeIndex].weeks[weekIndex],
-        value,
-        publicacionIndex
-      )
-      calcularResiduoActual(state.tiendas[storeIndex].weeks[weekIndex])
+      const currentWeek = state.tiendas[storeIndex].weeks[weekIndex]
+
+      recalcularPublicaciones(currentWeek, value, publicacionIndex)
+      calcularResiduoActual(currentWeek)
     },
 
     updateSocialMediaDist: (state, action) => {
@@ -191,11 +189,12 @@ const dataSlice = createSlice({
         weekIndex
       ].division.findIndex((publicacion) => publicacion.id === id)
 
-      const data =
-        state.tiendas[storeIndex].weeks[weekIndex].division[publicacionIndex]
+      const currentWeek = state.tiendas[storeIndex].weeks[weekIndex]
+
+      const data = currentWeek.division[publicacionIndex]
 
       recalcularSocialMedia(data, social, value)
-      calcularResiduoActual(state.tiendas[storeIndex].weeks[weekIndex])
+      calcularResiduoActual(currentWeek)
     },
 
     updateResiduo: (state, action) => {
@@ -212,24 +211,22 @@ const dataSlice = createSlice({
         (week) => week.weekId === current.week
       )
 
-      const publicacionIndex = state.tiendas[storeIndex].weeks[
-        weekIndex
-      ].division.findIndex((publicacion) => publicacion.id === id)
+      const currentWeek = state.tiendas[storeIndex].weeks[weekIndex]
+
+      const publicacionIndex = currentWeek.division.findIndex(
+        (publicacion) => publicacion.id === id
+      )
 
       if (social === "instagram") {
-        state.tiendas[storeIndex].weeks[weekIndex].division[
-          publicacionIndex
-        ].distribucion.instagram.out = value
+        currentWeek.division[publicacionIndex].distribucion.instagram.out =
+          value
       }
 
       if (social === "facebook") {
-        state.tiendas[storeIndex].weeks[weekIndex].division[
-          publicacionIndex
-        ].distribucion.facebook.out = value
+        currentWeek.division[publicacionIndex].distribucion.facebook.out = value
       }
 
-      const dist =
-        state.tiendas[storeIndex].weeks[weekIndex].division[publicacionIndex]
+      const dist = currentWeek.division[publicacionIndex]
 
       const residuoFacebook =
         dist.distribucion.facebook.in - dist.distribucion.facebook.out
@@ -237,11 +234,10 @@ const dataSlice = createSlice({
       const residuoInstagram =
         dist.distribucion.instagram.in - dist.distribucion.instagram.out
 
-      state.tiendas[storeIndex].weeks[weekIndex].division[
-        publicacionIndex
-      ].residuo = residuoFacebook + residuoInstagram
+      currentWeek.division[publicacionIndex].residuo =
+        residuoFacebook + residuoInstagram
 
-      calcularResiduoActual(state.tiendas[storeIndex].weeks[weekIndex])
+      calcularResiduoActual(currentWeek)
     },
   },
 })

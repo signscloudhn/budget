@@ -16,8 +16,11 @@ const WeeksBar = ({ weeks }: WeekBarProps) => {
 
   return (
     <ul className={styles.container}>
-      {weeks.map((w) => (
-        <li key={w.id}>{<Link href={`/dashboard/${w.id}`}>{w.id}</Link>}</li>
+      {weeks.map((week) => (
+        <li key={week.id}>
+          <Link href={`/dashboard/${week.id}`}>{week.id}</Link>
+          {/* <button>Delete</button> */}
+        </li>
       ))}
       <li>
         <Link href={`/dashboard/${lastWeekId + 1}`} onClick={()=>{

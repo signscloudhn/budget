@@ -4,10 +4,11 @@ import Icon from "@mui/material/Icon"
 import LanguageIcon from "@mui/icons-material/Language"
 import CheckCircleIcon from "@mui/icons-material/CheckCircle"
 import MasterTienda from "./MasterTienda"
-import { useState } from "react"
+import {useState } from "react"
 import { useRouter } from "next/router"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from 'react-redux';
 import { addGlobalResidue } from "../../../../redux/slices/dataSlice"
+import { state } from '../../../../interfaces/tienda';
 
 const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
   const [showMaster, setShowMaster] = useState(false)
@@ -16,12 +17,29 @@ const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
     setShowMaster(!showMaster)
   }
 
+  const tiendas = useSelector((state: state) => state.data.tiendas)
+
+  const storeIndex = tiendas.findIndex(tienda => tienda.nombre === nombre)
+
   const router = useRouter()
   const { id } = router.query
 
   const idNumber = Number(id)
 
   const dispatch = useDispatch()
+
+  const weekIndex = tiendas[storeIndex].weeks.findIndex(week => week.weekId === idNumber)
+
+  const current = tiendas[storeIndex].weeks[weekIndex]
+
+  const hasResidue = ()=>{
+    if(current?.residuo > 0){
+      return false
+    } else{
+      return true
+    }
+  }
+
 
   return (
     <div className={styles.container}>
@@ -33,7 +51,6 @@ const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
           component={LanguageIcon}
           onClick={() => {
             dispatch(addGlobalResidue({ nombre: nombre, id: idNumber }))
-            // console.log("hola")
           }}
           sx={{ color: "#16b0df" }}
           className={styles.bottom}
@@ -43,7 +60,7 @@ const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
       {showMaster && <MasterTienda handle={handleShow} nombre={nombre} />}
       {children}
       <div className={styles.item}>
-        <Icon component={CheckCircleIcon} color="success" />
+        {hasResidue() ? <Icon component={CheckCircleIcon} color="success" /> : <Icon component={CheckCircleIcon} color="disabled" />}
       </div>
     </div>
   )

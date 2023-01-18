@@ -26,6 +26,14 @@ const Week = ({ tienda, week, children }: WeekProps) => {
     }
   }
 
+  const isResidueSpend = () => {
+    if(week?.residuoGastado){
+      return false
+    } else {
+      return true
+    }
+  }
+
   const { updatePublications } = useStores()
 
   const dispatch = useDispatch()
@@ -52,7 +60,7 @@ const Week = ({ tienda, week, children }: WeekProps) => {
         <Icon component={BurstModeIcon} />
         <input
           type="number"
-          name=""
+          min={1}
           defaultValue={week.publicaciones}
           onChange={(e) => {
             updatePublications(tienda, week, +e.target.value)
@@ -61,7 +69,9 @@ const Week = ({ tienda, week, children }: WeekProps) => {
         <div className={styles.publications}>{children}</div>
       </div>
       <div className={styles.week_item}>
-        <Icon component={CurrencyExchangeIcon} color="error" />
+
+        {isResidueSpend() ? <Icon component={CurrencyExchangeIcon} color="error" /> : <Icon component={CurrencyExchangeIcon} color="disabled" />}
+
         <p style={{ padding: "0px 3px 0px 3px" }}>{week.residuo}</p>
       </div>
     </>

@@ -22,15 +22,16 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
     (week) => week.weekId == weekId
   )
 
-    const residuoLast = ()=>{
-    if(!currentStore.weeks[currentWeekIndex - 1]?.residuoGastado && currentStore.weeks[currentWeekIndex - 1]?.residuo > 0){
+  const residuoLast = () => {
+    if (
+      !currentStore.weeks[currentWeekIndex - 1]?.residuoGastado &&
+      currentStore.weeks[currentWeekIndex - 1]?.residuo > 0
+    ) {
       return currentStore.weeks[currentWeekIndex - 1]?.residuo
     } else {
       return 0
     }
   }
-
-
 
   const submit = (
     presupuestoInicial: number,
@@ -70,21 +71,25 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
         >
           {(formik) => (
             <Form>
-              <label htmlFor="presupuestoInicial">Presupuesto base:</label>
+
+              <div className={styles.field}>
+                <label htmlFor="presupuestoInicial">Presupuesto:</label>
               <Field type="number" name="presupuestoInicial" />
+              </div>
 
-              {/* <label htmlFor="residuo-anterior">Residuo anterior</label>
-            <Field type="number" name="residuoAnterior" /> */}
-
-              <label htmlFor="residuo-global">Residuo global:</label>
+              <div className={styles.field}>
+                <label htmlFor="residuo-global">Residuo global:</label>
               <Field type="number" name="residuoGlobal" />
+              </div>
 
-              <label htmlFor="residuoAnterior">Sumar residuo anterior ({residuoLast()}):</label>
+              <div className={styles.field}>
+                <label htmlFor="residuoAnterior">
+                Sumar residuo anterior ({residuoLast()}):
+              </label>
               <Field type="checkbox" name="sumarResiduoAnterior" />
+              </div>
 
-              <button type="submit" >
-                Listo
-              </button>
+              <button type="submit">Listo</button>
             </Form>
           )}
         </Formik>
