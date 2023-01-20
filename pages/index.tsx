@@ -1,13 +1,20 @@
-import Head from 'next/head'
-// import Image from 'next/image'
-import Link from 'next/link'
-import { useSelector } from 'react-redux'
-import styles from '../styles/Home.module.css'
-import { state } from '../interfaces/tienda';
+import Head from "next/head"
+import Link from "next/link"
+import { useSelector } from "react-redux"
+import styles from "../styles/Home.module.css"
+import { state } from "../interfaces/tienda"
+import { useEffect, useState } from "react"
 
 export default function Home() {
+  const [lastWeekId, setLastWeekId] = useState(0)
 
-  const lastWeekId: number = useSelector((state: state) => state.data.weeks[state.data.weeks.length - 1].id)
+  const lastWeek: number = useSelector(
+    (state: state) => state.data.weeks[state.data.weeks.length - 1].id
+  )
+
+  useEffect(() => {
+    setLastWeekId(lastWeek)
+  }, [lastWeek])
 
   return (
     <div className={styles.container}>
@@ -23,8 +30,12 @@ export default function Home() {
         </h1>
         <nav>
           <ul>
-            <li><Link href={`/dashboard/${lastWeekId}`} >Dashboard</Link></li>
-            <li><Link href={`/add-store`} >Nueva Tienda</Link></li>
+            <li>
+              <Link href={`/dashboard/${lastWeekId}`}>Dashboard</Link>
+            </li>
+            <li>
+              <Link href={`/add-store`}>Nueva Tienda</Link>
+            </li>
           </ul>
         </nav>
       </main>

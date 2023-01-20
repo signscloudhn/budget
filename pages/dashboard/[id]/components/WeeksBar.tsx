@@ -5,12 +5,17 @@ import { WeekBarProps } from "../interfaces/WeekBar"
 import { useDispatch, useSelector } from 'react-redux';
 import { createWeek } from "../../../../redux/slices/dataSlice";
 import { state } from "../../../../interfaces/tienda";
+import { useState, useEffect } from 'react';
 
 const WeeksBar = ({ weeks }: WeekBarProps) => {
 
+  const [lastWeekId, setLastWeekId] = useState(0)
+
   const dataWeeks = useSelector((state: state) => state.data.weeks)
 
-  const lastWeekId = dataWeeks[dataWeeks.length - 1].id
+  useEffect(()=>{
+    setLastWeekId(dataWeeks[dataWeeks.length - 1].id)
+  }, [dataWeeks])
 
   const dispatch = useDispatch()
 
@@ -19,7 +24,6 @@ const WeeksBar = ({ weeks }: WeekBarProps) => {
       {weeks.map((week) => (
         <li key={week.id}>
           <Link href={`/dashboard/${week.id}`}>{week.id}</Link>
-          {/* <button>Delete</button> */}
         </li>
       ))}
       <li>

@@ -14,7 +14,6 @@ const dataSlice = createSlice({
   reducers: {
     createNewStore: (state, action) => {
       state.tiendas.push(action.payload)
-      window.localStorage.setItem("data", JSON.stringify(state))
     },
 
     createWeek: (state) => {

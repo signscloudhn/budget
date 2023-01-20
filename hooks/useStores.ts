@@ -47,6 +47,7 @@ export const useStores = () => {
     publicaciones: number
   ) => {
     const tiendaIndex = data.tiendas.findIndex((i) => i === tienda)
+    console.log(data.tiendas[tiendaIndex])
 
     const weekIndex = data.tiendas[tiendaIndex].weeks.findIndex(
       (i) => i === week
@@ -63,7 +64,6 @@ export const useStores = () => {
 
   const updateMaster = (
     nombre: string,
-    // residuoAnteriorValue: number,
     id: any,
     residuoGlobalValue: number,
     presupuestoValue: number
@@ -73,10 +73,7 @@ export const useStores = () => {
     const currentStore = tiendas[storeIndex]
 
     const currentWeek = currentStore.weeks[tiendas[0].weeks.length - 1]
-    const lastWeek = currentStore.weeks[tiendas[0].weeks.length - 2]
 
-    const nombreTienda = currentStore.nombre
-    // const residuoAnterior = lastWeek.residuo
     const residuoGlobal = currentStore.residuoGlobal
     const presupuesto = currentWeek.presupuestoInicial
 
@@ -90,7 +87,6 @@ export const useStores = () => {
     )
 
     return {
-      // residuoAnterior,
       residuoGlobal,
       presupuesto,
     }
