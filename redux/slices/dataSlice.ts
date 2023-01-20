@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import {
   calcularResiduoActual,
   dividirPresupuesto,
-  recalcularResiduoGlobal,
+  // recalcularResiduoGlobal,
   recalcularSocialMedia,
 } from "../../utils/calculations"
 import { initialDataState as initialState } from "../initialStates"
