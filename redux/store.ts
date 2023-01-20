@@ -22,12 +22,10 @@ const loadFromLocalStorage = () => {
     }
   } catch (e) {
     console.warn(e)
-    // return undefined
   }
 }
 
 const store = createStore(rootReducer, loadFromLocalStorage())
 store.subscribe(() => saveToLocalStorage(store.getState()))
-// console.log(store.getState())
 
 export default store

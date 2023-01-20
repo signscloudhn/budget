@@ -39,7 +39,9 @@ const dataSlice = createSlice({
 
         tienda.weeks.push(newWeek)
 
-        recalcularResiduoGlobal(tienda)
+        // recalcularResiduoGlobal(tienda)
+
+        tienda.residuoGlobal = tienda.residuoGlobal + lastWeek.residuo
       })
     },
 
@@ -61,7 +63,7 @@ const dataSlice = createSlice({
       const residuoGlobal = action.payload.residuoGlobal
       const currentStoreIndex = action.payload.currentStoreIndex
       const currentWeekIndex = action.payload.currentWeekIndex
-      const sumarResiduoAnterior = action.payload.sumarResiduoAnterior
+      // const sumarResiduoAnterior = action.payload.sumarResiduoAnterior
 
       const currentWeek =
         state.tiendas[currentStoreIndex].weeks[currentWeekIndex]
@@ -72,21 +74,21 @@ const dataSlice = createSlice({
         state.tiendas[currentStoreIndex].residuoGlobal = residuoGlobal
 
         state.tiendas[currentStoreIndex].weeks.forEach((week) => {
-          week.residuoGastado = true
+          if (week.weekId !== currentWeek.weekId) week.residuoGastado = true
         })
       }
 
       currentWeek.presupuestoInicial = presupuestoInicial
 
-      if (sumarResiduoAnterior) {
-        currentWeek.presupuestoTotal =
-          currentWeek.presupuestoInicial + lastWeek.residuo
-        lastWeek.residuoGastado = true
+      // if (sumarResiduoAnterior) {
+      //   currentWeek.presupuestoTotal =
+      //     currentWeek.presupuestoInicial + lastWeek.residuo
+      //   lastWeek.residuoGastado = true
 
-        recalcularResiduoGlobal(state.tiendas[currentStoreIndex])
-      } else {
-        currentWeek.presupuestoTotal = presupuestoInicial
-      }
+      //   recalcularResiduoGlobal(state.tiendas[currentStoreIndex])
+      // } else {
+      //   currentWeek.presupuestoTotal = presupuestoInicial
+      // }
 
       dividirPresupuesto(currentWeek.publicaciones, currentWeek)
       calcularResiduoActual(currentWeek)
@@ -113,7 +115,11 @@ const dataSlice = createSlice({
         lastWeek.residuoGastado = true
       }
 
-      recalcularResiduoGlobal(state.tiendas[storeIndex])
+      // recalcularResiduoGlobal(state.tiendas[storeIndex])
+
+      state.tiendas[storeIndex].residuoGlobal =
+        state.tiendas[storeIndex].residuoGlobal - lastWeek.residuo
+
       dividirPresupuesto(currentWeek.publicaciones, currentWeek)
       calcularResiduoActual(state.tiendas[storeIndex].weeks[weekIndex])
     },
@@ -138,7 +144,8 @@ const dataSlice = createSlice({
       state.tiendas[storeIndex].weeks.forEach((week) => {
         if (week.weekId !== currentWeek.weekId) week.residuoGastado = true
       })
-      recalcularResiduoGlobal(state.tiendas[storeIndex])
+      // recalcularResiduoGlobal(state.tiendas[storeIndex])
+      state.tiendas[storeIndex].residuoGlobal = 0
 
       dividirPresupuesto(
         currentWeek.publicaciones,

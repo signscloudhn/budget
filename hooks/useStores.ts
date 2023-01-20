@@ -47,7 +47,6 @@ export const useStores = () => {
     publicaciones: number
   ) => {
     const tiendaIndex = data.tiendas.findIndex((i) => i === tienda)
-    console.log(data.tiendas[tiendaIndex])
 
     const weekIndex = data.tiendas[tiendaIndex].weeks.findIndex(
       (i) => i === week

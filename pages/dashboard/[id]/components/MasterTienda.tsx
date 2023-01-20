@@ -36,7 +36,7 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
   const submit = (
     presupuestoInicial: number,
     residuoGlobal: number,
-    sumarResiduoAnterior: boolean
+    // sumarResiduoAnterior: boolean
   ) => {
     dispatch(
       updateMasterTienda({
@@ -44,7 +44,7 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
         residuoGlobal,
         currentStoreIndex,
         currentWeekIndex,
-        sumarResiduoAnterior,
+        // sumarResiduoAnterior,
       })
     )
   }
@@ -64,7 +64,7 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
             submit(
               values.presupuestoInicial,
               values.residuoGlobal,
-              values.sumarResiduoAnterior
+              // values.sumarResiduoAnterior
             )
             handle()
           }}
@@ -82,12 +82,12 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
               <Field type="number" name="residuoGlobal" />
               </div>
 
-              <div className={styles.field}>
+              {/* <div className={styles.field}>
                 <label htmlFor="residuoAnterior">
                 Sumar residuo anterior ({residuoLast()}):
               </label>
               <Field type="checkbox" name="sumarResiduoAnterior" />
-              </div>
+              </div> */}
 
               <button type="submit">Listo</button>
             </Form>

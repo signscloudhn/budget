@@ -40,16 +40,16 @@ export const dividirPresupuesto = (publicaciones: number, week: storeWeeks) => {
   }
 }
 
-export const recalcularResiduoGlobal = (tienda: tienda) => {
-  let nuevoResiduoGlobal = 0
+// export const recalcularResiduoGlobal = (tienda: tienda) => {
+//   let nuevoResiduoGlobal = 0
 
-  tienda.weeks.forEach((week) => {
-    if (!week.residuoGastado) {
-      nuevoResiduoGlobal = nuevoResiduoGlobal + week.residuo
-    }
-  })
-  tienda.residuoGlobal = nuevoResiduoGlobal
-}
+//   tienda.weeks.forEach((week) => {
+//     if (!week.residuoGastado) {
+//       nuevoResiduoGlobal = nuevoResiduoGlobal + week.residuo
+//     }
+//   })
+//   tienda.residuoGlobal = nuevoResiduoGlobal
+// }
 
 export const recalcularPublicaciones = (
   week: storeWeeks,
