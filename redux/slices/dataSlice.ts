@@ -79,7 +79,7 @@ const dataSlice = createSlice({
       }
 
       currentWeek.presupuestoInicial = presupuestoInicial
-
+      currentWeek.presupuestoTotal = presupuestoInicial
       // if (sumarResiduoAnterior) {
       //   currentWeek.presupuestoTotal =
       //     currentWeek.presupuestoInicial + lastWeek.residuo
