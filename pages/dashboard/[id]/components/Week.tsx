@@ -1,4 +1,4 @@
-import { WeekProps } from "../interfaces/Week"
+import { WeekProps } from "../../../../interfaces/Dashboard/Week"
 import styles from "../styles/Week.module.scss"
 import Icon from "@mui/material/Icon"
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn"
@@ -8,10 +8,11 @@ import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange"
 import { useStores } from "../../../../hooks/useStores"
 import { useDispatch } from "react-redux"
 import { addLastResidue } from "../../../../redux/slices/dataSlice"
+import { storeWeeks } from "../../../../interfaces/tienda"
 
 const Week = ({ tienda, week, children }: WeekProps) => {
   const lastIndex =
-    tienda.weeks.findIndex((i) => {
+    tienda.weeks.findIndex((i: storeWeeks) => {
       return i === week
     }) - 1
 

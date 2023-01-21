@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 import { useSelector, useDispatch } from "react-redux"
 import { state } from "../../../../interfaces/tienda"
 import { updateMasterTienda } from "../../../../redux/slices/dataSlice"
-import { MasterTienda } from "../interfaces/MasterTienda"
+import { MasterTienda } from "../../../../interfaces/Dashboard/MasterTienda"
 import styles from "../styles/MasterTienda.module.scss"
 
 const MasterTienda = ({ handle, nombre }: MasterTienda) => {

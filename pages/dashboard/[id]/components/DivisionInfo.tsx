@@ -1,4 +1,4 @@
-import { DivisionProps } from "../interfaces/DivisionInfo"
+import { DivisionProps } from "../../../../interfaces/Dashboard/DivisionInfo"
 import styles from "../styles/DivisionInfo.module.scss"
 import ChevronRightIcon from "@mui/icons-material/ChevronRight"
 import InstagramIcon from "@mui/icons-material/Instagram"

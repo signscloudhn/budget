@@ -1,6 +1,6 @@
 import Link from "next/link"
 import styles from "../styles/WeeksBar.module.scss"
-import { WeekBarProps } from "../interfaces/WeekBar"
+import { WeekBarProps } from "../../../../interfaces/Dashboard/WeekBar"
 // import useWeeks from "../../../../hooks/useWeeks"
 import { useDispatch, useSelector } from 'react-redux';
 import { createWeek } from "../../../../redux/slices/dataSlice";

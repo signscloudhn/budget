@@ -1,4 +1,4 @@
-import { storeWeeks, tienda } from "../../../../interfaces/tienda"
+import { storeWeeks, tienda } from "../tienda"
 
 export interface WeekProps {
   tienda: tienda
