@@ -12,16 +12,16 @@ import { storeWeeks } from "../../../../interfaces/tienda"
 
 const Week = ({ tienda, week, children }: WeekProps) => {
   const lastIndex =
-    tienda.weeks.findIndex((i: storeWeeks) => {
+    tienda?.weeks.findIndex((i: storeWeeks) => {
       return i === week
     }) - 1
 
   const residuoLast = () => {
     if (
-      !tienda.weeks[lastIndex]?.residuoGastado &&
-      tienda.weeks[lastIndex]?.residuo > 0
+      !tienda?.weeks[lastIndex]?.residuoGastado &&
+      tienda?.weeks[lastIndex]?.residuo > 0
     ) {
-      return tienda.weeks[lastIndex]?.residuo
+      return tienda?.weeks[lastIndex]?.residuo
     } else {
       return 0
     }
@@ -48,14 +48,14 @@ const Week = ({ tienda, week, children }: WeekProps) => {
           component={KeyboardReturnIcon}
           className={styles.bottom}
           onClick={() => {
-            dispatch(addLastResidue({ nombre: tienda.nombre, id: week.weekId }))
+            dispatch(addLastResidue({ nombre: tienda?.nombre, id: week.weekId }))
           }}
         />
         <p>{residuoLast()}</p>
       </div>
       <div className={`${styles.week_item} ${styles.input_field}`}>
         <Icon component={PriceChangeIcon} color="success" />
-        <p>{week.presupuestoTotal}</p>
+        <p>{week?.presupuestoTotal}</p>
       </div>
       <div
         className={`${styles.week_item} ${styles.input_field} ${styles.pubs}`}
@@ -64,7 +64,7 @@ const Week = ({ tienda, week, children }: WeekProps) => {
         <input
           type="number"
           min={1}
-          defaultValue={week.publicaciones}
+          defaultValue={week?.publicaciones}
           onChange={(e) => {
             updatePublications(tienda, week, +e.target.value)
           }}
@@ -75,7 +75,7 @@ const Week = ({ tienda, week, children }: WeekProps) => {
 
         {isResidueSpend() ? <Icon component={CurrencyExchangeIcon} color="error" /> : <Icon component={CurrencyExchangeIcon} color="disabled" />}
 
-        <p style={{ padding: "0px 3px 0px 3px" }}>{week.residuo}</p>
+        <p style={{ padding: "0px 3px 0px 3px" }}>{week?.residuo}</p>
       </div>
     </>
   )

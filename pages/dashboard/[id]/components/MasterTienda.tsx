@@ -18,20 +18,9 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
     (tienda) => tienda.nombre === nombre
   )
   const currentStore = tiendas[currentStoreIndex]
-  const currentWeekIndex = currentStore.weeks.findIndex(
+  const currentWeekIndex = currentStore?.weeks.findIndex(
     (week) => week.weekId == weekId
   )
-
-  const residuoLast = () => {
-    if (
-      !currentStore.weeks[currentWeekIndex - 1]?.residuoGastado &&
-      currentStore.weeks[currentWeekIndex - 1]?.residuo > 0
-    ) {
-      return currentStore.weeks[currentWeekIndex - 1]?.residuo
-    } else {
-      return 0
-    }
-  }
 
   const submit = (
     presupuestoInicial: number,
@@ -50,8 +39,8 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
   }
 
   const initialValue = {
-    residuoGlobal: currentStore.residuoGlobal,
-    presupuestoInicial: currentStore.weeks[currentWeekIndex].presupuestoInicial,
+    residuoGlobal: currentStore?.residuoGlobal,
+    presupuestoInicial: currentStore?.weeks[currentWeekIndex].presupuestoInicial,
     sumarResiduoAnterior: false,
   }
 

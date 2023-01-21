@@ -28,9 +28,9 @@ const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
 
   const dispatch = useDispatch()
 
-  const weekIndex = tiendas[storeIndex].weeks.findIndex(week => week.weekId === idNumber)
+  const weekIndex = tiendas[storeIndex]?.weeks.findIndex(week => week.weekId === idNumber)
 
-  const current = tiendas[storeIndex].weeks[weekIndex]
+  const current = tiendas[storeIndex]?.weeks[weekIndex]
 
   const hasResidue = ()=>{
     if(current?.residuo > 0){
