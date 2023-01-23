@@ -66,6 +66,7 @@ const TiendasList = () => {
           onClick={() => {
             router.push("/add-store")
           }}
+          className={styles.new_btn}
         >
           <h4>Nueva tienda</h4>
         </div>

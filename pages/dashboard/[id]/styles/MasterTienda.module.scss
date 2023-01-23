@@ -13,11 +13,13 @@
     width: 300px;
     border-radius: 8px;
     background-color: azure;
+    border: 2px solid #33cfff;
     form {
       display: flex;
       justify-content: center;
       flex-direction: column;
       align-items: center;
+      gap: 10px;
       padding: 20px;
       .field {
         display: grid;
@@ -27,6 +29,24 @@
         margin: 6px;
         input {
           max-width: 60px;
+        }
+      }
+      .buttons_container {
+        display: flex;
+        gap: 10px;
+        button {
+          padding: 3px;
+          color: bla;
+          background-color: #0da2cf;
+          border: none;
+          border-radius: 3px;
+          cursor: pointer;
+          &:nth-child(2) {
+            background-color: #7a8f96;
+          }
+          &:hover {
+            transform: scale(1.02);
+          }
         }
       }
     }

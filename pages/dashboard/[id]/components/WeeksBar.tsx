@@ -1,13 +1,15 @@
 import Link from "next/link"
 import styles from "../styles/WeeksBar.module.scss"
 import { WeekBarProps } from "../../../../interfaces/Dashboard/WeekBar"
-// import useWeeks from "../../../../hooks/useWeeks"
 import { useDispatch, useSelector } from 'react-redux';
 import { createWeek } from "../../../../redux/slices/dataSlice";
 import { state } from "../../../../interfaces/tienda";
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 const WeeksBar = ({ weeks }: WeekBarProps) => {
+
+  const router = useRouter()
 
   const [lastWeekId, setLastWeekId] = useState(0)
 
@@ -19,12 +21,15 @@ const WeeksBar = ({ weeks }: WeekBarProps) => {
 
   const dispatch = useDispatch()
 
+  console.log(router.asPath)
+
   return (
     <ul className={styles.container}>
       {weeks && weeks.map((week) => (
-        <li key={week.id}>
-          <Link href={`/dashboard/${week.id}`}>{week.id}</Link>
+      <Link key={week.id} href={`/dashboard/${week.id}`}  >
+        <li   className={router.asPath == `/dashboard/${week.id}` ? styles.active : ''}>{week.id}
         </li>
+        </Link>
       ))}
       <li>
         <Link href={`/dashboard/${lastWeekId + 1}`} onClick={()=>{

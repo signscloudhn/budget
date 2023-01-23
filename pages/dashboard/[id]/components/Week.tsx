@@ -35,8 +35,6 @@ const Week = ({ tienda, week, children }: WeekProps) => {
     }
   }
 
-  // console.log(tienda)
-
   const { updatePublications } = useStores()
 
   const dispatch = useDispatch()

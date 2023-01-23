@@ -22,25 +22,21 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
     (week) => week.weekId == weekId
   )
 
-  const submit = (
-    presupuestoInicial: number,
-    residuoGlobal: number,
-    // sumarResiduoAnterior: boolean
-  ) => {
+  const submit = (presupuestoInicial: number, residuoGlobal: number) => {
     dispatch(
       updateMasterTienda({
         presupuestoInicial,
         residuoGlobal,
         currentStoreIndex,
         currentWeekIndex,
-        // sumarResiduoAnterior,
       })
     )
   }
 
   const initialValue = {
     residuoGlobal: currentStore?.residuoGlobal,
-    presupuestoInicial: currentStore?.weeks[currentWeekIndex].presupuestoInicial,
+    presupuestoInicial:
+      currentStore?.weeks[currentWeekIndex].presupuestoInicial,
     sumarResiduoAnterior: false,
   }
 
@@ -52,33 +48,29 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
           onSubmit={(values) => {
             submit(
               values.presupuestoInicial,
-              values.residuoGlobal,
+              values.residuoGlobal
               // values.sumarResiduoAnterior
             )
             handle()
           }}
         >
-          {(formik) => (
+          {() => (
             <Form>
-
               <div className={styles.field}>
                 <label htmlFor="presupuestoInicial">Presupuesto:</label>
-              <Field type="number" name="presupuestoInicial" />
+                <Field type="number" name="presupuestoInicial" />
               </div>
 
               <div className={styles.field}>
                 <label htmlFor="residuo-global">Residuo global:</label>
-              <Field type="number" name="residuoGlobal" />
+                <Field type="number" name="residuoGlobal" />
               </div>
-
-              {/* <div className={styles.field}>
-                <label htmlFor="residuoAnterior">
-                Sumar residuo anterior ({residuoLast()}):
-              </label>
-              <Field type="checkbox" name="sumarResiduoAnterior" />
-              </div> */}
-
-              <button type="submit">Listo</button>
+              <div className={styles.buttons_container}>
+                <button type="submit">Guardar</button>
+                <button type="button"  onClick={()=>{
+                  handle()
+                }} >Cancelar</button>
+              </div>
             </Form>
           )}
         </Formik>

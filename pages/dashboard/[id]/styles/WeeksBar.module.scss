@@ -1,15 +1,24 @@
 .container {
   width: 100%;
-  display: flex;
-  background-color: rgb(0, 28, 32);
   padding: 0;
+  display: flex;
+  background-color: #dae2e7;
+  border-bottom: solid 2px #33cfff;
+  .active {
+    background-color: #33cfff;
+  }
   li {
-    padding: 8px;
+    padding: 5px 10px;
     list-style: none;
-    border-right: 1px solid rgb(255, 255, 255);
+    border-right: 2px solid #33cfff;
+    cursor: pointer;
+    transition: 0.5s all;
     a {
-      color: rgb(202, 255, 255);
-      text-decoration: underline;
+      font-weight: 700;
+      color: rgb(83, 83, 83);
+    }
+    &:hover {
+      background-color: #adecff;
     }
   }
 }
