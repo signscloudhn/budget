@@ -11,7 +11,6 @@ const AddStore = () => {
   const lastWeekId: number = useSelector(
     (state: state) => state.data.weeks[state.data.weeks.length - 1].id
   )
-
   const router = useRouter()
 
   const { createStore } = useStores()
@@ -50,7 +49,6 @@ const AddStore = () => {
               component="p"
             />
             </div>
-            
             <div className={styles.field}>
               <label htmlFor="publicaciones">Publicaciones:</label>
               <Field name="publicaciones" type="number" />
@@ -59,7 +57,6 @@ const AddStore = () => {
               component="p"
             />
             </div>
-            
             <div className={styles.field}>
               <button type="submit">Agregar</button>
               <button

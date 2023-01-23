@@ -4,11 +4,12 @@
   display: flex;
   background-color: #dae2e7;
   border-bottom: solid 2px #33cfff;
+  overflow-x: scroll;
   .active {
     background-color: #33cfff;
   }
   li {
-    padding: 5px 10px;
+    padding: 5px 10px 15px;
     list-style: none;
     border-right: 2px solid #33cfff;
     cursor: pointer;

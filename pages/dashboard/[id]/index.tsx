@@ -35,7 +35,7 @@ const TiendasList = () => {
 
   return (
     <div className={styles.container}>
-      <WeeksBar weeks={datos.weeks} />
+      <h2>Week: {id}</h2>
       <div className={styles.tiendas_lista}>
         {datos.tiendas.map((tienda) => {
 
@@ -71,6 +71,7 @@ const TiendasList = () => {
           <h4>Nueva tienda</h4>
         </div>
       </div>
+      <WeeksBar weeks={datos.weeks} />
     </div>
   )
 }

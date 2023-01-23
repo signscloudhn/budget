@@ -4,7 +4,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight"
 import InstagramIcon from "@mui/icons-material/Instagram"
 import FacebookIcon from "@mui/icons-material/Facebook"
 import Icon from "@mui/material/Icon"
-import { useState } from "react"
+import { useState, useEffect, useRef, ElementRef, RefObject } from "react"
 import { useDispatch } from "react-redux"
 import {
   updatePublication,
@@ -27,8 +27,24 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
 
   const dispatch = useDispatch()
 
+  const useOutsideAlerter = (ref: any) => {
+    useEffect(() => {
+      const handleClickOutside = (event: any) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setShow(false)
+        }
+      }
+
+      document.addEventListener("mousedown", handleClickOutside)
+    }, [ref])
+  }
+
+  const wrapperRef = useRef(null)
+
+  useOutsideAlerter(wrapperRef)
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={wrapperRef}>
       <Icon
         component={ChevronRightIcon}
         className={styles.button}
@@ -57,7 +73,7 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
                   )
                 }}
               />
-              <Icon component={InstagramIcon}  />
+              <Icon component={InstagramIcon} />
               <input
                 type="number"
                 value={d.distribucion.instagram?.in}
@@ -92,7 +108,7 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
                   )
                 }}
               />
-              <Icon component={FacebookIcon}  />
+              <Icon component={FacebookIcon} />
               <input
                 type="number"
                 value={d.distribucion.facebook?.in}
@@ -127,7 +143,7 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
                   )
                 }}
               />
-              <p className={styles.residuo} >res: {d.residuo}</p>
+              <p className={styles.residuo}>res: {d.residuo}</p>
             </div>
           ))}
       </div>

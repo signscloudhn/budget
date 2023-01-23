@@ -21,8 +21,6 @@ const WeeksBar = ({ weeks }: WeekBarProps) => {
 
   const dispatch = useDispatch()
 
-  console.log(router.asPath)
-
   return (
     <ul className={styles.container}>
       {weeks && weeks.map((week) => (

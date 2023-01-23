@@ -24,6 +24,17 @@
     display: flex;
     align-items: center;
   }
+  .date {
+    background-color: #50607a47;
+    border: none;
+    color: #515353;
+  }
+  input[type="date" i] {
+    cursor: pointer;
+    &:nth-child(2) {
+      color: #515353;
+    }
+  }
   .residuo {
     padding: 5px 5px 5px 5px;
     border-left: 2px #33cfff solid;

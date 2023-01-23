@@ -17,6 +17,7 @@ export interface division {
 
 export interface storeWeeks {
   weekId: number
+  fecha: string | undefined
   presupuestoInicial: number
   presupuestoTotal: number
   publicaciones: number

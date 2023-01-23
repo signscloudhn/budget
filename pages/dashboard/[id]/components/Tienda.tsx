@@ -7,7 +7,7 @@ import MasterTienda from "./MasterTienda"
 import {useState } from "react"
 import { useRouter } from "next/router"
 import { useDispatch, useSelector } from 'react-redux';
-import { addGlobalResidue } from "../../../../redux/slices/dataSlice"
+import { addGlobalResidue, updateDate } from "../../../../redux/slices/dataSlice"
 import { state } from '../../../../interfaces/tienda';
 
 const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
@@ -46,6 +46,9 @@ const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
       <div className={styles.title}>
         <h5 onClick={handleShow}>{nombre}</h5>
       </div>
+      <input type="date" value={current.fecha} onChange={(e)=>{
+          dispatch(updateDate({nombre: nombre, id: Number(id), value: e.target.value}))
+        }} className={styles.date} />
       <div className={styles.residuo}>
         <Icon
           component={LanguageIcon}

@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit"
 import {
   calcularResiduoActual,
   dividirPresupuesto,
-  // recalcularResiduoGlobal,
   recalcularSocialMedia,
 } from "../../utils/calculations"
 import { initialDataState as initialState } from "../initialStates"
@@ -13,7 +12,13 @@ const dataSlice = createSlice({
   initialState,
   reducers: {
     createNewStore: (state, action) => {
-      state.tiendas.push(action.payload)
+      const storeExist = state.tiendas.filter(
+        (tienda) => tienda.nombre === action.payload.nombre
+      )
+
+      if (storeExist.length === 0) {
+        state.tiendas.push(action.payload)
+      }
     },
 
     createWeek: (state) => {
@@ -27,6 +32,7 @@ const dataSlice = createSlice({
 
         const newWeek = {
           weekId: newWeekId,
+          fecha: undefined,
           presupuestoInicial: lastWeek.presupuestoInicial,
           presupuestoTotal: lastWeek.presupuestoInicial,
           publicaciones: lastWeek.publicaciones,
@@ -39,10 +45,26 @@ const dataSlice = createSlice({
 
         tienda.weeks.push(newWeek)
 
-        // recalcularResiduoGlobal(tienda)
-
         tienda.residuoGlobal = tienda.residuoGlobal + lastWeek.residuo
       })
+    },
+
+    updateDate: (state, action) => {
+      const id = action.payload.id
+      const nombre = action.payload.nombre
+      const value = action.payload.value
+
+      const storeIndex = state.tiendas.findIndex(
+        (store) => store.nombre === nombre
+      )
+
+      const weekIndex = state.tiendas[storeIndex].weeks.findIndex(
+        (week) => week.weekId === id
+      )
+
+      const currentWeek = state.tiendas[storeIndex].weeks[weekIndex]
+
+      currentWeek.fecha = value
     },
 
     updatePublicationsDist: (state, action) => {
@@ -63,7 +85,6 @@ const dataSlice = createSlice({
       const residuoGlobal = action.payload.residuoGlobal
       const currentStoreIndex = action.payload.currentStoreIndex
       const currentWeekIndex = action.payload.currentWeekIndex
-      // const sumarResiduoAnterior = action.payload.sumarResiduoAnterior
 
       const currentWeek =
         state.tiendas[currentStoreIndex].weeks[currentWeekIndex]
@@ -80,15 +101,6 @@ const dataSlice = createSlice({
 
       currentWeek.presupuestoInicial = presupuestoInicial
       currentWeek.presupuestoTotal = presupuestoInicial
-      // if (sumarResiduoAnterior) {
-      //   currentWeek.presupuestoTotal =
-      //     currentWeek.presupuestoInicial + lastWeek.residuo
-      //   lastWeek.residuoGastado = true
-
-      //   recalcularResiduoGlobal(state.tiendas[currentStoreIndex])
-      // } else {
-      //   currentWeek.presupuestoTotal = presupuestoInicial
-      // }
 
       dividirPresupuesto(currentWeek.publicaciones, currentWeek)
       calcularResiduoActual(currentWeek)
@@ -114,8 +126,6 @@ const dataSlice = createSlice({
           currentWeek.presupuestoTotal + lastWeek.residuo
         lastWeek.residuoGastado = true
       }
-
-      // recalcularResiduoGlobal(state.tiendas[storeIndex])
 
       state.tiendas[storeIndex].residuoGlobal =
         state.tiendas[storeIndex].residuoGlobal - lastWeek.residuo
@@ -144,7 +154,6 @@ const dataSlice = createSlice({
       state.tiendas[storeIndex].weeks.forEach((week) => {
         if (week.weekId !== currentWeek.weekId) week.residuoGastado = true
       })
-      // recalcularResiduoGlobal(state.tiendas[storeIndex])
       state.tiendas[storeIndex].residuoGlobal = 0
 
       dividirPresupuesto(
@@ -250,6 +259,7 @@ const dataSlice = createSlice({
 
 export const {
   createNewStore,
+  updateDate,
   updatePublicationsDist,
   createWeek,
   updateMasterTienda,
