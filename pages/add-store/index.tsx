@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 import { useStores } from "../../hooks/useStores"
 import { state } from "../../interfaces/tienda"
 import styles from "./styles/add-store.module.sass"
-import { validations } from "./libs/validations"
+import validations from "../../lib/validations"
 import * as yup from "yup"
 
 const AddStore = () => {

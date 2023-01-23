@@ -2,7 +2,7 @@ import * as yup from "yup"
 
 const requerido = "Campo obligatorio"
 
-export const validations = {
+const validations = {
   nombre: yup
     .string()
     .min(10, "Debe tener 10 caracteres o mas")
@@ -16,3 +16,5 @@ export const validations = {
     .min(1, "Debe tener al menos una publicación")
     .required(requerido),
 }
+
+export default validations
