@@ -26,6 +26,7 @@ export const useStores = () => {
       weeks: [
         {
           weekId: lastWeek,
+          fecha: undefined,
           presupuestoInicial: presupuesto,
           presupuestoTotal: presupuesto,
           publicaciones: publicaciones,
