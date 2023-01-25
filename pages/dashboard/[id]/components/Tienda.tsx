@@ -40,13 +40,14 @@ const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
     }
   }
 
+  console.log(current?.fecha)
 
   return (
     <div className={styles.container}>
       <div className={styles.title}>
         <h5 onClick={handleShow}>{nombre}</h5>
       </div>
-      <input type="date" value={current?.fecha} onChange={(e)=>{
+      <input type="date" defaultValue={current?.fecha} onChange={(e)=>{
           dispatch(updateDate({nombre: nombre, id: Number(id), value: e.target.value}))
         }} className={styles.date} />
       <div className={styles.residuo}>

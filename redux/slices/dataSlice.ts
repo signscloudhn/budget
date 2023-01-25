@@ -2,10 +2,12 @@ import { createSlice } from "@reduxjs/toolkit"
 import {
   calcularResiduoActual,
   dividirPresupuesto,
+  generateDate,
   recalcularSocialMedia,
 } from "../../utils/calculations"
 import { initialDataState as initialState } from "../initialStates"
 import { recalcularPublicaciones } from "../../utils/calculations"
+const { nextWeek } = generateDate()
 
 const dataSlice = createSlice({
   name: "data",
@@ -22,10 +24,15 @@ const dataSlice = createSlice({
     },
 
     createWeek: (state) => {
-      const lastWeekId = state.weeks[state.weeks.length - 1].id
-      const newWeekId = lastWeekId + 1
+      const lastWeekId = state.weeks[state.weeks.length - 1]
+      const newWeekId = lastWeekId.id + 1
 
-      state.weeks.push({ id: newWeekId })
+      // TODO: Agregar fecha
+      const fecha = lastWeekId.fecha?.split("-")[1].trim()
+
+      const { startWeek, endWeek } = generateDate(nextWeek(fecha))
+
+      state.weeks.push({ id: newWeekId, fecha: `${startWeek} - ${endWeek}` })
 
       state.tiendas.forEach((tienda) => {
         const lastWeek = tienda.weeks[tienda.weeks.length - 1]
@@ -47,6 +54,31 @@ const dataSlice = createSlice({
 
         tienda.residuoGlobal = tienda.residuoGlobal + lastWeek.residuo
       })
+    },
+
+    deleteWeek: (state, action) => {
+      const weekId = action.payload.weekId
+
+      const weekIndex = state.weeks.findIndex(
+        (week) => week.id === Number(weekId)
+      )
+
+      // console.log(weekIndex, weekId)
+
+      state.weeks.forEach((week) => {
+        if (week.id > state.weeks[weekIndex].id) week.id = week.id - 1
+      })
+
+      state.tiendas.forEach((tienda) => {
+        tienda.weeks.forEach((week) => {
+          if (week.weekId > state.weeks[weekIndex].id)
+            week.weekId = week.weekId - 1
+        })
+      })
+
+      state.tiendas.forEach((tienda) => tienda.weeks.splice(weekIndex, 1))
+
+      state.weeks.splice(weekIndex, 1)
     },
 
     updateDate: (state, action) => {
@@ -259,6 +291,7 @@ const dataSlice = createSlice({
 
 export const {
   createNewStore,
+  deleteWeek,
   updateDate,
   updatePublicationsDist,
   createWeek,

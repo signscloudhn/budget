@@ -134,3 +134,50 @@ export const calcularResiduoActual = (week: storeWeeks) => {
 
   week.residuo = residuo
 }
+
+export const generateDate = (fecha?: string | undefined) => {
+  let date: Date
+
+  if (typeof fecha === "string") {
+    date = new Date(fecha)
+  } else {
+    date = new Date()
+  }
+
+  const milisecondsAt24Hours = 86400000
+  const daysToEndWeek = 6
+
+  const getStartWeek = () => {
+    let dias = date.getDay() * 86400000
+
+    return new Date(date.getTime() - dias)
+  }
+
+  const getEndWeek = () => {
+    let diasASumar =
+      getStartWeek().getTime() + daysToEndWeek * milisecondsAt24Hours
+
+    return new Date(diasASumar)
+  }
+
+  const todayStartWeek = new Date(getStartWeek().toLocaleDateString())
+  const todayEndWeek = new Date(getEndWeek().toLocaleDateString())
+
+  const getNextStartWeek = (fecha: string | undefined) => {
+    let nextDay
+
+    if (typeof fecha === "string") {
+      nextDay = new Date(fecha).getTime() + 1 * milisecondsAt24Hours
+    } else {
+      nextDay = new Date().getTime() + 1 * milisecondsAt24Hours
+    }
+
+    return new Date(nextDay).toLocaleDateString()
+  }
+
+  return {
+    startWeek: todayStartWeek.toLocaleDateString(),
+    endWeek: todayEndWeek.toLocaleDateString(),
+    nextWeek: getNextStartWeek,
+  }
+}

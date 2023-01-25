@@ -29,11 +29,9 @@ const WeeksBar = ({ weeks }: WeekBarProps) => {
         </li>
         </Link>
       ))}
-      <li>
         <Link href={`/dashboard/${lastWeekId + 1}`} onClick={()=>{
           dispatch(createWeek())
-        }}  >+</Link>
-      </li>
+        }}  ><li>+</li></Link>
     </ul>
   )
 }

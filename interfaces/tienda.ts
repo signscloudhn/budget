@@ -34,6 +34,7 @@ export interface tienda {
 
 export interface weeks {
   id: number
+  fecha: string | undefined
 }
 
 export interface tiendas {
