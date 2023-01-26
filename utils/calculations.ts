@@ -129,10 +129,10 @@ export const calcularResiduoActual = (week: storeWeeks) => {
   let residuo = 0
 
   week.division.forEach((publicacion) => {
-    residuo = residuo + publicacion.residuo
+    residuo = residuo + Number(publicacion.residuo.toFixed(2))
   })
 
-  week.residuo = residuo
+  week.residuo = Number(residuo.toFixed(2))
 }
 
 export const generateDate = (fecha?: string | undefined) => {

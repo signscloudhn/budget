@@ -63,8 +63,6 @@ const dataSlice = createSlice({
         (week) => week.id === Number(weekId)
       )
 
-      // console.log(weekIndex, weekId)
-
       state.weeks.forEach((week) => {
         if (week.id > state.weeks[weekIndex].id) week.id = week.id - 1
       })
@@ -120,8 +118,6 @@ const dataSlice = createSlice({
 
       const currentWeek =
         state.tiendas[currentStoreIndex].weeks[currentWeekIndex]
-      const lastWeek =
-        state.tiendas[currentStoreIndex].weeks[currentWeekIndex - 1]
 
       if (state.tiendas[currentStoreIndex].residuoGlobal != residuoGlobal) {
         state.tiendas[currentStoreIndex].residuoGlobal = residuoGlobal
@@ -282,7 +278,7 @@ const dataSlice = createSlice({
         dist.distribucion.instagram.in - dist.distribucion.instagram.out
 
       currentWeek.division[publicacionIndex].residuo =
-        residuoFacebook + residuoInstagram
+        Number(residuoFacebook.toFixed(2)) + Number(residuoInstagram.toFixed(2))
 
       calcularResiduoActual(currentWeek)
     },

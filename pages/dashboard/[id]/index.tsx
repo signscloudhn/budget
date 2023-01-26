@@ -6,7 +6,7 @@ import DivisionInfo from "./components/DivisionInfo"
 import styles from "./styles/index.module.scss"
 import { useSelector, useDispatch } from "react-redux"
 import { deleteWeek } from "../../../redux/slices/dataSlice"
-import { state, tienda, tiendas, weeks } from '../../../interfaces/tienda';
+import { state, tienda, tiendas } from '../../../interfaces/tienda';
 import { useEffect, useState } from "react"
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
 import { Icon } from "@mui/material"
@@ -50,7 +50,9 @@ const TiendasList = () => {
     <div className={styles.container}>
       <div className={styles.title}>
         <h2>Week: {id}</h2>
-        <Icon
+        {
+          lastWeekId === Number(id) && (
+            <Icon
           component={RemoveCircleOutlineIcon}
           fontSize="small"
           color="action"
@@ -58,13 +60,14 @@ const TiendasList = () => {
             setShowDelete(true)
           }}
         />
+          )
+        }
       </div>
       <p className={styles.date} >{weekDate}</p>
       {showDelete && (
         <div className={styles.delete_modal}>
           <div className={styles.modal_container}>
             <h4>Estas seguro de que quieres borrar la semana {id} ?</h4>
-            {/* <p>Para borrar la semana debes escribir 'kato-delete'</p> */}
             <div>
               <button
                 onClick={() => {

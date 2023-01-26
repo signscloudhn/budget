@@ -40,7 +40,6 @@ const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
     }
   }
 
-  console.log(current?.fecha)
 
   return (
     <div className={styles.container}>
