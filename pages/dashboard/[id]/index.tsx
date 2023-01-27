@@ -120,7 +120,7 @@ const TiendasList = () => {
           }}
           className={styles.new_btn}
         >
-          <h4>Nueva store</h4>
+          <h4>Nueva Tienda</h4>
         </div>
       </div>
       <WeeksBar weeks={datos.weeks} />

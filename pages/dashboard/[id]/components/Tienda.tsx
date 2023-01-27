@@ -110,7 +110,7 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
         <div className={styles.modal_container}>
           <div className={styles.modal}>
             <p>
-              Sumar el residue global a esta semana: {globalResidue}
+              Sumar el residuo global a esta semana: {globalResidue}
               <span>*Esta accion no se puede deshacer</span>
             </p>
             <div className={styles.buttons_container}>

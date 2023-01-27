@@ -6,7 +6,7 @@ import {
   updateMasterStore,
   updatePublicationsDist,
 } from "../redux/slices/dataSlice"
-import { dividirPresupuesto } from "../utils/calculations"
+import { splitBudget } from "../utils/calculations"
 
 export const useStores = () => {
   const data: stores = useSelector((state: state) => state.data)
@@ -33,7 +33,7 @@ export const useStores = () => {
       ],
     }
 
-    dividirPresupuesto(publications, store.weeks[0])
+    splitBudget(publications, store.weeks[0])
 
     dispatch(createNewStore(store))
   }

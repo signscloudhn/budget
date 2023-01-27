@@ -17,7 +17,7 @@ const AddStore = () => {
 
   return (
     <div className={styles.container}>
-      <h2>Agregar nueva store</h2>
+      <h2>Agregar nueva Tienda</h2>
 
       <Formik
         initialValues={{
@@ -50,7 +50,7 @@ const AddStore = () => {
             />
             </div>
             <div className={styles.field}>
-              <label htmlFor="publications">Publications:</label>
+              <label htmlFor="publications">Publicaciones:</label>
               <Field name="publications" type="number" />
               <ErrorMessage
               name="publications"

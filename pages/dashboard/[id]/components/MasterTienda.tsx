@@ -55,7 +55,7 @@ const MasterTienda = ({ handle, name }: MasterTienda) => {
           {() => (
             <Form>
               <div className={styles.field}>
-                <label htmlFor="budgetInitial">Presupuesto:</label>
+                <label htmlFor="budgetInitial">Budget:</label>
                 <Field type="number" name="budgetInitial" />
               </div>
 

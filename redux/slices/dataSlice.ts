@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import {
   calculateCurrentResidue,
-  dividirPresupuesto,
+  splitBudget,
   generateDate,
   recalculateSocialMedia,
 } from "../../utils/calculations"
@@ -50,7 +50,7 @@ const dataSlice = createSlice({
           residueIsSpend: false,
         }
 
-        dividirPresupuesto(lastWeek.publications, newWeek)
+        splitBudget(lastWeek.publications, newWeek)
 
         store.weeks.push(newWeek)
 
@@ -109,7 +109,7 @@ const dataSlice = createSlice({
       currentWeek.division = []
       currentWeek.publications = action.payload.publications
 
-      dividirPresupuesto(action.payload.publications, currentWeek)
+      splitBudget(action.payload.publications, currentWeek)
       calculateCurrentResidue(currentWeek)
     },
 
@@ -133,7 +133,7 @@ const dataSlice = createSlice({
       currentWeek.budgetInitial = budgetInitial
       currentWeek.budgetTotal = budgetInitial
 
-      dividirPresupuesto(currentWeek.publications, currentWeek)
+      splitBudget(currentWeek.publications, currentWeek)
       calculateCurrentResidue(currentWeek)
     },
 
@@ -158,7 +158,7 @@ const dataSlice = createSlice({
       state.stores[storeIndex].globalResidue =
         state.stores[storeIndex].globalResidue - lastWeek.residue
 
-      dividirPresupuesto(currentWeek.publications, currentWeek)
+      splitBudget(currentWeek.publications, currentWeek)
       calculateCurrentResidue(state.stores[storeIndex].weeks[weekIndex])
     },
 
@@ -182,7 +182,7 @@ const dataSlice = createSlice({
       })
       state.stores[storeIndex].globalResidue = 0
 
-      dividirPresupuesto(
+      splitBudget(
         currentWeek.publications,
         state.stores[storeIndex].weeks[weekIndex]
       )

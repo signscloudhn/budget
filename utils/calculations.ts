@@ -1,6 +1,6 @@
 import { storeWeeks, division } from "../interfaces/store"
 
-export const dividirPresupuesto = (publications: number, week: storeWeeks) => {
+export const splitBudget = (publications: number, week: storeWeeks) => {
   week.division = []
 
   let idCounter = 0
