@@ -1,7 +1,7 @@
-import { storeWeeks, tienda } from "../tienda"
+import { storeWeeks, store } from "../store"
 
 export interface WeekProps {
-  tienda: tienda
+  store: store
   week: storeWeeks
   children?: React.ReactNode
 }

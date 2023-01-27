@@ -2,7 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik"
 import { useRouter } from "next/router"
 import { useSelector } from "react-redux"
 import { useStores } from "../../hooks/useStores"
-import { state } from "../../interfaces/tienda"
+import { state } from "../../interfaces/store"
 import styles from "./styles/add-store.module.sass"
 import validations from "../../lib/validations"
 import * as yup from "yup"
@@ -17,43 +17,43 @@ const AddStore = () => {
 
   return (
     <div className={styles.container}>
-      <h2>Agregar nueva tienda</h2>
+      <h2>Agregar nueva store</h2>
 
       <Formik
         initialValues={{
-          nombre: "",
-          presupuesto: 0,
-          publicaciones: 1,
+          name: "",
+          budget: 0,
+          publications: 1,
         }}
         validationSchema={yup.object(validations)}
         onSubmit={(values) => {
-          createStore(values.nombre, values.presupuesto, values.publicaciones)
+          createStore(values.name, values.budget, values.publications)
           router.push(`/dashboard/${lastWeekId}`)
         }}
       >
         {(formik) => (
           <Form>
             <div className={styles.field_name}>
-              <label htmlFor="nombre">Nombre:</label>
-              <Field name="nombre" type="text" />
+              <label htmlFor="name">Nombre:</label>
+              <Field name="name" type="text" />
               <ErrorMessage
-              name="nombre"
+              name="name"
               component="p"
             />
             </div>
             <div className={styles.field}>
-              <label htmlFor="presupuesto">Presupuesto:</label>
-              <Field name="presupuesto" type="number" />
+              <label htmlFor="budget">Presupuesto:</label>
+              <Field name="budget" type="number" />
               <ErrorMessage
-              name="presupuesto"
+              name="budget"
               component="p"
             />
             </div>
             <div className={styles.field}>
-              <label htmlFor="publicaciones">Publicaciones:</label>
-              <Field name="publicaciones" type="number" />
+              <label htmlFor="publications">Publications:</label>
+              <Field name="publications" type="number" />
               <ErrorMessage
-              name="publicaciones"
+              name="publications"
               component="p"
             />
             </div>

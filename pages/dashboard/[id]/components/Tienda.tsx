@@ -11,9 +11,9 @@ import {
   addGlobalResidue,
   updateDate,
 } from "../../../../redux/slices/dataSlice"
-import { state } from "../../../../interfaces/tienda"
+import { state } from "../../../../interfaces/store"
 
-const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
+const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
   const [showModal, setShowModal] = useState({
     master: false,
     global: false,
@@ -32,9 +32,9 @@ const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
     })
   }
 
-  const tiendas = useSelector((state: state) => state.data.tiendas)
+  const stores = useSelector((state: state) => state.data.stores)
 
-  const storeIndex = tiendas.findIndex((tienda) => tienda.nombre === nombre)
+  const storeIndex = stores.findIndex((store) => store.name === name)
 
   const router = useRouter()
   const { id } = router.query
@@ -43,14 +43,14 @@ const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
 
   const dispatch = useDispatch()
 
-  const weekIndex = tiendas[storeIndex]?.weeks.findIndex(
-    (week) => week.weekId === idNumber
+  const weekIndex = stores[storeIndex]?.weeks.findIndex(
+    (week) => week.id === idNumber
   )
 
-  const current = tiendas[storeIndex]?.weeks[weekIndex]
+  const current = stores[storeIndex]?.weeks[weekIndex]
 
   const hasResidue = () => {
-    if (current?.residuo > 0) {
+    if (current?.residue > 0) {
       return false
     } else {
       return true
@@ -61,16 +61,16 @@ const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
     <>
       <div className={styles.container}>
         <div className={styles.title}>
-          <h5 onClick={handleMaster}>{nombre}</h5>
+          <h5 onClick={handleMaster}>{name}</h5>
         </div>
         <div className={styles.item_date}>
-          <p>{current?.fecha}</p>
+          <p>{current?.date}</p>
           <input
             type="date"
             onChange={(e) => {
               dispatch(
                 updateDate({
-                  nombre: nombre,
+                  name: name,
                   id: Number(id),
                   value: e.target.value,
                 })
@@ -79,12 +79,12 @@ const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
             className={styles.date}
           />
         </div>
-        <div className={styles.residuo}>
-          {residuoGlobal > 0 ? (
+        <div className={styles.residue}>
+          {globalResidue > 0 ? (
             <Icon
               component={LanguageIcon}
               onClick={() => {
-                if (residuoGlobal > 0) handleGlobal()
+                if (globalResidue > 0) handleGlobal()
               }}
               sx={{ color: "#16b0df" }}
               className={styles.bottom}
@@ -92,7 +92,7 @@ const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
           ) : (
             <Icon component={LanguageIcon} color="disabled" />
           )}
-          <p>{residuoGlobal}</p>
+          <p>{globalResidue}</p>
         </div>
         {children}
         <div className={styles.item}>
@@ -104,20 +104,20 @@ const Tienda = ({ nombre, residuoGlobal, children }: TiendaProps) => {
         </div>
       </div>
       {showModal.master && (
-        <MasterTienda handle={handleMaster} nombre={nombre} />
+        <MasterTienda handle={handleMaster} name={name} />
       )}
       {showModal.global && (
         <div className={styles.modal_container}>
           <div className={styles.modal}>
             <p>
-              Sumar el residuo global a esta semana: {residuoGlobal}
+              Sumar el residue global a esta semana: {globalResidue}
               <span>*Esta accion no se puede deshacer</span>
             </p>
             <div className={styles.buttons_container}>
               <button
                 onClick={() => {
-                  if (residuoGlobal > 0)
-                    dispatch(addGlobalResidue({ nombre: nombre, id: idNumber }))
+                  if (globalResidue > 0)
+                    dispatch(addGlobalResidue({ name: name, id: idNumber }))
                   handleGlobal()
                 }}
               >

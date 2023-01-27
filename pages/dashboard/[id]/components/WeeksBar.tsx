@@ -3,7 +3,7 @@ import styles from "../styles/WeeksBar.module.scss"
 import { WeekBarProps } from "../../../../interfaces/Dashboard/WeekBar"
 import { useDispatch, useSelector } from "react-redux"
 import { createWeek } from "../../../../redux/slices/dataSlice"
-import { state } from "../../../../interfaces/tienda"
+import { state } from "../../../../interfaces/store"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 

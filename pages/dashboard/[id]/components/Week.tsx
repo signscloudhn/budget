@@ -8,10 +8,10 @@ import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange"
 import { useStores } from "../../../../hooks/useStores"
 import { useDispatch } from "react-redux"
 import { addLastResidue } from "../../../../redux/slices/dataSlice"
-import { storeWeeks } from "../../../../interfaces/tienda"
+import { storeWeeks } from "../../../../interfaces/store"
 import { useState } from 'react';
 
-const Week = ({ tienda, week, children }: WeekProps) => {
+const Week = ({ store, week, children }: WeekProps) => {
 
   const [showModal, setShowModal] = useState({
     last: false,
@@ -25,23 +25,23 @@ const Week = ({ tienda, week, children }: WeekProps) => {
   }
 
   const lastIndex =
-    tienda?.weeks.findIndex((i: storeWeeks) => {
+    store?.weeks.findIndex((i: storeWeeks) => {
       return i === week
     }) - 1
 
-  const residuoLast = () => {
+  const residueLast = () => {
     if (
-      !tienda?.weeks[lastIndex]?.residuoGastado &&
-      tienda?.weeks[lastIndex]?.residuo > 0
+      !store?.weeks[lastIndex]?.residueIsSpend &&
+      store?.weeks[lastIndex]?.residue > 0
     ) {
-      return tienda?.weeks[lastIndex]?.residuo
+      return store?.weeks[lastIndex]?.residue
     } else {
       return 0
     }
   }
 
   const isResidueSpend = () => {
-    if(week?.residuoGastado){
+    if(week?.residueIsSpend){
       return false
     } else {
       return true
@@ -58,14 +58,14 @@ const Week = ({ tienda, week, children }: WeekProps) => {
         <div className={styles.modal_container}>
           <div className={styles.modal}>
             <p>
-              Sumar el residuo de la semana anterior a esta semana: {residuoLast()}
+              Sumar el residue de la semana anterior a esta semana: {residueLast()}
               <span>*Esta accion no se puede deshacer</span>
             </p>
             <div className={styles.buttons_container}>
               <button
                 onClick={() => {
-                  if (residuoLast() > 0)
-                    dispatch(addLastResidue({ nombre: tienda?.nombre, id: week.weekId }))
+                  if (residueLast() > 0)
+                    dispatch(addLastResidue({ name: store?.name, id: week.id }))
                   handleLast()
                 }}
               >
@@ -77,7 +77,7 @@ const Week = ({ tienda, week, children }: WeekProps) => {
         </div>
       )}
       <div className={styles.week_item}>
-        {residuoLast() > 0 ? (
+        {residueLast() > 0 ? (
           <Icon
           component={KeyboardReturnIcon}
           className={styles.bottom}
@@ -91,11 +91,11 @@ const Week = ({ tienda, week, children }: WeekProps) => {
           color="disabled"
         />
         )}
-        <p>{residuoLast()}</p>
+        <p>{residueLast()}</p>
       </div>
       <div className={`${styles.week_item} ${styles.input_field}`}>
         <Icon component={PriceChangeIcon} color="success" />
-        <p>{week?.presupuestoTotal}</p>
+        <p>{week?.budgetTotal}</p>
       </div>
       <div
         className={`${styles.week_item} ${styles.input_field} ${styles.pubs}`}
@@ -104,9 +104,9 @@ const Week = ({ tienda, week, children }: WeekProps) => {
         <input
           type="number"
           min={1}
-          value={week?.publicaciones}
+          value={week?.publications}
           onChange={(e) => {
-            updatePublications(tienda, week, +e.target.value)
+            updatePublications(store, week, +e.target.value)
           }}
         />
         <div className={styles.publications}>{children}</div>
@@ -115,7 +115,7 @@ const Week = ({ tienda, week, children }: WeekProps) => {
 
         {isResidueSpend() ? <Icon component={CurrencyExchangeIcon} color="error" /> : <Icon component={CurrencyExchangeIcon} color="disabled" />}
 
-        <p style={{ padding: "0px 3px 0px 3px" }}>{week?.residuo}</p>
+        <p style={{ padding: "0px 3px 0px 3px" }}>{week?.residue}</p>
       </div>
     </>
   )

@@ -1,104 +1,95 @@
-import { storeWeeks, tienda, division } from "../interfaces/tienda"
+import { storeWeeks, division } from "../interfaces/store"
 
-export const dividirPresupuesto = (publicaciones: number, week: storeWeeks) => {
+export const dividirPresupuesto = (publications: number, week: storeWeeks) => {
   week.division = []
 
   let idCounter = 0
 
-  for (let i = 0; i < publicaciones; i++) {
-    const presupuestoPublicacion = week.presupuestoTotal / publicaciones
+  for (let i = 0; i < publications; i++) {
+    const budgetPublication = week.budgetTotal / publications
 
-    const presupuestoSocialMedia = presupuestoPublicacion / 2
+    const budgetSocialMedia = budgetPublication / 2
 
-    const presupuestoSocialMediaRounded = Number(
-      presupuestoSocialMedia.toFixed(2)
-    )
+    const budgetSocialMediaRounded = Number(budgetSocialMedia.toFixed(2))
 
-    const presupuestoPublicacionRounded = Number(
-      presupuestoPublicacion.toFixed(2)
-    )
+    const budgetPublicationRounded = Number(budgetPublication.toFixed(2))
 
     idCounter = idCounter + 1
 
-    const presupuestoDividido = {
+    const budgetDivided = {
       id: idCounter,
-      presupuesto: presupuestoPublicacionRounded,
-      distribucion: {
+      budget: budgetPublicationRounded,
+      distribution: {
         instagram: {
-          in: presupuestoSocialMediaRounded,
+          in: budgetSocialMediaRounded,
           out: 0,
         },
         facebook: {
-          in: presupuestoSocialMediaRounded,
+          in: budgetSocialMediaRounded,
           out: 0,
         },
       },
-      residuo: 0,
+      residue: 0,
     }
 
-    week.division.push(presupuestoDividido)
+    week.division.push(budgetDivided)
   }
 }
 
-// export const recalcularResiduoGlobal = (tienda: tienda) => {
-//   let nuevoResiduoGlobal = 0
+// export const recalculateGlobalResidue = (store: store) => {
+//   let nuevoGlobalResidue = 0
 
-//   tienda.weeks.forEach((week) => {
-//     if (!week.residuoGastado) {
-//       nuevoResiduoGlobal = nuevoResiduoGlobal + week.residuo
+//   store.weeks.forEach((week) => {
+//     if (!week.residueIsSpend) {
+//       nuevoGlobalResidue = nuevoGlobalResidue + week.residue
 //     }
 //   })
-//   tienda.residuoGlobal = nuevoResiduoGlobal
+//   store.globalResidue = nuevoGlobalResidue
 // }
 
-export const recalcularPublicaciones = (
+export const recalculatePublications = (
   week: storeWeeks,
-  presupuesto: number,
-  publicacionIndex: number
+  budget: number,
+  publicationIndex: number
 ) => {
-  const currentPublicacion = week.division[publicacionIndex]
+  const currentPublication = week.division[publicationIndex]
 
-  currentPublicacion.presupuesto = presupuesto
+  currentPublication.budget = budget
 
-  const presupuestoSocialMedia = presupuesto / 2
+  const budgetSocialMedia = budget / 2
 
-  const presupuestoSocialMediaRounded = Number(
-    presupuestoSocialMedia.toFixed(2)
-  )
+  const budgetSocialMediaRounded = Number(budgetSocialMedia.toFixed(2))
 
-  currentPublicacion.distribucion = {
+  currentPublication.distribution = {
     instagram: {
-      in: presupuestoSocialMediaRounded,
+      in: budgetSocialMediaRounded,
       out: 0,
     },
     facebook: {
-      in: presupuestoSocialMediaRounded,
+      in: budgetSocialMediaRounded,
       out: 0,
     },
   }
 
-  const presupuestoRestante =
-    week.presupuestoTotal - currentPublicacion.presupuesto
+  const budgetSurplus = week.budgetTotal - currentPublication.budget
 
-  const presupuestoARepartir = presupuestoRestante / (week.publicaciones - 1)
+  const budgetToGive = budgetSurplus / (week.publications - 1)
 
-  week.division.forEach((publicacion) => {
-    if (publicacion.id !== currentPublicacion.id) {
-      publicacion.presupuesto = presupuestoARepartir
+  week.division.forEach((publication) => {
+    if (publication.id !== currentPublication.id) {
+      publication.budget = budgetToGive
 
-      const presupuestoSocialMedia = presupuestoARepartir / 2
+      const budgetSocialMedia = budgetToGive / 2
 
-      const presupuestoSocialMediaRounded = Number(
-        presupuestoSocialMedia.toFixed(2)
-      )
+      const budgetSocialMediaRounded = Number(budgetSocialMedia.toFixed(2))
 
-      publicacion.distribucion = {
+      publication.distribution = {
         instagram: {
-          in: presupuestoSocialMediaRounded,
+          in: budgetSocialMediaRounded,
           out: 0,
         },
         facebook: {
-          in: presupuestoSocialMediaRounded,
+          in: budgetSocialMediaRounded,
           out: 0,
         },
       }
@@ -106,68 +97,68 @@ export const recalcularPublicaciones = (
   })
 }
 
-export const recalcularSocialMedia = (
+export const recalculateSocialMedia = (
   division: division,
   social: string,
   value: number
 ) => {
-  let restante = division.presupuesto - value
+  let surplus = division.budget - value
 
   if (social === "instagram") {
-    division.distribucion.instagram.in = value
+    division.distribution.instagram.in = value
 
-    division.distribucion.facebook.in = restante
+    division.distribution.facebook.in = surplus
   }
   if (social === "facebook") {
-    division.distribucion.facebook.in = value
+    division.distribution.facebook.in = value
 
-    division.distribucion.instagram.in = restante
+    division.distribution.instagram.in = surplus
   }
 }
 
-export const calcularResiduoActual = (week: storeWeeks) => {
-  let residuo = 0
+export const calculateCurrentResidue = (week: storeWeeks) => {
+  let residue = 0
 
-  week.division.forEach((publicacion) => {
-    residuo = residuo + Number(publicacion.residuo.toFixed(2))
+  week.division.forEach((publication) => {
+    residue = residue + Number(publication.residue.toFixed(2))
   })
 
-  week.residuo = Number(residuo.toFixed(2))
+  week.residue = Number(residue.toFixed(2))
 }
 
-export const generateDate = (fecha?: string | undefined) => {
-  let date: Date
+export const generateDate = (date?: string | undefined) => {
+  let newDate: Date
 
-  if (typeof fecha === "string") {
-    date = new Date(fecha)
+  if (typeof date === "string") {
+    newDate = new Date(date)
   } else {
-    date = new Date()
+    newDate = new Date()
   }
 
   const milisecondsAt24Hours = 86400000
   const daysToEndWeek = 6
 
   const getStartWeek = () => {
-    let dias = date.getDay() * 86400000
+    let dias = newDate.getDay() * 86400000
 
-    return new Date(date.getTime() - dias)
+    return new Date(newDate.getTime() - dias)
   }
 
   const getEndWeek = () => {
-    let diasASumar =
+    let daysToSum =
       getStartWeek().getTime() + daysToEndWeek * milisecondsAt24Hours
 
-    return new Date(diasASumar)
+    return new Date(daysToSum)
   }
 
   const todayStartWeek = new Date(getStartWeek().toLocaleDateString())
   const todayEndWeek = new Date(getEndWeek().toLocaleDateString())
 
-  const getNextStartWeek = (fecha: string | undefined) => {
+  const getNextStartWeek = (date: string | undefined) => {
     let nextDay
 
-    if (typeof fecha === "string") {
-      nextDay = new Date(fecha).getTime() + 1 * milisecondsAt24Hours
+    if (typeof date === "string") {
+      nextDay = new Date(date).getTime() + 1 * milisecondsAt24Hours
     } else {
       nextDay = new Date().getTime() + 1 * milisecondsAt24Hours
     }

@@ -1,4 +1,4 @@
-import { division } from "../tienda"
+import { division } from "../store"
 
 export interface DivisionProps {
   division: Array<division>

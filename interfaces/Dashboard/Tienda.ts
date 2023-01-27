@@ -1,5 +1,5 @@
 export interface TiendaProps {
-  nombre: string
-  residuoGlobal: number
+  name: string
+  globalResidue: number
   children?: React.ReactNode
 }

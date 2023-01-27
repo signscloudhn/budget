@@ -60,7 +60,7 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
               <h5>Post {d.id}:</h5>
               <input
                 type="number"
-                value={d.presupuesto}
+                value={d.budget}
                 min={0}
                 // max={}
                 onChange={(e) => {
@@ -76,10 +76,10 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
               <Icon component={InstagramIcon} />
               <input
                 type="number"
-                value={d.distribucion.instagram?.in}
+                value={d.distribution.instagram?.in}
                 className={styles.in}
                 min={0}
-                max={d.presupuesto}
+                max={d.budget}
                 onChange={(e) => {
                   dispatch(
                     updateSocialMediaDist({
@@ -93,10 +93,10 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
               />
               <input
                 type="number"
-                value={d.distribucion.instagram?.out}
+                value={d.distribution.instagram?.out}
                 className={styles.out}
                 min={0}
-                max={d.distribucion.instagram?.in}
+                max={d.distribution.instagram?.in}
                 onChange={(e) => {
                   dispatch(
                     updateResiduo({
@@ -111,10 +111,10 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
               <Icon component={FacebookIcon} />
               <input
                 type="number"
-                value={d.distribucion.facebook?.in}
+                value={d.distribution.facebook?.in}
                 className={styles.in}
                 min={0}
-                max={d.presupuesto}
+                max={d.budget}
                 onChange={(e) => {
                   dispatch(
                     updateSocialMediaDist({
@@ -128,10 +128,10 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
               />
               <input
                 type="number"
-                defaultValue={d.distribucion.facebook?.out}
+                defaultValue={d.distribution.facebook?.out}
                 className={styles.out}
                 min={0}
-                max={d.distribucion.facebook?.in}
+                max={d.distribution.facebook?.in}
                 onChange={(e) => {
                   dispatch(
                     updateResiduo({
@@ -143,7 +143,7 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
                   )
                 }}
               />
-              <p className={styles.residuo}>res: {d.residuo}</p>
+              <p className={styles.residue}>res: {d.residue}</p>
             </div>
           ))}
       </div>

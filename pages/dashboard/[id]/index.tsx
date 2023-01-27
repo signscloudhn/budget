@@ -6,14 +6,14 @@ import DivisionInfo from "./components/DivisionInfo"
 import styles from "./styles/index.module.scss"
 import { useSelector, useDispatch } from "react-redux"
 import { deleteWeek } from "../../../redux/slices/dataSlice"
-import { state, tienda, tiendas } from '../../../interfaces/tienda';
+import { state, store, stores } from '../../../interfaces/store';
 import { useEffect, useState } from "react"
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
 import { Icon } from "@mui/material"
 
 const TiendasList = () => {
-  const [datos, setDatos] = useState<tiendas>({
-    tiendas: [],
+  const [datos, setDatos] = useState<stores>({
+    stores: [],
     weeks: [],
   })
   const [lastWeekId, setLastWeekId] = useState(0)
@@ -23,7 +23,7 @@ const TiendasList = () => {
   const router = useRouter()
   const { id } = router.query
 
-  const state: tiendas = useSelector((state: state) => state.data)
+  const state: stores = useSelector((state: state) => state.data)
 
   useEffect(() => {
     setDatos(state)
@@ -31,9 +31,9 @@ const TiendasList = () => {
   }, [state, datos.weeks])
 
 
-  const current = (tienda: tienda) => {
-    const i: number | undefined = tienda.weeks.findIndex(
-      (week) => week.weekId === Number(id)
+  const current = (store: store) => {
+    const i: number | undefined = store.weeks.findIndex(
+      (week) => week.id === Number(id)
     )
 
     if (i === -1) {
@@ -43,7 +43,7 @@ const TiendasList = () => {
   const dispatch = useDispatch()
 
 
-  const weekDate = datos.weeks.filter(week => week.id === Number(id))[0]?.fecha
+  const weekDate = datos.weeks.filter(week => week.id === Number(id))[0]?.date
 
 
   return (
@@ -71,7 +71,7 @@ const TiendasList = () => {
             <div>
               <button
                 onClick={() => {
-                  dispatch(deleteWeek({ weekId: id }))
+                  dispatch(deleteWeek({ id: id }))
                   setShowDelete(false)
                   router.push(`/dashboard/${lastWeekId - 1}`)
                 }}
@@ -89,23 +89,23 @@ const TiendasList = () => {
           </div>
         </div>
       )}
-      <div className={styles.tiendas_lista}>
-        {datos.tiendas.map((tienda) => {
-          if (current(tienda)) {
+      <div className={styles.stores_lista}>
+        {datos.stores.map((store) => {
+          if (current(store)) {
             return (
               <Tienda
-                key={tienda.nombre}
-                nombre={tienda.nombre}
-                residuoGlobal={tienda.residuoGlobal}
+                key={store.name}
+                name={store.name}
+                globalResidue={store.globalResidue}
               >
-                {tienda.weeks.map((week) => {
+                {store.weeks.map((week) => {
                   // * Render
-                  if (week.weekId.toString() === id)
+                  if (week.id.toString() === id)
                     return (
-                      <Week key={tienda.nombre} tienda={tienda} week={week}>
+                      <Week key={store.name} store={store} week={week}>
                         <DivisionInfo
                           division={week.division}
-                          update={{ name: tienda.nombre, week: week.weekId }}
+                          update={{ name: store.name, week: week.id }}
                         />
                       </Week>
                     )
@@ -120,7 +120,7 @@ const TiendasList = () => {
           }}
           className={styles.new_btn}
         >
-          <h4>Nueva tienda</h4>
+          <h4>Nueva store</h4>
         </div>
       </div>
       <WeeksBar weeks={datos.weeks} />

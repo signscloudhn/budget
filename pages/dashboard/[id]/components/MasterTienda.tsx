@@ -1,32 +1,31 @@
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import { useRouter } from "next/router"
 import { useSelector, useDispatch } from "react-redux"
-import { state } from "../../../../interfaces/tienda"
-import { updateMasterTienda } from "../../../../redux/slices/dataSlice"
+import { state } from "../../../../interfaces/store"
+import { updateMasterStore } from "../../../../redux/slices/dataSlice"
 import { MasterTienda } from "../../../../interfaces/Dashboard/MasterTienda"
 import styles from "../styles/MasterTienda.module.scss"
 
-const MasterTienda = ({ handle, nombre }: MasterTienda) => {
+const MasterTienda = ({ handle, name }: MasterTienda) => {
   const router = useRouter()
   const { id } = router.query
-  const weekId = Number(id)
 
   const dispatch = useDispatch()
-  const tiendas = useSelector((state: state) => state.data.tiendas)
+  const stores = useSelector((state: state) => state.data.stores)
 
-  const currentStoreIndex = tiendas.findIndex(
-    (tienda) => tienda.nombre === nombre
+  const currentStoreIndex = stores.findIndex(
+    (store) => store.name === name
   )
-  const currentStore = tiendas[currentStoreIndex]
+  const currentStore = stores[currentStoreIndex]
   const currentWeekIndex = currentStore?.weeks.findIndex(
-    (week) => week.weekId == weekId
+    (week) => week.id == Number(id)
   )
 
-  const submit = (presupuestoInicial: number, residuoGlobal: number) => {
+  const submit = (budgetInitial: number, globalResidue: number) => {
     dispatch(
-      updateMasterTienda({
-        presupuestoInicial,
-        residuoGlobal,
+      updateMasterStore({
+        budgetInitial,
+        globalResidue,
         currentStoreIndex,
         currentWeekIndex,
       })
@@ -34,22 +33,21 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
   }
 
   const initialValue = {
-    residuoGlobal: currentStore?.residuoGlobal,
-    presupuestoInicial:
-      currentStore?.weeks[currentWeekIndex].presupuestoInicial,
+    globalResidue: currentStore?.globalResidue,
+    budgetInitial:
+      currentStore?.weeks[currentWeekIndex].budgetInitial,
     sumarResiduoAnterior: false,
   }
 
   return (
-    <div className={styles.master_tienda}>
+    <div className={styles.master_store}>
       <div className={styles.modal}>
         <Formik
           initialValues={initialValue}
           onSubmit={(values) => {
             submit(
-              values.presupuestoInicial,
-              values.residuoGlobal
-              // values.sumarResiduoAnterior
+              values.budgetInitial,
+              values.globalResidue
             )
             handle()
           }}
@@ -57,13 +55,13 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
           {() => (
             <Form>
               <div className={styles.field}>
-                <label htmlFor="presupuestoInicial">Presupuesto:</label>
-                <Field type="number" name="presupuestoInicial" />
+                <label htmlFor="budgetInitial">Presupuesto:</label>
+                <Field type="number" name="budgetInitial" />
               </div>
 
               <div className={styles.field}>
-                <label htmlFor="residuo-global">Residuo global:</label>
-                <Field type="number" name="residuoGlobal" />
+                <label htmlFor="residue-global">Residuo global:</label>
+                <Field type="number" name="globalResidue" />
               </div>
               <div className={styles.buttons_container}>
                 <button type="submit">

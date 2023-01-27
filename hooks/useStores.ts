@@ -1,94 +1,88 @@
-// import { data } from '../data/tiendas';
+// import { data } from '../data/stores';
 import { useDispatch, useSelector } from "react-redux"
-import { tienda, storeWeeks, tiendas, state } from "../interfaces/tienda"
+import { store, storeWeeks, stores, state } from "../interfaces/store"
 import {
   createNewStore,
-  updateMasterTienda,
+  updateMasterStore,
   updatePublicationsDist,
 } from "../redux/slices/dataSlice"
 import { dividirPresupuesto } from "../utils/calculations"
 
 export const useStores = () => {
-  const data: tiendas = useSelector((state: state) => state.data)
-  const tiendas = data.tiendas
+  const data: stores = useSelector((state: state) => state.data)
+  const stores = data.stores
   const dispatch = useDispatch()
 
-  const createStore = (
-    nombre: string,
-    presupuesto: number,
-    publicaciones: number
-  ) => {
+  const createStore = (name: string, budget: number, publications: number) => {
     const lastWeek = data.weeks[data.weeks.length - 1].id
 
-    const tienda: tienda = {
-      nombre: nombre,
-      residuoGlobal: 0,
+    const store: store = {
+      name: name,
+      globalResidue: 0,
       weeks: [
         {
-          weekId: lastWeek,
-          fecha: undefined,
-          presupuestoInicial: presupuesto,
-          presupuestoTotal: presupuesto,
-          publicaciones: publicaciones,
+          id: lastWeek,
+          date: undefined,
+          budgetInitial: budget,
+          budgetTotal: budget,
+          publications: publications,
           division: [],
-          residuo: 0,
-          residuoGastado: false,
+          residue: 0,
+          residueIsSpend: false,
         },
       ],
     }
 
-    dividirPresupuesto(publicaciones, tienda.weeks[0])
+    dividirPresupuesto(publications, store.weeks[0])
 
-    dispatch(createNewStore(tienda))
+    dispatch(createNewStore(store))
   }
 
   const updatePublications = (
-    tienda: tienda,
+    store: store,
     week: storeWeeks,
-    publicaciones: number
+    publications: number
   ) => {
-    const tiendaIndex = data.tiendas.findIndex((i) => i === tienda)
+    const storeIndex = data.stores.findIndex((i) => i === store)
 
-    const weekIndex = data.tiendas[tiendaIndex].weeks.findIndex(
-      (i) => i === week
-    )
+    const weekIndex = data.stores[storeIndex].weeks.findIndex((i) => i === week)
 
     dispatch(
       updatePublicationsDist({
-        tiendaIndex: tiendaIndex,
+        storeIndex: storeIndex,
         weekIndex: weekIndex,
-        publicaciones: publicaciones,
+        publications: publications,
       })
     )
   }
 
   const updateMaster = (
-    nombre: string,
+    name: string,
     id: any,
-    residuoGlobalValue: number,
-    presupuestoValue: number
+    globalResidueValue: number,
+    budgetValue: number
   ) => {
-    const storeIndex = tiendas.findIndex((tienda) => tienda.nombre === nombre)
+    const storeIndex = stores.findIndex((store) => store.name === name)
 
-    const currentStore = tiendas[storeIndex]
+    const currentStore = stores[storeIndex]
 
-    const currentWeek = currentStore.weeks[tiendas[0].weeks.length - 1]
+    const currentWeek = currentStore.weeks[stores[0].weeks.length - 1]
 
-    const residuoGlobal = currentStore.residuoGlobal
-    const presupuesto = currentWeek.presupuestoInicial
+    const globalResidue = currentStore.globalResidue
+    const budget = currentWeek.budgetInitial
 
     dispatch(
-      updateMasterTienda({
+      updateMasterStore({
         storeIndex,
         id,
-        residuoGlobalValue,
-        presupuestoValue,
+        globalResidueValue,
+        budgetValue,
       })
     )
 
     return {
-      residuoGlobal,
-      presupuesto,
+      globalResidue,
+      budget,
     }
   }
 

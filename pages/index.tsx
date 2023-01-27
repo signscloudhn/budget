@@ -2,7 +2,7 @@ import Head from "next/head"
 import Link from "next/link"
 import { useSelector } from "react-redux"
 import styles from "../styles/Home.module.css"
-import { state } from "../interfaces/tienda"
+import { state } from "../interfaces/store"
 import { useEffect, useState } from "react"
 
 export default function Home() {

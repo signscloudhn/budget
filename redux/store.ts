@@ -1,6 +1,6 @@
 import { legacy_createStore as createStore } from "redux"
 import rootReducer from "./rootReducer"
-import { state } from "../interfaces/tienda"
+import { state } from "../interfaces/store"
 
 const saveToLocalStorage = (state: state) => {
   try {

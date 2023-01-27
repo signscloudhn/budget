@@ -1,32 +1,32 @@
-import { tiendas } from "../interfaces/tienda"
+import { stores } from "../interfaces/store"
 import { generateDate } from "../utils/calculations"
 
 const { startWeek, endWeek } = generateDate()
 
-export const initialDataState: tiendas = {
+export const initialDataState: stores = {
   weeks: [
-    { id: 1, fecha: `${startWeek} - ${endWeek}` },
+    { id: 1, date: `${startWeek} - ${endWeek}` },
 
     //  { id: 2 }, { id: 3 }
   ],
-  tiendas: [
+  stores: [
     // {
-    //   nombre: "Villana Antillana 333 Seneca",
-    //   residuoGlobal: 13,
+    //   name: "Villana Antillana 333 Seneca",
+    //   globalResidue: 13,
     //   weeks: [
     //     {
-    //       weekId: 1,
+    //       id: 1,
     //       // Editable
-    //       presupuestoInicial: 100,
-    //       presupuestoTotal: 100,
+    //       budgetInitial: 100,
+    //       budgetTotal: 100,
     //       // Editable
-    //       publicaciones: 3,
+    //       publications: 3,
     //       division: [
     //         {
     //           // Editable y recalculable
     //           id: 1,
-    //           presupuesto: 33,
-    //           distribucion: {
+    //           budget: 33,
+    //           distribution: {
     //             instagram: {
     //               // Editable
     //               in: 13,
@@ -40,13 +40,13 @@ export const initialDataState: tiendas = {
     //               out: 12,
     //             },
     //           },
-    //           // Se calcula de lo que sobro en la distribucion
-    //           residuo: 6,
+    //           // Se calcula de lo que sobro en la distribution
+    //           residue: 6,
     //         },
     //         {
     //           id: 2,
-    //           presupuesto: 33,
-    //           distribucion: {
+    //           budget: 33,
+    //           distribution: {
     //             instagram: {
     //               in: 13,
     //               out: 12,
@@ -56,12 +56,12 @@ export const initialDataState: tiendas = {
     //               out: 12,
     //             },
     //           },
-    //           residuo: 6,
+    //           residue: 6,
     //         },
     //         {
     //           id: 3,
-    //           presupuesto: 33,
-    //           distribucion: {
+    //           budget: 33,
+    //           distribution: {
     //             instagram: {
     //               in: 13,
     //               out: 12,
@@ -71,26 +71,26 @@ export const initialDataState: tiendas = {
     //               out: 12,
     //             },
     //           },
-    //           residuo: 6,
+    //           residue: 6,
     //         },
     //       ],
-    //       // Se calcula sumando los residuos de cada publicacion
-    //       residuo: 0,
-    //       residuoGastado: false,
+    //       // Se calcula sumando los residues de cada publication
+    //       residue: 0,
+    //       residueIsSpend: false,
     //     },
     //     {
-    //       weekId: 2,
+    //       id: 2,
     //       // Editable
-    //       presupuestoInicial: 100,
-    //       presupuestoTotal: 120,
+    //       budgetInitial: 100,
+    //       budgetTotal: 120,
     //       // Editable
-    //       publicaciones: 2,
+    //       publications: 2,
     //       division: [
     //         {
     //           // Editable y recalculable
     //           id: 1,
-    //           presupuesto: 33,
-    //           distribucion: {
+    //           budget: 33,
+    //           distribution: {
     //             instagram: {
     //               // Editable
     //               in: 13,
@@ -104,13 +104,13 @@ export const initialDataState: tiendas = {
     //               out: 12,
     //             },
     //           },
-    //           // Se calcula de lo que sobro en la distribucion
-    //           residuo: 6,
+    //           // Se calcula de lo que sobro en la distribution
+    //           residue: 6,
     //         },
     //         {
     //           id: 2,
-    //           presupuesto: 33,
-    //           distribucion: {
+    //           budget: 33,
+    //           distribution: {
     //             instagram: {
     //               in: 13,
     //               out: 12,
@@ -120,26 +120,26 @@ export const initialDataState: tiendas = {
     //               out: 12,
     //             },
     //           },
-    //           residuo: 6,
+    //           residue: 6,
     //         },
     //       ],
-    //       // Se calcula sumando los residuos de cada publicacion
-    //       residuo: 234,
-    //       residuoGastado: false,
+    //       // Se calcula sumando los residues de cada publication
+    //       residue: 234,
+    //       residueIsSpend: false,
     //     },
     //     {
-    //       weekId: 3,
+    //       id: 3,
     //       // Editable
-    //       presupuestoInicial: 100,
-    //       presupuestoTotal: 120,
+    //       budgetInitial: 100,
+    //       budgetTotal: 120,
     //       // Editable
-    //       publicaciones: 2,
+    //       publications: 2,
     //       division: [
     //         {
     //           // Editable y recalculable
     //           id: 1,
-    //           presupuesto: 33,
-    //           distribucion: {
+    //           budget: 33,
+    //           distribution: {
     //             instagram: {
     //               // Editable
     //               in: 13,
@@ -153,13 +153,13 @@ export const initialDataState: tiendas = {
     //               out: 12,
     //             },
     //           },
-    //           // Se calcula de lo que sobro en la distribucion
-    //           residuo: 6,
+    //           // Se calcula de lo que sobro en la distribution
+    //           residue: 6,
     //         },
     //         {
     //           id: 2,
-    //           presupuesto: 33,
-    //           distribucion: {
+    //           budget: 33,
+    //           distribution: {
     //             instagram: {
     //               in: 13,
     //               out: 12,
@@ -169,12 +169,12 @@ export const initialDataState: tiendas = {
     //               out: 12,
     //             },
     //           },
-    //           residuo: 6,
+    //           residue: 6,
     //         },
     //       ],
-    //       // Se calcula sumando los residuos de cada publicacion
-    //       residuo: 24,
-    //       residuoGastado: false,
+    //       // Se calcula sumando los residues de cada publication
+    //       residue: 24,
+    //       residueIsSpend: false,
     //     },
     //   ],
     // },
