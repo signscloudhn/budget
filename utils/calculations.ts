@@ -151,8 +151,8 @@ export const generateDate = (date?: string | undefined) => {
     return new Date(daysToSum)
   }
 
-  const todayStartWeek = new Date(getStartWeek().toLocaleDateString())
-  const todayEndWeek = new Date(getEndWeek().toLocaleDateString())
+  const todayStartWeek = new Date(getStartWeek().toDateString())
+  const todayEndWeek = new Date(getEndWeek().toDateString())
 
   const getNextStartWeek = (date: string | undefined) => {
     let nextDay
@@ -163,12 +163,12 @@ export const generateDate = (date?: string | undefined) => {
       nextDay = new Date().getTime() + 1 * milisecondsAt24Hours
     }
 
-    return new Date(nextDay).toLocaleDateString()
+    return new Date(nextDay).toDateString()
   }
 
   return {
-    startWeek: todayStartWeek.toLocaleDateString(),
-    endWeek: todayEndWeek.toLocaleDateString(),
+    startWeek: todayStartWeek.toDateString(),
+    endWeek: todayEndWeek.toDateString(),
     nextWeek: getNextStartWeek,
   }
 }
