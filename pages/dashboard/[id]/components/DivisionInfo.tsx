@@ -4,7 +4,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight"
 import InstagramIcon from "@mui/icons-material/Instagram"
 import FacebookIcon from "@mui/icons-material/Facebook"
 import Icon from "@mui/material/Icon"
-import { useState, useEffect, useRef, ElementRef, RefObject } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useDispatch } from "react-redux"
 import {
   updatePublication,

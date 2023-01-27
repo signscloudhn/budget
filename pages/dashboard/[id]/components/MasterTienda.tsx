@@ -66,10 +66,16 @@ const MasterTienda = ({ handle, nombre }: MasterTienda) => {
                 <Field type="number" name="residuoGlobal" />
               </div>
               <div className={styles.buttons_container}>
-                <button type="submit">Guardar</button>
-                <button type="button"  onClick={()=>{
-                  handle()
-                }} >Cancelar</button>
+                <button type="submit">
+                  Guardar</button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    handle()
+                  }}
+                >
+                  Cancelar
+                </button>
               </div>
             </Form>
           )}

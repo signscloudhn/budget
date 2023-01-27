@@ -7,6 +7,8 @@ import {
 } from "../../utils/calculations"
 import { initialDataState as initialState } from "../initialStates"
 import { recalcularPublicaciones } from "../../utils/calculations"
+import store from "../store"
+import { weeks } from "../../interfaces/tienda"
 const { nextWeek } = generateDate()
 
 const dataSlice = createSlice({
@@ -74,9 +76,15 @@ const dataSlice = createSlice({
         })
       })
 
-      state.tiendas.forEach((tienda) => tienda.weeks.splice(weekIndex, 1))
+      state.tiendas.forEach((tienda) =>
+        tienda.weeks.splice(tienda.weeks.length - 1, 1)
+      )
 
       state.weeks.splice(weekIndex, 1)
+
+      state.tiendas.forEach((tienda) => {
+        tienda.weeks[tienda.weeks.length - 1].residuoGastado = false
+      })
     },
 
     updateDate: (state, action) => {

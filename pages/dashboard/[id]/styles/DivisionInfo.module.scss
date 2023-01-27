@@ -8,13 +8,14 @@
   display: flex;
   position: absolute;
   top: 32px;
-  left: 0;
+  left: -40px;
   background-color: aliceblue;
   z-index: 1;
   .post {
     margin: 5px;
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     align-items: center;
     .in {
       border-bottom: 1px solid rgb(15 175 9);

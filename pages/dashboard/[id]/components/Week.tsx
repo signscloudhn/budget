@@ -9,8 +9,21 @@ import { useStores } from "../../../../hooks/useStores"
 import { useDispatch } from "react-redux"
 import { addLastResidue } from "../../../../redux/slices/dataSlice"
 import { storeWeeks } from "../../../../interfaces/tienda"
+import { useState } from 'react';
 
 const Week = ({ tienda, week, children }: WeekProps) => {
+
+  const [showModal, setShowModal] = useState({
+    last: false,
+  })
+
+  const handleLast = () => {
+    setShowModal({
+      ...showModal,
+      last: !showModal.last,
+    })
+  }
+
   const lastIndex =
     tienda?.weeks.findIndex((i: storeWeeks) => {
       return i === week
@@ -41,14 +54,43 @@ const Week = ({ tienda, week, children }: WeekProps) => {
 
   return (
     <>
+    {showModal.last && (
+        <div className={styles.modal_container}>
+          <div className={styles.modal}>
+            <p>
+              Sumar el residuo de la semana anterior a esta semana: {residuoLast()}
+              <span>*Esta accion no se puede deshacer</span>
+            </p>
+            <div className={styles.buttons_container}>
+              <button
+                onClick={() => {
+                  if (residuoLast() > 0)
+                    dispatch(addLastResidue({ nombre: tienda?.nombre, id: week.weekId }))
+                  handleLast()
+                }}
+              >
+                Sumar
+              </button>
+              <button onClick={handleLast}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className={styles.week_item}>
-        <Icon
+        {residuoLast() > 0 ? (
+          <Icon
           component={KeyboardReturnIcon}
           className={styles.bottom}
           onClick={() => {
-            dispatch(addLastResidue({ nombre: tienda?.nombre, id: week.weekId }))
+            handleLast()
           }}
         />
+        ) : (
+          <Icon
+          component={KeyboardReturnIcon}
+          color="disabled"
+        />
+        )}
         <p>{residuoLast()}</p>
       </div>
       <div className={`${styles.week_item} ${styles.input_field}`}>
@@ -62,7 +104,7 @@ const Week = ({ tienda, week, children }: WeekProps) => {
         <input
           type="number"
           min={1}
-          defaultValue={week?.publicaciones}
+          value={week?.publicaciones}
           onChange={(e) => {
             updatePublications(tienda, week, +e.target.value)
           }}
