@@ -51,7 +51,7 @@ const TiendasList = () => {
       <div className={styles.title}>
         <h2>Week: {id}</h2>
         {
-          lastWeekId === Number(id) && (
+          lastWeekId === Number(id) && state.weeks.length > 1 && (
             <Icon
           component={RemoveCircleOutlineIcon}
           fontSize="small"

@@ -62,26 +62,28 @@ const dataSlice = createSlice({
       const id = action.payload.id
 
       const weekIndex = state.weeks.findIndex((week) => week.id === Number(id))
-
-      state.weeks.forEach((week) => {
-        if (week.id > state.weeks[weekIndex].id) week.id = week.id - 1
-      })
-
-      state.stores.forEach((store) => {
-        store.weeks.forEach((week) => {
+      console.log(state.weeks.length)
+      if (state.weeks.length > 1) {
+        state.weeks.forEach((week) => {
           if (week.id > state.weeks[weekIndex].id) week.id = week.id - 1
         })
-      })
 
-      state.stores.forEach((store) =>
-        store.weeks.splice(store.weeks.length - 1, 1)
-      )
+        state.stores.forEach((store) => {
+          store.weeks.forEach((week) => {
+            if (week.id > state.weeks[weekIndex].id) week.id = week.id - 1
+          })
+        })
 
-      state.weeks.splice(weekIndex, 1)
+        state.stores.forEach((store) =>
+          store.weeks.splice(store.weeks.length - 1, 1)
+        )
 
-      state.stores.forEach((store) => {
-        store.weeks[store.weeks.length - 1].residueIsSpend = false
-      })
+        state.weeks.splice(weekIndex, 1)
+
+        state.stores.forEach((store) => {
+          store.weeks[store.weeks.length - 1].residueIsSpend = false
+        })
+      }
     },
 
     updateDate: (state, action) => {
