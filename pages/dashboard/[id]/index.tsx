@@ -91,7 +91,7 @@ const TiendasList = () => {
       )}
       <div className={styles.stores_lista}>
         {datos.stores.map((store) => {
-          if (current(store)) {
+          if (current(store) && store.active) {
             return (
               <Tienda
                 key={store.name}
@@ -122,6 +122,9 @@ const TiendasList = () => {
         >
           <h4>Nueva Tienda</h4>
         </div>
+
+        {/* TODO: reactivar tiendas */}
+
       </div>
       <WeeksBar weeks={datos.weeks} />
     </div>

@@ -28,6 +28,7 @@ export interface storeWeeks {
 
 export interface store {
   name: string
+  active: boolean
   globalResidue: number
   weeks: Array<storeWeeks>
 }

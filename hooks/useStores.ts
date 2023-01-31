@@ -18,6 +18,7 @@ export const useStores = () => {
 
     const store: store = {
       name: name,
+      active: true,
       globalResidue: 0,
       weeks: [
         {
