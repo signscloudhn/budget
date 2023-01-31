@@ -71,15 +71,21 @@
     align-items: center;
     overflow-y: scroll;
   }
-  .new_btn {
-    cursor: pointer;
-    transition: 0.2s all;
-    color: #33cfff;
-    h4 {
-      text-decoration: underline;
-    }
-    &:hover {
-      color: white;
+  .add_buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    button {
+      background: #1ca3cc;
+      color: black;
+      border: none;
+      border-radius: 3px;
+      padding: 3px;
+      cursor: pointer;
+      &:hover {
+        color: white;
+        transition: 0.2s all;
+      }
     }
   }
 }

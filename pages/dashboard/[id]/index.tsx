@@ -10,25 +10,32 @@ import { state, store, stores } from "../../../interfaces/store"
 import { useEffect, useState } from "react"
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
 import { Icon } from "@mui/material"
+import DisabledStores from "./components/DisabledStores"
 
 const TiendasList = () => {
+
   const [datos, setDatos] = useState<stores>({
     stores: [],
     weeks: [],
   })
-  const [lastWeekId, setLastWeekId] = useState(0)
-
-  const [showDelete, setShowDelete] = useState(false)
-
-  const router = useRouter()
-  const { id } = router.query
 
   const state: stores = useSelector((state: state) => state.data)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setDatos(state)
     setLastWeekId(datos.weeks[datos.weeks.length - 1]?.id)
   }, [state, datos.weeks])
+
+
+  const [lastWeekId, setLastWeekId] = useState(0)
+  const [showModals, setShowModals] = useState({
+    delete: false,
+    disabled: false,
+  })
+
+  const router = useRouter()
+  const { id } = router.query
 
   const current = (store: store) => {
     const weekIndex: number | undefined = store.weeks.findIndex(
@@ -39,29 +46,55 @@ const TiendasList = () => {
       return false
     } else return true
   }
-  const dispatch = useDispatch()
 
-  const weekDate = datos.weeks.filter((week) => week.id === Number(id))[0]?.date
+  const weekDate = datos.weeks.find((week) => week.id === Number(id))?.date
+
+  const hasStoresDisabled = () => {
+    if (
+      lastWeekId === Number(id) &&
+      state.weeks.length > 1 &&
+      datos.stores.some((store) => !store.active)
+    ) {
+      return true
+    } else false
+  }
 
   return (
     <div className={styles.container}>
       <div className={styles.title}>
         <h2>Week: {id}</h2>
         {
-        // TODO
-        lastWeekId === Number(id) && state.weeks.length > 1 && (
-          <Icon
-            component={RemoveCircleOutlineIcon}
-            fontSize="small"
-            color="action"
-            onClick={() => {
-              setShowDelete(true)
-            }}
-          />
-        )}
+          // TODO
+          lastWeekId === Number(id) && state.weeks.length > 1 && (
+            <Icon
+              component={RemoveCircleOutlineIcon}
+              fontSize="small"
+              color="action"
+              onClick={() => {
+                setShowModals({
+                  ...showModals,
+                  delete: true,
+                })
+              }}
+            />
+          )
+        }
       </div>
+
       <p className={styles.date}>{weekDate}</p>
-      {showDelete && (
+
+      {showModals.disabled && hasStoresDisabled() && (
+        <DisabledStores
+          func={() => {
+            setShowModals({
+              ...showModals,
+              disabled: false,
+            })
+          }}
+        />
+      )}
+
+      {showModals.delete && (
         <div className={styles.delete_modal}>
           <div className={styles.modal_container}>
             <h4>Estas seguro de que quieres borrar la semana {id} ?</h4>
@@ -69,23 +102,32 @@ const TiendasList = () => {
               <button
                 onClick={() => {
                   dispatch(deleteWeek({ id: id }))
-                  setShowDelete(false)
+                  setShowModals({
+                    ...showModals,
+                    delete: false,
+                  })
                   router.push(`/dashboard/${lastWeekId - 1}`)
                 }}
               >
                 Si, estoy seguro
               </button>
+
               <button
                 onClick={() => {
-                  setShowDelete(false)
+                  setShowModals({
+                    ...showModals,
+                    delete: false,
+                  })
                 }}
               >
                 No
               </button>
+
             </div>
           </div>
         </div>
       )}
+
       <div className={styles.stores_lista}>
         {datos.stores.map((store) => {
           if (current(store)) {
@@ -111,22 +153,31 @@ const TiendasList = () => {
             )
           }
         })}
-        <button
-          onClick={() => {
-            router.push("/add-store")
-          }}
-          className={styles.new_btn}
-        >
-          Nueva Tienda
-        </button>
 
-        {/* TODO: reactivar tiendas */}
+        <div className={styles.add_buttons}>
+          <button
+            onClick={() => {
+              router.push("/add-store")
+            }}
+            className={styles.new_btn}
+          >
+            Nueva Tienda
+          </button>
 
-        {/* <button>
-          Activar tiendas
-        </button> */}
+          {hasStoresDisabled() && (
+            <button
+              onClick={() => {
+                setShowModals({
+                  ...showModals,
+                  disabled: true,
+                })
+              }}
+            >
+              Activar tiendas
+            </button>
+          )}
 
-
+        </div>
       </div>
       <WeeksBar weeks={datos.weeks} />
     </div>

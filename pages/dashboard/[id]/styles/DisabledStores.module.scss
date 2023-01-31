@@ -1,0 +1,25 @@
+.disabled_stores {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(250, 235, 215, 0.356);
+  h4 {
+    margin-bottom: 10px;
+  }
+  .list_container {
+    background-color: azure;
+    border-radius: 8px;
+    width: 300px;
+    padding: 10px;
+    li {
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      padding: 5px;
+    }
+  }
+}
