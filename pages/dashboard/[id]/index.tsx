@@ -111,16 +111,22 @@ const TiendasList = () => {
             )
           }
         })}
-        <div
+        <button
           onClick={() => {
             router.push("/add-store")
           }}
           className={styles.new_btn}
         >
-          <h4>Nueva Tienda</h4>
-        </div>
+          Nueva Tienda
+        </button>
 
         {/* TODO: reactivar tiendas */}
+
+        {/* <button>
+          Activar tiendas
+        </button> */}
+
+
       </div>
       <WeeksBar weeks={datos.weeks} />
     </div>

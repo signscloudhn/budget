@@ -34,7 +34,7 @@ const MasterTienda = ({ handle, name }: MasterTienda) => {
 
   const initialValue = {
     globalResidue: currentStore?.globalResidue,
-    budgetInitial: currentStore?.weeks[currentWeekIndex].budgetInitial,
+    budgetInitial: currentStore?.weeks[currentWeekIndex]?.budgetInitial,
     sumarResiduoAnterior: false,
   }
 

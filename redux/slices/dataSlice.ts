@@ -296,13 +296,27 @@ const dataSlice = createSlice({
       const name = action.payload.name
       const storeIndex = state.stores.findIndex((store) => store.name === name)
 
-      state.stores[storeIndex].active = false
+      const currentStore = state.stores[storeIndex]
+      const currentWeek = currentStore.weeks[currentStore.weeks.length - 1]
+      const lastWeek = currentStore.weeks[currentStore.weeks.length - 2]
+
+      currentStore.active = false
 
       // TODO: Devolver residuo si fue gastado
-      //
+
+      if (currentWeek.budgetInitial != currentWeek.budgetTotal) {
+        if (currentStore.globalResidue > 0) {
+          lastWeek.residueIsSpend = false
+          currentStore.globalResidue =
+            currentStore.globalResidue + lastWeek.residue
+        } else {
+          currentStore.globalResidue =
+            currentWeek.budgetTotal - currentWeek.budgetInitial
+        }
+      }
 
       // TODO: Eliminar ultima week
-      //
+      currentStore.weeks.pop()
     },
   },
 })
