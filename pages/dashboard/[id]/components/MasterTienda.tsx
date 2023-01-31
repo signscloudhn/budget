@@ -159,7 +159,7 @@ const MasterTienda = ({ handle, name }: MasterTienda) => {
 
               {show.openDelete && (
               <>
-              <p className={styles.disclaimer}>Para borrar escribe la palabra &aposkato-delete&apos en el siguiente campo:</p>
+              <p className={styles.disclaimer}>Para borrar escribe la palabra {"'"}kato-delete{"'"} en el siguiente campo:</p>
               <input type="text" onChange={e => {
                   captureInput(e.target.value)
               }} />
