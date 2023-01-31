@@ -27,7 +27,7 @@ const dataSlice = createSlice({
       const lastWeekId = state.weeks[state.weeks.length - 1]
       const newWeekId = lastWeekId.id + 1
 
-      // TODO: Agregar date
+      // // TODO: Agregar date
       const date = lastWeekId.date?.split("-")[1].trim()
 
       const { startWeek, endWeek } = generateDate(nextWeek(date))
@@ -50,9 +50,11 @@ const dataSlice = createSlice({
 
         splitBudget(lastWeek.publications, newWeek)
 
-        store.weeks.push(newWeek)
+        if (store.active) {
+          store.weeks.push(newWeek)
 
-        store.globalResidue = store.globalResidue + lastWeek.residue
+          store.globalResidue = store.globalResidue + lastWeek.residue
+        }
       })
     },
 
@@ -276,7 +278,8 @@ const dataSlice = createSlice({
         state.weeks.splice(weekIndex, 1)
 
         state.stores.forEach((store) => {
-          store.weeks[store.weeks.length - 1].residueIsSpend = false
+          if (store.weeks.length > 1)
+            store.weeks[store.weeks.length - 1].residueIsSpend = false
         })
       }
     },
@@ -289,7 +292,18 @@ const dataSlice = createSlice({
       state.stores.splice(storeIndex, 1)
     },
 
-    deleteWeekToStore: (state, action) => {},
+    disableStore: (state, action) => {
+      const name = action.payload.name
+      const storeIndex = state.stores.findIndex((store) => store.name === name)
+
+      state.stores[storeIndex].active = false
+
+      // TODO: Devolver residuo si fue gastado
+      //
+
+      // TODO: Eliminar ultima week
+      //
+    },
   },
 })
 
@@ -306,6 +320,7 @@ export const {
   updateResiduo,
   deleteWeek,
   deleteStore,
+  disableStore,
 } = dataSlice.actions
 
 export default dataSlice.reducer

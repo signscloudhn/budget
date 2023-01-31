@@ -32,22 +32,22 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
     })
   }
 
-  const stores = useSelector((state: state) => state.data.stores)
+  const data = useSelector((state: state) => state.data)
 
-  const storeIndex = stores.findIndex((store) => store.name === name)
+  const storeIndex = data.stores.findIndex((store) => store.name === name)
 
   const router = useRouter()
   const { id } = router.query
 
-  const idNumber = Number(id)
+  const idToNumber = Number(id)
 
   const dispatch = useDispatch()
 
-  const weekIndex = stores[storeIndex]?.weeks.findIndex(
-    (week) => week.id === idNumber
+  const weekIndex = data.stores[storeIndex]?.weeks.findIndex(
+    (week) => week.id === idToNumber
   )
 
-  const current = stores[storeIndex]?.weeks[weekIndex]
+  const current = data.stores[storeIndex]?.weeks[weekIndex]
 
   const hasResidue = () => {
     if (current?.residue > 0) {
@@ -57,11 +57,20 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
     }
   }
 
+  const isLastWeek = () => {
+    if (data.weeks[data.weeks.length - 1].id === idToNumber) {return true}
+    else {
+      return false
+    }
+  }
+
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.title}>
-          <h5 onClick={handleMaster}>{name}</h5>
+        <div className={styles.title} style={isLastWeek() ? {cursor: "pointer"}: {cursor: "auto"}}>
+          <h5 onClick={()=>{
+            isLastWeek() && handleMaster()
+          }}>{name}</h5>
         </div>
         <div className={styles.item_date}>
           <p>{current?.date}</p>
@@ -103,7 +112,7 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
           )}
         </div>
       </div>
-      {showModal.master && (
+      {showModal.master && isLastWeek() && (
         <MasterTienda handle={handleMaster} name={name} />
       )}
       {showModal.global && (
@@ -117,7 +126,7 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
               <button
                 onClick={() => {
                   if (globalResidue > 0)
-                    dispatch(addGlobalResidue({ name: name, id: idNumber }))
+                    dispatch(addGlobalResidue({ name: name, id: idToNumber }))
                   handleGlobal()
                 }}
               >

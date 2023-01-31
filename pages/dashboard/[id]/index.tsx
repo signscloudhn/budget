@@ -6,7 +6,7 @@ import DivisionInfo from "./components/DivisionInfo"
 import styles from "./styles/index.module.scss"
 import { useSelector, useDispatch } from "react-redux"
 import { deleteWeek } from "../../../redux/slices/dataSlice"
-import { state, store, stores } from '../../../interfaces/store';
+import { state, store, stores } from "../../../interfaces/store"
 import { useEffect, useState } from "react"
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
 import { Icon } from "@mui/material"
@@ -30,40 +30,37 @@ const TiendasList = () => {
     setLastWeekId(datos.weeks[datos.weeks.length - 1]?.id)
   }, [state, datos.weeks])
 
-
   const current = (store: store) => {
-    const i: number | undefined = store.weeks.findIndex(
+    const weekIndex: number | undefined = store.weeks.findIndex(
       (week) => week.id === Number(id)
     )
 
-    if (i === -1) {
+    if (weekIndex === -1) {
       return false
     } else return true
   }
   const dispatch = useDispatch()
 
-
-  const weekDate = datos.weeks.filter(week => week.id === Number(id))[0]?.date
-
+  const weekDate = datos.weeks.filter((week) => week.id === Number(id))[0]?.date
 
   return (
     <div className={styles.container}>
       <div className={styles.title}>
         <h2>Week: {id}</h2>
         {
-          lastWeekId === Number(id) && state.weeks.length > 1 && (
-            <Icon
-          component={RemoveCircleOutlineIcon}
-          fontSize="small"
-          color="action"
-          onClick={() => {
-            setShowDelete(true)
-          }}
-        />
-          )
-        }
+        // TODO
+        lastWeekId === Number(id) && state.weeks.length > 1 && (
+          <Icon
+            component={RemoveCircleOutlineIcon}
+            fontSize="small"
+            color="action"
+            onClick={() => {
+              setShowDelete(true)
+            }}
+          />
+        )}
       </div>
-      <p className={styles.date} >{weekDate}</p>
+      <p className={styles.date}>{weekDate}</p>
       {showDelete && (
         <div className={styles.delete_modal}>
           <div className={styles.modal_container}>
@@ -91,7 +88,7 @@ const TiendasList = () => {
       )}
       <div className={styles.stores_lista}>
         {datos.stores.map((store) => {
-          if (current(store) && store.active) {
+          if (current(store)) {
             return (
               <Tienda
                 key={store.name}
@@ -124,7 +121,6 @@ const TiendasList = () => {
         </div>
 
         {/* TODO: reactivar tiendas */}
-
       </div>
       <WeeksBar weeks={datos.weeks} />
     </div>

@@ -1,7 +1,7 @@
 import { Formik, Form, Field } from "formik"
 import { useRouter } from "next/router"
 import { useSelector, useDispatch } from "react-redux"
-import { deleteStore } from "../../../../redux/slices/dataSlice"
+import { deleteStore, disableStore } from "../../../../redux/slices/dataSlice"
 import { state } from "../../../../interfaces/store"
 import { updateMasterStore } from "../../../../redux/slices/dataSlice"
 import { MasterTienda } from "../../../../interfaces/Dashboard/MasterTienda"
@@ -81,8 +81,6 @@ const MasterTienda = ({ handle, name }: MasterTienda) => {
   }
   }, [show.deleteInput])
 
-  console.log(show.deleteInput, show.enableDelete)
-
   return (
     <div className={styles.master_store}>
       <div className={styles.modal}>
@@ -137,7 +135,11 @@ const MasterTienda = ({ handle, name }: MasterTienda) => {
           </button>
           {show.danger_zone && (
             <div className={styles.content}>
-              <button>Desactivar tienda</button>
+              <button
+              onClick={()=>{
+                dispatch(disableStore({name}))
+              }}
+              >Desactivar tienda</button>
               <p>
                 *Esto desactivara la tienda a partir de esta semana y podras
                 reactivarla cuando quieras, ademas si haz sumado alguno de los residuos (global o anterior) sera devuelto.
@@ -159,7 +161,7 @@ const MasterTienda = ({ handle, name }: MasterTienda) => {
 
               {show.openDelete && (
               <>
-              <p className={styles.disclaimer}>Para borrar escribe la palabra {"'"}kato-delete{"'"} en el siguiente campo:</p>
+              <p className={styles.disclaimer}>Para borrar la tienda escribe la palabra {"'"}kato-delete{"'"} en el siguiente campo:</p>
               <input type="text" onChange={e => {
                   captureInput(e.target.value)
               }} />
