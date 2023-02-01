@@ -7,6 +7,10 @@ import {
   updatePublicationsDist,
 } from "../redux/slices/dataSlice"
 import { splitBudget } from "../utils/calculations"
+import {
+  findStoreIndexWithName,
+  findWeekIndexWithId,
+} from "../utils/indexFinder"
 
 export const useStores = () => {
   const data: stores = useSelector((state: state) => state.data)
@@ -44,9 +48,9 @@ export const useStores = () => {
     week: storeWeeks,
     publications: number
   ) => {
-    const storeIndex = data.stores.findIndex((i) => i === store)
+    const storeIndex = findStoreIndexWithName(stores, store.name)
 
-    const weekIndex = data.stores[storeIndex].weeks.findIndex((i) => i === week)
+    const weekIndex = findWeekIndexWithId(data.stores[storeIndex], week.id)
 
     dispatch(
       updatePublicationsDist({

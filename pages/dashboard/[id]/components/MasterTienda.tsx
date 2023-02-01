@@ -7,6 +7,7 @@ import { updateMasterStore } from "../../../../redux/slices/dataSlice"
 import { MasterTienda } from "../../../../interfaces/Dashboard/MasterTienda"
 import styles from "../styles/MasterTienda.module.scss"
 import { useState, useEffect } from 'react';
+import { findStoreIndexWithName, findWeekIndexWithId } from "../../../../utils/indexFinder"
 
 const MasterTienda = ({ handle, name }: MasterTienda) => {
   const router = useRouter()
@@ -15,11 +16,9 @@ const MasterTienda = ({ handle, name }: MasterTienda) => {
   const dispatch = useDispatch()
   const stores = useSelector((state: state) => state.data.stores)
 
-  const currentStoreIndex = stores.findIndex((store) => store.name === name)
+  const currentStoreIndex = findStoreIndexWithName(stores, name)
   const currentStore = stores[currentStoreIndex]
-  const currentWeekIndex = currentStore?.weeks.findIndex(
-    (week) => week.id == Number(id)
-  )
+  const currentWeekIndex = findWeekIndexWithId(currentStore, Number(id))
 
   const submit = (budgetInitial: number, globalResidue: number) => {
     dispatch(

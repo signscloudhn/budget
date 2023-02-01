@@ -7,6 +7,10 @@ import {
 } from "../../utils/calculations"
 import { initialDataState as initialState } from "../initialStates"
 import { recalculatePublications } from "../../utils/calculations"
+import {
+  findStoreIndexWithName,
+  findWeekIndexWithId,
+} from "../../utils/indexFinder"
 const { nextWeek } = generateDate()
 
 const dataSlice = createSlice({
@@ -62,11 +66,8 @@ const dataSlice = createSlice({
       const name = action.payload.name
       const id = action.payload.id
 
-      const storeIndex = state.stores.findIndex((store) => store.name === name)
-
-      const weekIndex = state.stores[storeIndex].weeks.findIndex(
-        (week) => week.id === id
-      )
+      const storeIndex = findStoreIndexWithName(state.stores, name)
+      const weekIndex = findWeekIndexWithId(state.stores[storeIndex], id)
 
       const currentWeek = state.stores[storeIndex].weeks[weekIndex]
       const lastWeek = state.stores[storeIndex].weeks[weekIndex - 1]
@@ -86,12 +87,8 @@ const dataSlice = createSlice({
     addGlobalResidue: (state, action) => {
       const name = action.payload.name
       const id = action.payload.id
-
-      const storeIndex = state.stores.findIndex((store) => store.name === name)
-
-      const weekIndex = state.stores[storeIndex].weeks.findIndex(
-        (week) => week.id === id
-      )
+      const storeIndex = findStoreIndexWithName(state.stores, name)
+      const weekIndex = findWeekIndexWithId(state.stores[storeIndex], id)
 
       const currentWeek = state.stores[storeIndex].weeks[weekIndex]
 
@@ -115,11 +112,8 @@ const dataSlice = createSlice({
       const name = action.payload.name
       const value = action.payload.value
 
-      const storeIndex = state.stores.findIndex((store) => store.name === name)
-
-      const weekIndex = state.stores[storeIndex].weeks.findIndex(
-        (week) => week.id === id
-      )
+      const storeIndex = findStoreIndexWithName(state.stores, name)
+      const weekIndex = findWeekIndexWithId(state.stores[storeIndex], id)
 
       const currentWeek = state.stores[storeIndex].weeks[weekIndex]
 
@@ -168,12 +162,10 @@ const dataSlice = createSlice({
       const current = action.payload.current
       const value = action.payload.value
 
-      const storeIndex = state.stores.findIndex(
-        (store) => store.name === current.name
-      )
-
-      const weekIndex = state.stores[storeIndex].weeks.findIndex(
-        (week) => week.id === current.week
+      const storeIndex = findStoreIndexWithName(state.stores, current.name)
+      const weekIndex = findWeekIndexWithId(
+        state.stores[storeIndex],
+        current.week
       )
 
       const publicationIndex = state.stores[storeIndex].weeks[
@@ -192,12 +184,10 @@ const dataSlice = createSlice({
       const social = action.payload.social
       const current = action.payload.current
 
-      const storeIndex = state.stores.findIndex(
-        (store) => store.name === current.name
-      )
-
-      const weekIndex = state.stores[storeIndex].weeks.findIndex(
-        (week) => week.id === current.week
+      const storeIndex = findStoreIndexWithName(state.stores, current.name)
+      const weekIndex = findWeekIndexWithId(
+        state.stores[storeIndex],
+        current.week
       )
 
       const publicationIndex = state.stores[storeIndex].weeks[
@@ -218,12 +208,10 @@ const dataSlice = createSlice({
       const social = action.payload.social
       const current = action.payload.current
 
-      const storeIndex = state.stores.findIndex(
-        (store) => store.name === current.name
-      )
-
-      const weekIndex = state.stores[storeIndex].weeks.findIndex(
-        (week) => week.id === current.week
+      const storeIndex = findStoreIndexWithName(state.stores, current.name)
+      const weekIndex = findWeekIndexWithId(
+        state.stores[storeIndex],
+        current.week
       )
 
       const currentWeek = state.stores[storeIndex].weeks[weekIndex]
@@ -249,8 +237,11 @@ const dataSlice = createSlice({
       const residueInstagram =
         dist.distribution.instagram.in - dist.distribution.instagram.out
 
-      currentWeek.division[publicationIndex].residue =
-        Number(residueFacebook.toFixed(2)) + Number(residueInstagram.toFixed(2))
+      const residueWithDecimals = residueFacebook + residueInstagram
+
+      currentWeek.division[publicationIndex].residue = Number(
+        residueWithDecimals.toFixed(2)
+      )
 
       calculateCurrentResidue(currentWeek)
     },
@@ -259,7 +250,7 @@ const dataSlice = createSlice({
       const id = action.payload.id
 
       const weekIndex = state.weeks.findIndex((week) => week.id === Number(id))
-      console.log(state.weeks.length)
+
       if (state.weeks.length > 1) {
         state.weeks.forEach((week) => {
           if (week.id > state.weeks[weekIndex].id) week.id = week.id - 1
@@ -287,14 +278,14 @@ const dataSlice = createSlice({
     deleteStore: (state, action) => {
       const name = action.payload.name
 
-      const storeIndex = state.stores.findIndex((store) => store.name === name)
+      const storeIndex = findStoreIndexWithName(state.stores, name)
 
       state.stores.splice(storeIndex, 1)
     },
 
     disableStore: (state, action) => {
       const name = action.payload.name
-      const storeIndex = state.stores.findIndex((store) => store.name === name)
+      const storeIndex = findStoreIndexWithName(state.stores, name)
 
       const currentStore = state.stores[storeIndex]
       const currentWeek = currentStore.weeks[currentStore.weeks.length - 1]
@@ -318,7 +309,7 @@ const dataSlice = createSlice({
     enableStore: (state, action) => {
       const name = action.payload.name
 
-      const storeIndex = state.stores.findIndex((store) => store.name === name)
+      const storeIndex = findStoreIndexWithName(state.stores, name)
 
       const currentStore = state.stores[storeIndex]
       currentStore.active = true
