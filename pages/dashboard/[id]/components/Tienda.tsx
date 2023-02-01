@@ -50,16 +50,25 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
   const current = data.stores[storeIndex]?.weeks[weekIndex]
 
   const hasResidue = () => {
+    const hasSpendingMoney = current?.division.some(
+      (publicacion) =>
+        publicacion.distribution.facebook.out !== 0 ||
+        publicacion.distribution.instagram.out !== 0
+    )
+
     if (current?.residue > 0) {
-      return false
+      return "has residue"
+    } else if (!hasSpendingMoney) {
+      return "not touched"
     } else {
-      return true
+      return "clean"
     }
   }
 
   const isLastWeek = () => {
-    if (data.weeks[data.weeks.length - 1].id === idToNumber) {return true}
-    else {
+    if (data.weeks[data.weeks.length - 1].id === idToNumber) {
+      return true
+    } else {
       return false
     }
   }
@@ -67,10 +76,17 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.title} style={isLastWeek() ? {cursor: "pointer"}: {cursor: "auto"}}>
-          <h5 onClick={()=>{
-            isLastWeek() && handleMaster()
-          }}>{name}</h5>
+        <div
+          className={styles.title}
+          style={isLastWeek() ? { cursor: "pointer" } : { cursor: "auto" }}
+        >
+          <h5
+            onClick={() => {
+              isLastWeek() && handleMaster()
+            }}
+          >
+            {name}
+          </h5>
         </div>
         <div className={styles.item_date}>
           <p>{current?.date}</p>
@@ -105,10 +121,16 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
         </div>
         {children}
         <div className={styles.item}>
-          {hasResidue() ? (
+          {hasResidue() === "clean" && (
             <Icon component={CheckCircleIcon} color="success" />
-          ) : (
+          )}
+
+          {hasResidue() === "not touched" && (
             <Icon component={CheckCircleIcon} color="disabled" />
+          )}
+
+          {hasResidue() === "has residue" && (
+            <Icon component={CheckCircleIcon} color="warning" />
           )}
         </div>
       </div>

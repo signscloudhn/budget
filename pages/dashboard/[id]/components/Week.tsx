@@ -58,7 +58,7 @@ const Week = ({ store, week, children }: WeekProps) => {
         <div className={styles.modal_container}>
           <div className={styles.modal}>
             <p>
-              Sumar el residue de la semana anterior a esta semana: {residueLast()}
+              Sumar el residuo de la semana anterior a esta semana: {residueLast()}
               <span>*Esta accion no se puede deshacer</span>
             </p>
             <div className={styles.buttons_container}>
