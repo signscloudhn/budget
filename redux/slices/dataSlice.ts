@@ -17,6 +17,11 @@ const dataSlice = createSlice({
   name: "data",
   initialState,
   reducers: {
+    setData: (state, action) => {
+      state.stores = action.payload.stores
+      state.weeks = action.payload.weeks
+    },
+
     createNewStore: (state, action) => {
       const storeExist = state.stores.filter(
         (store) => store.name === action.payload.name
@@ -336,6 +341,7 @@ const dataSlice = createSlice({
 })
 
 export const {
+  setData,
   createNewStore,
   createWeek,
   addLastResidue,

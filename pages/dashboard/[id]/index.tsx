@@ -6,13 +6,16 @@ import DivisionInfo from "./components/DivisionInfo"
 import styles from "./styles/index.module.scss"
 import { useSelector, useDispatch } from "react-redux"
 import { deleteWeek } from "../../../redux/slices/dataSlice"
-import { state, store, stores } from "../../../interfaces/store"
+import { state, store as mainStore, stores } from "../../../interfaces/store"
 import { useEffect, useState } from "react"
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
 import { Icon } from "@mui/material"
 import DisabledStores from "./components/DisabledStores"
+import store , { fetchThunk, postThunk } from '../../../redux/store';
 
 const TiendasList = () => {
+
+  // const dispatch = useDispatch()
 
   const [datos, setDatos] = useState<stores>({
     stores: [],
@@ -22,10 +25,16 @@ const TiendasList = () => {
   const state: stores = useSelector((state: state) => state.data)
   const dispatch = useDispatch()
 
+  // useEffect(() => {
+  //   dispatch(fetchThunk)
+  // }, [])
+
+ store.subscribe(() => dispatch(postThunk))
+
   useEffect(() => {
     setDatos(state)
     setLastWeekId(datos.weeks[datos.weeks.length - 1]?.id)
-  }, [state, datos.weeks])
+  }, [state])
 
 
   const [lastWeekId, setLastWeekId] = useState(0)
@@ -37,7 +46,7 @@ const TiendasList = () => {
   const router = useRouter()
   const { id } = router.query
 
-  const current = (store: store) => {
+  const current = (store: mainStore) => {
     const weekIndex: number | undefined = store.weeks.findIndex(
       (week) => week.id === Number(id)
     )
@@ -61,6 +70,12 @@ const TiendasList = () => {
 
   return (
     <div className={styles.container}>
+      <button onClick={()=>{
+        dispatch(postThunk)
+      }} >Save</button>
+      <button onClick={()=> dispatch(fetchThunk)} >
+        Fetch
+      </button>
       <div className={styles.title}>
         <h2>Week: {id}</h2>
         {

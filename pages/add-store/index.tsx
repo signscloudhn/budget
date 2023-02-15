@@ -1,11 +1,12 @@
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import { useRouter } from "next/router"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from 'react-redux';
 import { useStores } from "../../hooks/useStores"
 import { state } from "../../interfaces/store"
 import styles from "./styles/add-store.module.sass"
 import validations from "../../lib/validations"
 import * as yup from "yup"
+import { postThunk } from '../../redux/store';
 
 const AddStore = () => {
   const lastWeekId: number = useSelector(
@@ -14,6 +15,8 @@ const AddStore = () => {
   const router = useRouter()
 
   const { createStore } = useStores()
+
+  const dispatch = useDispatch()
 
   return (
     <div className={styles.container}>
@@ -28,6 +31,7 @@ const AddStore = () => {
         validationSchema={yup.object(validations)}
         onSubmit={(values) => {
           createStore(values.name, values.budget, values.publications)
+          dispatch(postThunk)
           router.push(`/dashboard/${lastWeekId}`)
         }}
       >
