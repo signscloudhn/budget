@@ -23,11 +23,11 @@ const TiendasList = () => {
   })
 
   const state: stores = useSelector((state: state) => state.data)
-  const dispatch = useDispatch()
+  const dispatch: any = useDispatch()
 
-  // useEffect(() => {
-  //   dispatch(fetchThunk)
-  // }, [])
+  useEffect(() => {
+    dispatch(fetchThunk)
+  }, [])
 
  store.subscribe(() => dispatch(postThunk))
 

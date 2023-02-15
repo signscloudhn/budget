@@ -6,33 +6,9 @@ import {
 import rootReducer from "./rootReducer"
 import { state } from "../interfaces/store"
 
-const saveToLocalStorage = (state: state) => {
-  try {
-    if (typeof window !== "undefined") {
-      const serialisedState = JSON.stringify(state)
-      localStorage.setItem("state", serialisedState)
-    }
-  } catch (e) {
-    console.warn(e)
-  }
-}
-
-const loadFromLocalStorage = () => {
-  try {
-    if (typeof window !== "undefined") {
-      const serialisedState = localStorage.getItem("state")
-      if (serialisedState === null) return undefined
-      return JSON.parse(serialisedState)
-    }
-  } catch (e) {
-    console.warn(e)
-  }
-}
-
 import { Dispatch } from "redux"
 import { setData } from "./slices/dataSlice"
 import axios from "axios"
-import { useDispatch } from "react-redux"
 
 // const dispatch = useDispatch()
 
@@ -64,6 +40,5 @@ export const asyncMiddleware: Middleware = (store) => (next) => (action) => {
 }
 
 const store = createStore(rootReducer, applyMiddleware(asyncMiddleware))
-// store.subscribe(() => saveToLocalStorage(store.getState()))
 
 export default store

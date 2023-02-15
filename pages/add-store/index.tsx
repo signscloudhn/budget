@@ -16,7 +16,7 @@ const AddStore = () => {
 
   const { createStore } = useStores()
 
-  const dispatch = useDispatch()
+  const dispatch: any = useDispatch()
 
   return (
     <div className={styles.container}>
@@ -30,7 +30,9 @@ const AddStore = () => {
         }}
         validationSchema={yup.object(validations)}
         onSubmit={(values) => {
-          createStore(values.name, values.budget, values.publications)
+          const { name, budget, publications }= values
+
+          createStore(name, budget, publications)
           dispatch(postThunk)
           router.push(`/dashboard/${lastWeekId}`)
         }}

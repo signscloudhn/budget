@@ -15,7 +15,7 @@ export default function Home() {
     (state: state) => state.data.weeks[state.data.weeks.length - 1].id
   )
 
-  const dispatch = useDispatch()
+  const dispatch: any = useDispatch()
 
   useEffect(() => {
     // dispatch(fetchThunk)
