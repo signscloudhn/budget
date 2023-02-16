@@ -16,7 +16,6 @@ import store , { fetchThunk, postThunk } from '../../../redux/store';
 const TiendasList = () => {
 
   // const dispatch = useDispatch()
-  // hola
 
   const [datos, setDatos] = useState<stores>({
     stores: [],
@@ -27,10 +26,10 @@ const TiendasList = () => {
   const dispatch: any = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchThunk)
+    // dispatch(fetchThunk)
   }, [])
 
- store.subscribe(() => dispatch(postThunk))
+//  store.subscribe(() => dispatch(postThunk))
 
   useEffect(() => {
     setDatos(state)
@@ -69,11 +68,23 @@ const TiendasList = () => {
     } else false
   }
 
+  const exportData = () => {
+    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+      JSON.stringify(datos)
+    )}`;
+    const link = document.createElement("a");
+    link.href = jsonString;
+    link.download = "data.json";
+
+    link.click();
+  };
+
   return (
     <div className={styles.container}>
       <button onClick={()=>{
-        dispatch(postThunk)
-      }} >Save</button>
+        // dispatch(postThunk)
+        exportData()
+      }} >Export</button>
       <button onClick={()=> dispatch(fetchThunk)} >
         Fetch
       </button>

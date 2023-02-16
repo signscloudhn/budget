@@ -7,6 +7,8 @@ import {
 } from "../../utils/calculations"
 import { initialDataState as initialState } from "../initialStates"
 import { recalculatePublications } from "../../utils/calculations"
+import { weeks } from "../../interfaces/store"
+import { weekCreator } from "../../utils/update"
 import {
   findStoreIndexWithName,
   findWeekIndexWithId,
@@ -33,38 +35,41 @@ const dataSlice = createSlice({
     },
 
     createWeek: (state) => {
-      const lastWeekId = state.weeks[state.weeks.length - 1]
+      const stores = state.stores
+      const weeks = state.weeks
+      const lastWeekId = weeks[weeks.length - 1]
       const newWeekId = lastWeekId.id + 1
 
-      // // TODO: Agregar date
-      const date = lastWeekId.date?.split("-")[1].trim()
+      weekCreator([stores, weeks, lastWeekId, newWeekId])
+    },
 
-      const { startWeek, endWeek } = generateDate(nextWeek(date))
+    deleteWeek: (state, action) => {
+      const id = action.payload.id
 
-      state.weeks.push({ id: newWeekId, date: `${startWeek} - ${endWeek}` })
+      const weekIndex = state.weeks.findIndex((week) => week.id === Number(id))
 
-      state.stores.forEach((store) => {
-        const lastWeek = store.weeks[store.weeks.length - 1]
+      if (state.weeks.length > 1) {
+        state.weeks.forEach((week) => {
+          if (week.id > state.weeks[weekIndex].id) week.id = week.id - 1
+        })
 
-        const newWeek = {
-          id: newWeekId,
-          date: undefined,
-          budgetInitial: lastWeek.budgetInitial,
-          budgetTotal: lastWeek.budgetInitial,
-          publications: lastWeek.publications,
-          division: [],
-          residue: 0,
-          residueIsSpend: false,
-        }
+        state.stores.forEach((store) => {
+          store.weeks.forEach((week) => {
+            if (week.id > state.weeks[weekIndex].id) week.id = week.id - 1
+          })
+        })
 
-        splitBudget(lastWeek.publications, newWeek)
+        state.stores.forEach((store) =>
+          store.weeks.splice(store.weeks.length - 1, 1)
+        )
 
-        if (store.active) {
-          store.weeks.push(newWeek)
+        state.weeks.splice(weekIndex, 1)
 
-          store.globalResidue = store.globalResidue + lastWeek.residue
-        }
-      })
+        state.stores.forEach((store) => {
+          if (store.weeks.length > 1)
+            store.weeks[store.weeks.length - 1].residueIsSpend = false
+        })
+      }
     },
 
     addLastResidue: (state, action) => {
@@ -251,35 +256,6 @@ const dataSlice = createSlice({
       calculateCurrentResidue(currentWeek)
     },
 
-    deleteWeek: (state, action) => {
-      const id = action.payload.id
-
-      const weekIndex = state.weeks.findIndex((week) => week.id === Number(id))
-
-      if (state.weeks.length > 1) {
-        state.weeks.forEach((week) => {
-          if (week.id > state.weeks[weekIndex].id) week.id = week.id - 1
-        })
-
-        state.stores.forEach((store) => {
-          store.weeks.forEach((week) => {
-            if (week.id > state.weeks[weekIndex].id) week.id = week.id - 1
-          })
-        })
-
-        state.stores.forEach((store) =>
-          store.weeks.splice(store.weeks.length - 1, 1)
-        )
-
-        state.weeks.splice(weekIndex, 1)
-
-        state.stores.forEach((store) => {
-          if (store.weeks.length > 1)
-            store.weeks[store.weeks.length - 1].residueIsSpend = false
-        })
-      }
-    },
-
     deleteStore: (state, action) => {
       const name = action.payload.name
 
@@ -311,6 +287,7 @@ const dataSlice = createSlice({
 
       currentStore.weeks.pop()
     },
+
     enableStore: (state, action) => {
       const name = action.payload.name
 
