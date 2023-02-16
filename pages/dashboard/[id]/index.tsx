@@ -16,6 +16,7 @@ import store , { fetchThunk, postThunk } from '../../../redux/store';
 const TiendasList = () => {
 
   // const dispatch = useDispatch()
+  // hola
 
   const [datos, setDatos] = useState<stores>({
     stores: [],
