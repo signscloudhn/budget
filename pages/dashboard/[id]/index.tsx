@@ -26,7 +26,7 @@ const TiendasList = () => {
   const dispatch: any = useDispatch()
 
   useEffect(() => {
-    // dispatch(fetchThunk)
+    dispatch(fetchThunk)
   }, [])
 
 //  store.subscribe(() => dispatch(postThunk))
@@ -82,9 +82,9 @@ const TiendasList = () => {
   return (
     <div className={styles.container}>
       <button onClick={()=>{
-        // dispatch(postThunk)
-        exportData()
-      }} >Export</button>
+        dispatch(postThunk)
+        // exportData()
+      }} >Save</button>
       <button onClick={()=> dispatch(fetchThunk)} >
         Fetch
       </button>

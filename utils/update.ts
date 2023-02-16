@@ -1,36 +1,193 @@
-import { generateDate, splitBudget } from "./calculations"
+import {
+  dateUpdaterProps,
+  masterStoreUpdaterProps,
+  storeDisablerProps,
+  storeEnablerProps,
+  updatePublicationDistProps,
+} from "../interfaces/crud"
+import {
+  calculateCurrentResidue,
+  recalculatePublications,
+  recalculateSocialMedia,
+  splitBudget,
+} from "./calculations"
+import { findStoreIndexWithName, findWeekIndexWithId } from "./indexFinder"
+import {
+  publicationUpdaterProps,
+  SocialMediaDistUpdaterProps,
+} from "../interfaces/crud"
 
-const { nextWeek } = generateDate()
+export const dateUpdater = ({ stores, id, name, value }: dateUpdaterProps) => {
+  const storeIndex = findStoreIndexWithName(stores, name)
+  const weekIndex = findWeekIndexWithId(stores[storeIndex], id)
 
-export const weekCreator = (...args: any[]) => {
-  const [lastWeekId, weeks, stores, newWeekId] = args
+  const currentWeek = stores[storeIndex].weeks[weekIndex]
 
-  const date = lastWeekId.date?.split("-")[1].trim()
+  currentWeek.date = value
+}
 
-  const { startWeek, endWeek } = generateDate(nextWeek(date))
+export const updatePublicationDist = ({
+  stores,
+  storeIndex,
+  weekIndex,
+  publications,
+}: updatePublicationDistProps) => {
+  const currentWeek = stores[storeIndex].weeks[weekIndex]
+  currentWeek.division = []
+  currentWeek.publications = publications
 
-  weeks.push({ id: newWeekId, date: `${startWeek} - ${endWeek}` })
+  splitBudget(publications, currentWeek)
+  calculateCurrentResidue(currentWeek)
+}
 
-  stores.forEach((store: any) => {
-    const lastWeek = store.weeks[store.weeks.length - 1]
+export const masterStoreUpdater = ({
+  stores,
+  budgetInitial,
+  globalResidue,
+  currentStoreIndex,
+  currentWeekIndex,
+}: masterStoreUpdaterProps) => {
+  const currentWeek = stores[currentStoreIndex].weeks[currentWeekIndex]
 
-    const newWeek = {
-      id: newWeekId,
-      date: undefined,
-      budgetInitial: lastWeek.budgetInitial,
-      budgetTotal: lastWeek.budgetInitial,
-      publications: lastWeek.publications,
-      division: [],
-      residue: 0,
-      residueIsSpend: false,
+  if (stores[currentStoreIndex].globalResidue != globalResidue) {
+    stores[currentStoreIndex].globalResidue = globalResidue
+
+    stores[currentStoreIndex].weeks.forEach((week) => {
+      if (week.id !== currentWeek.id) week.residueIsSpend = true
+    })
+  }
+
+  currentWeek.budgetInitial = budgetInitial
+  currentWeek.budgetTotal = budgetInitial
+
+  splitBudget(currentWeek.publications, currentWeek)
+  calculateCurrentResidue(currentWeek)
+}
+
+export const publicationUpdater = ({
+  stores,
+  id,
+  current,
+  value,
+}: publicationUpdaterProps) => {
+  const storeIndex = findStoreIndexWithName(stores, current.name)
+  const weekIndex = findWeekIndexWithId(stores[storeIndex], current.week)
+
+  const publicationIndex = stores[storeIndex].weeks[
+    weekIndex
+  ].division.findIndex((publication) => publication.id === id)
+
+  const currentWeek = stores[storeIndex].weeks[weekIndex]
+
+  recalculatePublications(currentWeek, value, publicationIndex)
+  calculateCurrentResidue(currentWeek)
+}
+
+export const SocialMediaDistUpdater = ({
+  stores,
+  id,
+  value,
+  social,
+  current,
+}: SocialMediaDistUpdaterProps) => {
+  const storeIndex = findStoreIndexWithName(stores, current.name)
+  const weekIndex = findWeekIndexWithId(stores[storeIndex], current.week)
+
+  const publicationIndex = stores[storeIndex].weeks[
+    weekIndex
+  ].division.findIndex((publication) => publication.id === id)
+
+  const currentWeek = stores[storeIndex].weeks[weekIndex]
+
+  const data = currentWeek.division[publicationIndex]
+
+  recalculateSocialMedia(data, social, value)
+  calculateCurrentResidue(currentWeek)
+}
+
+export const residueUpdater = ({
+  stores,
+  id,
+  value,
+  social,
+  current,
+}: SocialMediaDistUpdaterProps) => {
+  const storeIndex = findStoreIndexWithName(stores, current.name)
+  const weekIndex = findWeekIndexWithId(stores[storeIndex], current.week)
+
+  const currentWeek = stores[storeIndex].weeks[weekIndex]
+
+  const publicationIndex = currentWeek.division.findIndex(
+    (publication) => publication.id === id
+  )
+
+  if (social === "instagram") {
+    currentWeek.division[publicationIndex].distribution.instagram.out = value
+  }
+
+  if (social === "facebook") {
+    currentWeek.division[publicationIndex].distribution.facebook.out = value
+  }
+
+  const dist = currentWeek.division[publicationIndex]
+
+  const residueFacebook =
+    dist.distribution.facebook.in - dist.distribution.facebook.out
+
+  const residueInstagram =
+    dist.distribution.instagram.in - dist.distribution.instagram.out
+
+  const residueWithDecimals = residueFacebook + residueInstagram
+
+  currentWeek.division[publicationIndex].residue = Number(
+    residueWithDecimals.toFixed(2)
+  )
+
+  calculateCurrentResidue(currentWeek)
+}
+
+export const storeDisabler = ({ name, stores }: storeDisablerProps) => {
+  const storeIndex = findStoreIndexWithName(stores, name)
+  const currentStore = stores[storeIndex]
+  const currentWeek = currentStore.weeks[currentStore.weeks.length - 1]
+  const lastWeek = currentStore.weeks[currentStore.weeks.length - 2]
+
+  currentStore.active = false
+
+  if (currentWeek.budgetInitial != currentWeek.budgetTotal) {
+    if (currentStore.globalResidue > 0) {
+      lastWeek.residueIsSpend = false
+      currentStore.globalResidue = currentStore.globalResidue + lastWeek.residue
+    } else {
+      currentStore.globalResidue =
+        currentWeek.budgetTotal - currentWeek.budgetInitial
     }
+  }
 
-    splitBudget(lastWeek.publications, newWeek)
+  currentStore.weeks.pop()
+}
 
-    if (store.active) {
-      store.weeks.push(newWeek)
+export const storeEnabler = ({ stores, weeks, name }: storeEnablerProps) => {
+  const storeIndex = findStoreIndexWithName(stores, name)
 
-      store.globalResidue = store.globalResidue + lastWeek.residue
-    }
-  })
+  const currentStore = stores[storeIndex]
+  currentStore.active = true
+
+  const lastWeek = currentStore.weeks[currentStore.weeks.length - 1]
+
+  const lastWeekId = weeks[weeks.length - 1].id
+
+  const newWeek = {
+    id: lastWeekId,
+    date: undefined,
+    budgetInitial: lastWeek.budgetInitial,
+    budgetTotal: lastWeek.budgetInitial,
+    publications: lastWeek.publications,
+    division: [],
+    residue: 0,
+    residueIsSpend: false,
+  }
+  splitBudget(lastWeek.publications, newWeek)
+
+  currentStore.weeks.push(newWeek)
 }
