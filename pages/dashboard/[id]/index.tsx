@@ -29,7 +29,7 @@ const TiendasList = () => {
     dispatch(fetchThunk)
   }, [])
 
-//  store.subscribe(() => dispatch(postThunk))
+  // store.subscribe(() => dispatch(postThunk))
 
   useEffect(() => {
     setDatos(state)
@@ -91,7 +91,6 @@ const TiendasList = () => {
       <div className={styles.title}>
         <h2>Week: {id}</h2>
         {
-          // TODO
           lastWeekId === Number(id) && state.weeks.length > 1 && (
             <Icon
               component={RemoveCircleOutlineIcon}
