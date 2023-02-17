@@ -1,23 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { initialDataState as initialState } from "../initialStates"
-import {
-  lastResidueAdder,
-  weekCreator,
-  globalResidueAdder,
-} from "../../utils/create"
-import { findStoreIndexWithName } from "../../utils/indexFinder"
-import { weekDeleter } from "../../utils/delete"
+import { weekCreator } from "../../utils/create"
+import { weekDeleter, storeDeleter } from "../../utils/delete"
 import { storeEnabler } from "../../utils/update"
+import { newStoreCreator } from "../../utils/create"
 import {
   publicationUpdater,
   SocialMediaDistUpdater,
   residueUpdater,
   storeDisabler,
+  globalResidueAdder,
+  lastResidueAdder,
 } from "../../utils/update"
 import {
   dateUpdater,
   masterStoreUpdater,
-  updatePublicationDist,
+  publicationDistUpdater,
 } from "../../utils/update"
 
 const dataSlice = createSlice({
@@ -30,13 +28,10 @@ const dataSlice = createSlice({
     },
 
     createNewStore: (state, action) => {
-      const storeExist = state.stores.filter(
-        (store) => store.name === action.payload.name
-      )
+      const { stores } = state
+      const payload = action.payload
 
-      if (storeExist.length === 0) {
-        state.stores.push(action.payload)
-      }
+      newStoreCreator({ stores, payload })
     },
 
     createWeek: (state) => {
@@ -50,9 +45,8 @@ const dataSlice = createSlice({
     deleteWeek: (state, action) => {
       const id = action.payload.id
       const { stores, weeks } = state
-      const weekIndex = weeks.findIndex((week) => week.id === Number(id))
 
-      weekDeleter({ id, stores, weeks, weekIndex })
+      weekDeleter({ id, stores, weeks })
     },
 
     addLastResidue: (state, action) => {
@@ -86,7 +80,7 @@ const dataSlice = createSlice({
       const weekIndex = action.payload.weekIndex
       const publications = action.payload.publications
 
-      updatePublicationDist({
+      publicationDistUpdater({
         stores,
         storeIndex,
         weekIndex,
@@ -152,11 +146,10 @@ const dataSlice = createSlice({
     },
 
     deleteStore: (state, action) => {
+      const { stores } = state
       const name = action.payload.name
 
-      const storeIndex = findStoreIndexWithName(state.stores, name)
-
-      state.stores.splice(storeIndex, 1)
+      storeDeleter({ stores, name })
     },
 
     disableStore: (state, action) => {

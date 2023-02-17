@@ -1,8 +1,4 @@
 import { weeks, store } from "./store"
-import { weekDeleter } from "../utils/delete"
-import { globalResidueAdder } from "../utils/create"
-import { residueUpdater } from "../utils/update"
-
 export interface weekCreatorProps {
   weeks: Array<weeks>
   stores: Array<store>
@@ -10,11 +6,15 @@ export interface weekCreatorProps {
   lastWeek: weeks
 }
 
+export interface newStoreCreatorProps {
+  stores: Array<store>
+  payload: store
+}
+
 export interface weekDeleterProps {
   id: number
   stores: Array<store>
   weeks: Array<weeks>
-  weekIndex: number
 }
 
 export interface lastResidueAdderProps {
@@ -84,7 +84,7 @@ export interface residueUpdaterProps {
   }
 }
 
-export interface storeDisablerProps {
+export interface storeUpdaterProps {
   name: string
   stores: Array<store>
 }

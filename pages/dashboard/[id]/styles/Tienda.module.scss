@@ -1,13 +1,13 @@
 @import "./mixins.scss";
 
 .container {
-  // position: relative;
+  position: relative;
   max-width: 1000px;
   background-color: #dae2e7;
   display: flex;
   align-items: stretch;
   justify-content: center;
-  margin: 0px 0px 10px 0px;
+  margin: 0px 0px 20px 0px;
   border: 2px #33cfff solid;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.596);
   border-radius: 8px;

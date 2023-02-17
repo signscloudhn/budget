@@ -1,16 +1,31 @@
 @import "./mixins.scss";
 
 .container {
-  margin: 3px;
-  position: relative;
+  // margin: 3px;
+  position: absolute;
+  left: 0px;
+  top: 31px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
+
+.publications_container {
+  background-color: #d5dbdf;
+  border: 2px #33cfff solid;
+  z-index: 1;
+  box-shadow: #000000bd 0px 2px 12px 1px;
+  border-radius: 8px;
+  padding: 3px;
+  button {
+    cursor: pointer;
+  }
+}
+
 .publications {
   display: flex;
-  position: absolute;
-  top: 32px;
-  left: -40px;
-  background-color: aliceblue;
-  z-index: 1;
   .post {
     margin: 5px;
     display: flex;
@@ -29,5 +44,11 @@
   }
 }
 .button {
-  @include button;
+  cursor: pointer;
+  color: rgb(167, 167, 167);
+  transform: scale(0.5);
+  &:hover {
+    color: white;
+    transform: scale(1);
+  }
 }

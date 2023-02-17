@@ -1,14 +1,6 @@
-import {
-  lastResidueAdderProps,
-  weekCreatorProps,
-  globalResidueAdderProps,
-} from "../interfaces/crud"
-import {
-  calculateCurrentResidue,
-  generateDate,
-  splitBudget,
-} from "./calculations"
-import { findStoreIndexWithName, findWeekIndexWithId } from "./indexFinder"
+import { weekCreatorProps } from "../interfaces/crud"
+import { generateDate, splitBudget } from "./calculations"
+import { newStoreCreatorProps } from "../interfaces/crud"
 
 const { nextWeek } = generateDate()
 
@@ -48,47 +40,10 @@ export const weekCreator = ({
   })
 }
 
-export const lastResidueAdder = ({
-  name,
-  id,
-  stores,
-}: lastResidueAdderProps) => {
-  const storeIndex = findStoreIndexWithName(stores, name)
-  const weekIndex = findWeekIndexWithId(stores[storeIndex], id)
+export const newStoreCreator = ({ stores, payload }: newStoreCreatorProps) => {
+  const storeExist = stores.filter((store) => store.name === payload.name)
 
-  const currentWeek = stores[storeIndex].weeks[weekIndex]
-  const lastWeek = stores[storeIndex].weeks[weekIndex - 1]
-
-  if (!lastWeek?.residueIsSpend && lastWeek !== undefined) {
-    currentWeek.budgetTotal = currentWeek.budgetTotal + lastWeek.residue
-    lastWeek.residueIsSpend = true
+  if (storeExist.length === 0) {
+    stores.push(payload)
   }
-
-  stores[storeIndex].globalResidue =
-    stores[storeIndex].globalResidue - lastWeek.residue
-
-  splitBudget(currentWeek.publications, currentWeek)
-  calculateCurrentResidue(stores[storeIndex].weeks[weekIndex])
-}
-
-export const globalResidueAdder = ({
-  name,
-  id,
-  stores,
-}: globalResidueAdderProps) => {
-  const storeIndex = findStoreIndexWithName(stores, name)
-  const weekIndex = findWeekIndexWithId(stores[storeIndex], id)
-
-  const currentWeek = stores[storeIndex].weeks[weekIndex]
-
-  currentWeek.budgetTotal =
-    currentWeek.budgetTotal + stores[storeIndex].globalResidue
-
-  stores[storeIndex].weeks.forEach((week) => {
-    if (week.id !== currentWeek.id) week.residueIsSpend = true
-  })
-  stores[storeIndex].globalResidue = 0
-
-  splitBudget(currentWeek.publications, stores[storeIndex].weeks[weekIndex])
-  calculateCurrentResidue(currentWeek)
 }

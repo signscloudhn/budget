@@ -1,7 +1,9 @@
 import {
   dateUpdaterProps,
+  globalResidueAdderProps,
+  lastResidueAdderProps,
   masterStoreUpdaterProps,
-  storeDisablerProps,
+  storeUpdaterProps,
   storeEnablerProps,
   updatePublicationDistProps,
 } from "../interfaces/crud"
@@ -22,11 +24,10 @@ export const dateUpdater = ({ stores, id, name, value }: dateUpdaterProps) => {
   const weekIndex = findWeekIndexWithId(stores[storeIndex], id)
 
   const currentWeek = stores[storeIndex].weeks[weekIndex]
-
   currentWeek.date = value
 }
 
-export const updatePublicationDist = ({
+export const publicationDistUpdater = ({
   stores,
   storeIndex,
   weekIndex,
@@ -47,12 +48,13 @@ export const masterStoreUpdater = ({
   currentStoreIndex,
   currentWeekIndex,
 }: masterStoreUpdaterProps) => {
-  const currentWeek = stores[currentStoreIndex].weeks[currentWeekIndex]
+  const currentStore = stores[currentStoreIndex]
+  const currentWeek = currentStore.weeks[currentWeekIndex]
 
-  if (stores[currentStoreIndex].globalResidue != globalResidue) {
-    stores[currentStoreIndex].globalResidue = globalResidue
+  if (currentStore.globalResidue != globalResidue) {
+    currentStore.globalResidue = globalResidue
 
-    stores[currentStoreIndex].weeks.forEach((week) => {
+    currentStore.weeks.forEach((week) => {
       if (week.id !== currentWeek.id) week.residueIsSpend = true
     })
   }
@@ -146,7 +148,7 @@ export const residueUpdater = ({
   calculateCurrentResidue(currentWeek)
 }
 
-export const storeDisabler = ({ name, stores }: storeDisablerProps) => {
+export const storeDisabler = ({ name, stores }: storeUpdaterProps) => {
   const storeIndex = findStoreIndexWithName(stores, name)
   const currentStore = stores[storeIndex]
   const currentWeek = currentStore.weeks[currentStore.weeks.length - 1]
@@ -190,4 +192,48 @@ export const storeEnabler = ({ stores, weeks, name }: storeEnablerProps) => {
   splitBudget(lastWeek.publications, newWeek)
 
   currentStore.weeks.push(newWeek)
+}
+
+export const lastResidueAdder = ({
+  name,
+  id,
+  stores,
+}: lastResidueAdderProps) => {
+  const storeIndex = findStoreIndexWithName(stores, name)
+  const weekIndex = findWeekIndexWithId(stores[storeIndex], id)
+
+  const currentWeek = stores[storeIndex].weeks[weekIndex]
+  const lastWeek = stores[storeIndex].weeks[weekIndex - 1]
+
+  if (!lastWeek?.residueIsSpend && lastWeek !== undefined) {
+    currentWeek.budgetTotal = currentWeek.budgetTotal + lastWeek.residue
+    lastWeek.residueIsSpend = true
+  }
+
+  stores[storeIndex].globalResidue =
+    stores[storeIndex].globalResidue - lastWeek.residue
+
+  splitBudget(currentWeek.publications, currentWeek)
+  calculateCurrentResidue(currentWeek)
+}
+
+export const globalResidueAdder = ({
+  name,
+  id,
+  stores,
+}: globalResidueAdderProps) => {
+  const storeIndex = findStoreIndexWithName(stores, name)
+  const weekIndex = findWeekIndexWithId(stores[storeIndex], id)
+  const currentStore = stores[storeIndex]
+  const currentWeek = stores[storeIndex].weeks[weekIndex]
+
+  currentWeek.budgetTotal = currentWeek.budgetTotal + currentStore.globalResidue
+
+  currentStore.weeks.forEach((week) => {
+    if (week.id !== currentWeek.id) week.residueIsSpend = true
+  })
+  currentStore.globalResidue = 0
+
+  splitBudget(currentWeek.publications, currentWeek)
+  calculateCurrentResidue(currentWeek)
 }
