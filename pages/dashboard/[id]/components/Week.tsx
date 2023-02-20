@@ -1,4 +1,4 @@
-import { WeekProps } from "../../../../interfaces/Dashboard/Week"
+import { WeekProps } from "../../../../interfaces/dashboard"
 import styles from "../styles/Week.module.scss"
 import Icon from "@mui/material/Icon"
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn"

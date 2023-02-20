@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { deleteStore, disableStore } from "../../../../redux/slices/dataSlice"
 import { state } from "../../../../interfaces/store"
 import { updateMasterStore } from "../../../../redux/slices/dataSlice"
-import { MasterTienda } from "../../../../interfaces/Dashboard/MasterTienda"
+import { MasterTienda } from "../../../../interfaces/dashboard"
 import styles from "../styles/MasterTienda.module.scss"
 import { useState, useEffect } from 'react';
 import { findStoreIndexWithName, findWeekIndexWithId } from "../../../../utils/indexFinder"

@@ -1,16 +1,8 @@
-import { DivisionProps } from "../../../../interfaces/Dashboard/DivisionInfo"
+import { DivisionProps } from "../../../../interfaces/dashboard"
 import styles from "../styles/DivisionInfo.module.scss"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
-import InstagramIcon from "@mui/icons-material/Instagram"
-import FacebookIcon from "@mui/icons-material/Facebook"
 import Icon from "@mui/material/Icon"
-import { useState, useEffect, useRef } from "react"
-import { useDispatch } from "react-redux"
-import {
-  updatePublication,
-  updateResiduo,
-  updateSocialMediaDist,
-} from "../../../../redux/slices/dataSlice"
+import { useState, useEffect, useRef, RefObject } from "react"
 import Post from "./Post"
 
 const DivisionInfo = ({ division, update }: DivisionProps) => {
@@ -26,12 +18,10 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
     setShow(!show)
   }
 
-  const dispatch = useDispatch()
-
-  const useOutsideAlerter = (ref: any) => {
+  const useOutsideAlerter = (ref: RefObject<HTMLDivElement>) => {
     useEffect(() => {
       const handleClickOutside = (event: any) => {
-        if (ref.current && !ref.current.contains(event.target)) {
+        if (ref?.current && !ref?.current.contains(event.target)) {
           setShow(false)
         }
       }
@@ -40,7 +30,7 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
     }, [ref])
   }
 
-  const wrapperRef = useRef(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
   useOutsideAlerter(wrapperRef)
 
@@ -58,8 +48,8 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
       {show && (
         <div className={styles.publications_container}>
           <div className={styles.publications}>
-            {division.map((d) => (
-              <Post key={d.id} div={d} update={update} />
+            {division.map((dist) => (
+              <Post key={dist.id} dist={dist} update={update} />
             ))}
           </div>
           {/* <button>Save</button> */}

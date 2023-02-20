@@ -1,7 +1,7 @@
 import styles from "../styles/DisabledStores.module.scss"
 import { useSelector, useDispatch } from 'react-redux';
 import { state } from "../../../../interfaces/store"
-import { DisabledStoresProps } from '../../../../interfaces/Dashboard/DisabledStores';
+import { DisabledStoresProps } from '../../../../interfaces/dashboard';
 import { enableStore } from "../../../../redux/slices/dataSlice";
 
 const DisabledStores = ({func}: DisabledStoresProps) => {

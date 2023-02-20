@@ -1,4 +1,4 @@
-import { TiendaProps } from "../../../../interfaces/Dashboard/Tienda"
+import { TiendaProps } from "../../../../interfaces/dashboard"
 import styles from "../styles/Tienda.module.scss"
 import Icon from "@mui/material/Icon"
 import LanguageIcon from "@mui/icons-material/Language"
