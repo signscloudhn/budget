@@ -170,7 +170,7 @@ const TiendasList = () => {
                       <Week key={store.name} store={store} week={week}>
                         <DivisionInfo
                           division={week.division}
-                          update={{ name: store.name, week: week.id }}
+                          update={{ name: store.name, weekId: week.id }}
                         />
                       </Week>
                     )

@@ -5,27 +5,27 @@ import styles from "../styles/DivisionInfo.module.scss"
 import { useDispatch } from "react-redux"
 import {
   updatePublication,
-  updateResiduo,
+  updateSpent,
   updateSocialMediaDist,
 } from "../../../../redux/slices/dataSlice"
 import { PostProps } from "../../../../interfaces/dashboard"
 
-const Post = ({ dist, update }: PostProps) => {
+const Post = ({ post, update }: PostProps) => {
   const dispatch = useDispatch()
 
   return (
     <div className={styles.post}>
-      <h5>Post {dist.id}:</h5>
+      <h5>Post {post.id}:</h5>
       <input type="checkbox" />
       <input
         type="number"
-        value={dist.budget}
+        value={post.budget}
         min={0}
         // max={}
         onChange={(e) => {
           dispatch(
             updatePublication({
-              id: dist.id,
+              id: post.id,
               current: update,
               value: e.target.value,
             })
@@ -35,14 +35,14 @@ const Post = ({ dist, update }: PostProps) => {
       <Icon component={InstagramIcon} />
       <input
         type="number"
-        value={dist.distribution?.instagram?.in}
+        value={post.distribution?.instagram?.in}
         className={styles.in}
         min={0}
-        max={dist.budget}
+        max={post.budget}
         onChange={(e) => {
           dispatch(
             updateSocialMediaDist({
-              id: dist.id,
+              id: post.id,
               current: update,
               value: e.target.value,
               social: "instagram",
@@ -52,14 +52,14 @@ const Post = ({ dist, update }: PostProps) => {
       />
       <input
         type="number"
-        value={dist.distribution?.instagram?.out}
+        value={post.distribution?.instagram?.out}
         className={styles.out}
         min={0}
-        max={dist.distribution?.instagram?.in}
+        max={post.distribution?.instagram?.in}
         onChange={(e) => {
           dispatch(
-            updateResiduo({
-              id: dist.id,
+            updateSpent({
+              id: post.id,
               current: update,
               value: e.target.value,
               social: "instagram",
@@ -70,14 +70,14 @@ const Post = ({ dist, update }: PostProps) => {
       <Icon component={FacebookIcon} />
       <input
         type="number"
-        value={dist.distribution?.facebook?.in}
+        value={post.distribution?.facebook?.in}
         className={styles.in}
         min={0}
-        max={dist.budget}
+        max={post.budget}
         onChange={(e) => {
           dispatch(
             updateSocialMediaDist({
-              id: dist.id,
+              id: post.id,
               current: update,
               value: e.target.value,
               social: "facebook",
@@ -87,14 +87,14 @@ const Post = ({ dist, update }: PostProps) => {
       />
       <input
         type="number"
-        defaultValue={dist.distribution?.facebook?.out}
+        defaultValue={post.distribution?.facebook?.out}
         className={styles.out}
         min={0}
-        max={dist.distribution?.facebook?.in}
+        max={post.distribution?.facebook?.in}
         onChange={(e) => {
           dispatch(
-            updateResiduo({
-              id: dist.id,
+            updateSpent({
+              id: post.id,
               current: update,
               value: e.target.value,
               social: "facebook",
@@ -102,7 +102,7 @@ const Post = ({ dist, update }: PostProps) => {
           )
         }}
       />
-      <p className={styles.residue}>res: {dist.residue}</p>
+      <p className={styles.residue}>res: {post.residue}</p>
     </div>
   )
 }

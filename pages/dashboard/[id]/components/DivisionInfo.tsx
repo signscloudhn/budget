@@ -48,8 +48,8 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
       {show && (
         <div className={styles.publications_container}>
           <div className={styles.publications}>
-            {division.map((dist) => (
-              <Post key={dist.id} dist={dist} update={update} />
+            {division.map((post) => (
+              <Post key={post.id} post={post} update={update} />
             ))}
           </div>
           {/* <button>Save</button> */}

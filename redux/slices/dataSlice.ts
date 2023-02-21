@@ -129,7 +129,7 @@ const dataSlice = createSlice({
       })
     },
 
-    updateResiduo: (state, action) => {
+    updateSpent: (state, action) => {
       const { stores } = state
       const id = action.payload.id
       const value = action.payload.value
@@ -179,7 +179,7 @@ export const {
   updatePublicationsDist,
   updatePublication,
   updateSocialMediaDist,
-  updateResiduo,
+  updateSpent,
   deleteWeek,
   deleteStore,
   disableStore,

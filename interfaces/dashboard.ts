@@ -20,15 +20,15 @@ export interface DivisionProps {
   division: Array<division>
   update: {
     name: string
-    id: number
+    weekId: number
   }
 }
 
 export interface PostProps {
-  dist: division
+  post: division
   update: {
     name: string
-    id: number
+    weekId: number
   }
 }
 

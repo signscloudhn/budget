@@ -94,12 +94,11 @@ export const SocialMediaDistUpdater = ({
 }: SocialMediaDistUpdaterProps) => {
   const storeIndex = findStoreIndexWithName(stores, current.name)
   const weekIndex = findWeekIndexWithId(stores[storeIndex], current.week)
-
-  const publicationIndex = stores[storeIndex].weeks[
-    weekIndex
-  ].division.findIndex((publication) => publication.id === id)
-
   const currentWeek = stores[storeIndex].weeks[weekIndex]
+
+  const publicationIndex = currentWeek.division.findIndex(
+    (publication) => publication.id === id
+  )
 
   const data = currentWeek.division[publicationIndex]
 

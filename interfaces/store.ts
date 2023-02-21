@@ -11,6 +11,7 @@ interface dist {
 export interface division {
   id: number
   budget: number
+  // equivalent: boolean
   distribution: dist
   residue: number
 }
