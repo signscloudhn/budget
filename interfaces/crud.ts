@@ -69,7 +69,7 @@ export interface SocialMediaDistUpdaterProps {
   social: string
   current: {
     name: string
-    week: number
+    weekId: number
   }
 }
 
@@ -80,7 +80,7 @@ export interface residueUpdaterProps {
   social: string
   current: {
     name: string
-    week: number
+    weekId: number
   }
 }
 

@@ -93,8 +93,10 @@ export const SocialMediaDistUpdater = ({
   current,
 }: SocialMediaDistUpdaterProps) => {
   const storeIndex = findStoreIndexWithName(stores, current.name)
-  const weekIndex = findWeekIndexWithId(stores[storeIndex], current.week)
+  const weekIndex = findWeekIndexWithId(stores[storeIndex], current.weekId)
   const currentWeek = stores[storeIndex].weeks[weekIndex]
+
+  console.log(current)
 
   const publicationIndex = currentWeek.division.findIndex(
     (publication) => publication.id === id
@@ -114,7 +116,7 @@ export const residueUpdater = ({
   current,
 }: SocialMediaDistUpdaterProps) => {
   const storeIndex = findStoreIndexWithName(stores, current.name)
-  const weekIndex = findWeekIndexWithId(stores[storeIndex], current.week)
+  const weekIndex = findWeekIndexWithId(stores[storeIndex], current.weekId)
 
   const currentWeek = stores[storeIndex].weeks[weekIndex]
 
