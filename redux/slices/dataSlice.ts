@@ -1,4 +1,4 @@
-import { createSlice, current as Currenator } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit"
 import { initialDataState as initialState } from "../initialStates"
 import { weekCreator } from "../../utils/create"
 import { weekDeleter, storeDeleter } from "../../utils/delete"
@@ -159,7 +159,6 @@ const dataSlice = createSlice({
         social,
         current,
       })
-      console.log(Currenator(state))
     },
 
     deleteStore: (state, action) => {

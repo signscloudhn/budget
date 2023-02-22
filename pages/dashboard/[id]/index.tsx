@@ -11,11 +11,11 @@ import { useEffect, useState } from "react"
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
 import { Icon } from "@mui/material"
 import DisabledStores from "./components/DisabledStores"
-import store , { fetchThunk, postThunk } from '../../../redux/store';
+// import store , { fetchThunk, postThunk } from '../../../redux/store';
 
 const TiendasList = () => {
 
-  // const dispatch = useDispatch()
+
 
   const [datos, setDatos] = useState<stores>({
     stores: [],
@@ -25,11 +25,9 @@ const TiendasList = () => {
   const state: stores = useSelector((state: state) => state.data)
   const dispatch: any = useDispatch()
 
-  useEffect(() => {
-    dispatch(fetchThunk)
-  }, [])
-
-  // store.subscribe(() => dispatch(postThunk))
+  // useEffect(() => {
+  //   dispatch(fetchThunk)
+  // }, [])
 
   useEffect(() => {
     setDatos(state)
@@ -81,13 +79,13 @@ const TiendasList = () => {
 
   return (
     <div className={styles.container}>
-      <button onClick={()=>{
+      {/* <button onClick={()=>{
         dispatch(postThunk)
         // exportData()
       }} >Save</button>
       <button onClick={()=> dispatch(fetchThunk)} >
         Fetch
-      </button>
+      </button> */}
       <div className={styles.title}>
         <h2>Week: {id}</h2>
         {

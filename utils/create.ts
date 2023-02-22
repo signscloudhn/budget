@@ -19,18 +19,26 @@ export const weekCreator = ({
   stores.forEach((store) => {
     const lastWeekStore = store.weeks[store.weeks.length - 1]
 
+    const lastWeekStoreCopy = lastWeekStore.division.slice()
+
+    lastWeekStoreCopy.forEach((post) => {
+      post.distribution.facebook.out = 0
+      post.distribution.instagram.out = 0
+      post.residue = 0
+    })
+
     const newWeek = {
       id: newWeekId,
       date: undefined,
       budgetInitial: lastWeekStore.budgetInitial,
       budgetTotal: lastWeekStore.budgetInitial,
       publications: lastWeekStore.publications,
-      division: [],
+      division: lastWeekStoreCopy,
       residue: 0,
       residueIsSpend: false,
     }
 
-    splitBudget(lastWeekStore.publications, newWeek)
+    // splitBudget(lastWeekStore.publications, newWeek)
 
     if (store.active) {
       store.weeks.push(newWeek)

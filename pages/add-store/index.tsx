@@ -6,7 +6,7 @@ import { state } from "../../interfaces/store"
 import styles from "./styles/add-store.module.sass"
 import validations from "../../lib/validations"
 import * as yup from "yup"
-import { postThunk } from '../../redux/store';
+// import { postThunk } from '../../redux/store';
 
 const AddStore = () => {
   const lastWeekId: number = useSelector(
@@ -16,7 +16,7 @@ const AddStore = () => {
 
   const { createStore } = useStores()
 
-  const dispatch: any = useDispatch()
+  // const dispatch: any = useDispatch()
 
   return (
     <div className={styles.container}>
@@ -33,7 +33,7 @@ const AddStore = () => {
           const { name, budget, publications }= values
 
           createStore(name, budget, publications)
-          dispatch(postThunk)
+          // dispatch(postThunk)
           router.push(`/dashboard/${lastWeekId}`)
         }}
       >
