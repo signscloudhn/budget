@@ -1,13 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, current as Currenator } from "@reduxjs/toolkit"
 import { initialDataState as initialState } from "../initialStates"
 import { weekCreator } from "../../utils/create"
 import { weekDeleter, storeDeleter } from "../../utils/delete"
-import { storeEnabler } from "../../utils/update"
+import {
+  equivalentUpdater,
+  postUpdater,
+  storeEnabler,
+} from "../../utils/update"
 import { newStoreCreator } from "../../utils/create"
 import {
-  publicationUpdater,
   SocialMediaDistUpdater,
-  residueUpdater,
+  spentUpdater,
   storeDisabler,
   globalResidueAdder,
   lastResidueAdder,
@@ -104,13 +107,26 @@ const dataSlice = createSlice({
       })
     },
 
-    updatePublication: (state, action) => {
+    updatePostBudget: (state, action) => {
       const { stores } = state
       const id = action.payload.id
       const current = action.payload.current
       const value = action.payload.value
 
-      publicationUpdater({ stores, id, current, value })
+      postUpdater({ stores, id, current, value })
+    },
+
+    updateEquivalent: (state, action) => {
+      const { stores } = state
+
+      const id = action.payload.id
+      const current = action.payload.current
+
+      equivalentUpdater({
+        stores,
+        id,
+        current,
+      })
     },
 
     updateSocialMediaDist: (state, action) => {
@@ -136,13 +152,14 @@ const dataSlice = createSlice({
       const social = action.payload.social
       const current = action.payload.current
 
-      residueUpdater({
+      spentUpdater({
         stores,
         id,
         value,
         social,
         current,
       })
+      console.log(Currenator(state))
     },
 
     deleteStore: (state, action) => {
@@ -177,7 +194,8 @@ export const {
   updateMasterStore,
   updateDate,
   updatePublicationsDist,
-  updatePublication,
+  updatePostBudget,
+  updateEquivalent,
   updateSocialMediaDist,
   updateSpent,
   deleteWeek,

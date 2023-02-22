@@ -1,4 +1,5 @@
 import { storeWeeks, division } from "../interfaces/store"
+import { equivalentUpdater } from "./update"
 
 export const splitBudget = (publications: number, week: storeWeeks) => {
   week.division = []
@@ -19,6 +20,7 @@ export const splitBudget = (publications: number, week: storeWeeks) => {
     const budgetDivided = {
       id: idCounter,
       budget: budgetPublicationRounded,
+      equivalent: true,
       distribution: {
         instagram: {
           in: budgetSocialMediaRounded,
@@ -54,47 +56,68 @@ export const recalculatePublications = (
 ) => {
   const currentPublication = week.division[publicationIndex]
 
-  currentPublication.budget = budget
+  const notEquivalentPosts = week.division.filter(
+    (post) => post.equivalent === false && post.id != currentPublication.id
+  )
 
-  const budgetSocialMedia = budget / 2
+  const equivalentPosts = week.division.filter(
+    (post) => post.equivalent === true
+  )
 
-  const budgetSocialMediaRounded = Number(budgetSocialMedia.toFixed(2))
+  const initialValue = 0
+  const notEquivalentTotal = notEquivalentPosts.reduce(
+    (prev, curr) => prev + curr.budget,
+    initialValue
+  )
 
-  currentPublication.distribution = {
-    instagram: {
-      in: budgetSocialMediaRounded,
-      out: 0,
-    },
-    facebook: {
-      in: budgetSocialMediaRounded,
-      out: 0,
-    },
-  }
+  const availableBudget = week.budgetTotal - notEquivalentTotal
 
-  const budgetSurplus = week.budgetTotal - currentPublication.budget
+  if (budget < availableBudget) {
+    currentPublication.budget = budget
 
-  const budgetToGive = budgetSurplus / (week.publications - 1)
+    const leftOverForEquivalents =
+      week.budgetTotal - notEquivalentTotal - budget
 
-  week.division.forEach((publication) => {
-    if (publication.id !== currentPublication.id) {
-      publication.budget = budgetToGive
+    const budgetSocialMedia = budget / 2
 
-      const budgetSocialMedia = budgetToGive / 2
+    const budgetSocialMediaRounded = Number(budgetSocialMedia.toFixed(2))
 
-      const budgetSocialMediaRounded = Number(budgetSocialMedia.toFixed(2))
-
-      publication.distribution = {
-        instagram: {
-          in: budgetSocialMediaRounded,
-          out: 0,
-        },
-        facebook: {
-          in: budgetSocialMediaRounded,
-          out: 0,
-        },
-      }
+    currentPublication.distribution = {
+      instagram: {
+        in: budgetSocialMediaRounded,
+        out: 0,
+      },
+      facebook: {
+        in: budgetSocialMediaRounded,
+        out: 0,
+      },
     }
-  })
+
+    week.division.forEach((post) => {
+      if (post.equivalent) {
+        const budgetToPost = leftOverForEquivalents / equivalentPosts.length
+
+        post.budget = budgetToPost
+
+        const budgetSocialMedia = budgetToPost / 2
+
+        const budgetSocialMediaRounded = Number(budgetSocialMedia.toFixed(2))
+
+        post.distribution = {
+          instagram: {
+            in: budgetSocialMediaRounded,
+            out: 0,
+          },
+          facebook: {
+            in: budgetSocialMediaRounded,
+            out: 0,
+          },
+        }
+      }
+    })
+  } else {
+    console.log("que pedo")
+  }
 }
 
 export const recalculateSocialMedia = (

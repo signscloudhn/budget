@@ -10,7 +10,10 @@ export interface newStoreCreatorProps {
   stores: Array<store>
   payload: store
 }
-
+interface current {
+  name: string
+  weekId: number
+}
 export interface weekDeleterProps {
   id: number
   stores: Array<store>
@@ -37,6 +40,12 @@ export interface dateUpdaterProps {
   value: string
 }
 
+export interface equivalentUpdaterProps {
+  stores: Array<store>
+  id: number
+  current: current
+}
+
 export interface updatePublicationDistProps {
   stores: Array<store>
   storeIndex: number
@@ -52,13 +61,10 @@ export interface masterStoreUpdaterProps {
   currentWeekIndex: number
 }
 
-export interface publicationUpdaterProps {
+export interface postUpdaterProps {
   stores: Array<store>
   id: number
-  current: {
-    name: string
-    week: number
-  }
+  current: current
   value: number
 }
 
@@ -67,10 +73,7 @@ export interface SocialMediaDistUpdaterProps {
   id: number
   value: number
   social: string
-  current: {
-    name: string
-    weekId: number
-  }
+  current: current
 }
 
 export interface residueUpdaterProps {
@@ -78,10 +81,7 @@ export interface residueUpdaterProps {
   id: number
   value: number
   social: string
-  current: {
-    name: string
-    weekId: number
-  }
+  current: current
 }
 
 export interface storeUpdaterProps {

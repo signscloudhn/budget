@@ -4,30 +4,47 @@ import InstagramIcon from "@mui/icons-material/Instagram"
 import styles from "../styles/DivisionInfo.module.scss"
 import { useDispatch } from "react-redux"
 import {
-  updatePublication,
   updateSpent,
   updateSocialMediaDist,
+  updateEquivalent,
+  updatePostBudget,
 } from "../../../../redux/slices/dataSlice"
 import { PostProps } from "../../../../interfaces/dashboard"
 
 const Post = ({ post, update }: PostProps) => {
   const dispatch = useDispatch()
 
+  const isDisabled = ()=>{
+            if(post.equivalent){
+              return true
+            } else {
+              return false
+            }
+          }
+
   return (
     <div className={styles.post}>
       <h5>Post {post.id}:</h5>
-      <input type="checkbox" />
+      <input type="checkbox" checked={post.equivalent} onChange={()=>{
+        dispatch(updateEquivalent({
+          current: update,
+          id: post.id
+        }))
+      }} />
       <input
         type="number"
         value={post.budget}
         min={0}
         // max={}
+        disabled={
+          !post.equivalent ? false : true
+        }
         onChange={(e) => {
           dispatch(
-            updatePublication({
+            updatePostBudget({
               id: post.id,
               current: update,
-              value: e.target.value,
+              value: Number(e.target.value),
             })
           )
         }}
@@ -44,7 +61,7 @@ const Post = ({ post, update }: PostProps) => {
             updateSocialMediaDist({
               id: post.id,
               current: update,
-              value: e.target.value,
+              value: Number(e.target.value),
               social: "instagram",
             })
           )
@@ -61,7 +78,7 @@ const Post = ({ post, update }: PostProps) => {
             updateSpent({
               id: post.id,
               current: update,
-              value: e.target.value,
+              value: Number(e.target.value),
               social: "instagram",
             })
           )
@@ -79,7 +96,7 @@ const Post = ({ post, update }: PostProps) => {
             updateSocialMediaDist({
               id: post.id,
               current: update,
-              value: e.target.value,
+              value: Number(e.target.value),
               social: "facebook",
             })
           )
@@ -96,7 +113,7 @@ const Post = ({ post, update }: PostProps) => {
             updateSpent({
               id: post.id,
               current: update,
-              value: e.target.value,
+              value: Number(e.target.value),
               social: "facebook",
             })
           )

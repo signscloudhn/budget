@@ -6,6 +6,8 @@ import {
   storeUpdaterProps,
   storeEnablerProps,
   updatePublicationDistProps,
+  equivalentUpdaterProps,
+  postUpdaterProps,
 } from "../interfaces/crud"
 import {
   calculateCurrentResidue,
@@ -14,10 +16,7 @@ import {
   splitBudget,
 } from "./calculations"
 import { findStoreIndexWithName, findWeekIndexWithId } from "./indexFinder"
-import {
-  publicationUpdaterProps,
-  SocialMediaDistUpdaterProps,
-} from "../interfaces/crud"
+import { SocialMediaDistUpdaterProps } from "../interfaces/crud"
 
 export const dateUpdater = ({ stores, id, name, value }: dateUpdaterProps) => {
   const storeIndex = findStoreIndexWithName(stores, name)
@@ -66,14 +65,14 @@ export const masterStoreUpdater = ({
   calculateCurrentResidue(currentWeek)
 }
 
-export const publicationUpdater = ({
+export const postUpdater = ({
   stores,
   id,
   current,
   value,
-}: publicationUpdaterProps) => {
+}: postUpdaterProps) => {
   const storeIndex = findStoreIndexWithName(stores, current.name)
-  const weekIndex = findWeekIndexWithId(stores[storeIndex], current.week)
+  const weekIndex = findWeekIndexWithId(stores[storeIndex], current.weekId)
 
   const publicationIndex = stores[storeIndex].weeks[
     weekIndex
@@ -83,6 +82,24 @@ export const publicationUpdater = ({
 
   recalculatePublications(currentWeek, value, publicationIndex)
   calculateCurrentResidue(currentWeek)
+}
+
+export const equivalentUpdater = ({
+  stores,
+  current,
+  id,
+}: equivalentUpdaterProps) => {
+  const storeIndex = findStoreIndexWithName(stores, current.name)
+  const weekIndex = findWeekIndexWithId(stores[storeIndex], current.weekId)
+
+  const publicationIndex = stores[storeIndex].weeks[
+    weekIndex
+  ].division.findIndex((publication) => publication.id === id)
+
+  const currentPost =
+    stores[storeIndex].weeks[weekIndex].division[publicationIndex]
+
+  currentPost.equivalent = !currentPost.equivalent
 }
 
 export const SocialMediaDistUpdater = ({
@@ -96,8 +113,6 @@ export const SocialMediaDistUpdater = ({
   const weekIndex = findWeekIndexWithId(stores[storeIndex], current.weekId)
   const currentWeek = stores[storeIndex].weeks[weekIndex]
 
-  console.log(current)
-
   const publicationIndex = currentWeek.division.findIndex(
     (publication) => publication.id === id
   )
@@ -108,7 +123,7 @@ export const SocialMediaDistUpdater = ({
   calculateCurrentResidue(currentWeek)
 }
 
-export const residueUpdater = ({
+export const spentUpdater = ({
   stores,
   id,
   value,
@@ -125,11 +140,13 @@ export const residueUpdater = ({
   )
 
   if (social === "instagram") {
-    currentWeek.division[publicationIndex].distribution.instagram.out = value
+    currentWeek.division[publicationIndex].distribution.instagram.out =
+      Number(value)
   }
 
   if (social === "facebook") {
-    currentWeek.division[publicationIndex].distribution.facebook.out = value
+    currentWeek.division[publicationIndex].distribution.facebook.out =
+      Number(value)
   }
 
   const dist = currentWeek.division[publicationIndex]
