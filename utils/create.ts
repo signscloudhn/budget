@@ -33,14 +33,7 @@ export const weekCreator = ({ weeks, stores, lastWeek }: weekCreatorProps) => {
       residue: 0,
       residueIsSpend: false,
     }
-
-    console.log(
-      "🚀 ~ file: create.ts:40 ~ stores.forEach ~ lastWeekStore:",
-      current(lastWeekStore)
-    )
-
     // splitBudget(lastWeekStore.publications, newWeek) //
-
     if (store.active) {
       store.weeks.push(newWeek)
 
