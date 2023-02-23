@@ -40,9 +40,8 @@ const dataSlice = createSlice({
     createWeek: (state) => {
       const { stores, weeks } = state
       const lastWeek = weeks[weeks.length - 1]
-      const newWeekId = lastWeek.id + 1
 
-      weekCreator({ weeks, stores, newWeekId, lastWeek })
+      weekCreator({ weeks, stores, lastWeek })
     },
 
     deleteWeek: (state, action) => {

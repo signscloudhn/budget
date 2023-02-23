@@ -2,7 +2,6 @@ import { weeks, store } from "./store"
 export interface weekCreatorProps {
   weeks: Array<weeks>
   stores: Array<store>
-  newWeekId: number
   lastWeek: weeks
 }
 

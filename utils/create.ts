@@ -1,17 +1,13 @@
 import { weekCreatorProps } from "../interfaces/crud"
 import { generateDate, splitBudget } from "./calculations"
 import { newStoreCreatorProps } from "../interfaces/crud"
+import { current } from "@reduxjs/toolkit"
 
 const { nextWeek } = generateDate()
 
-export const weekCreator = ({
-  weeks,
-  stores,
-  newWeekId,
-  lastWeek,
-}: weekCreatorProps) => {
+export const weekCreator = ({ weeks, stores, lastWeek }: weekCreatorProps) => {
   const date = lastWeek.date?.split("-")[1].trim()
-
+  const newWeekId = lastWeek.id + 1
   const { startWeek, endWeek } = generateDate(nextWeek(date))
 
   weeks.push({ id: newWeekId, date: `${startWeek} - ${endWeek}` })
@@ -38,7 +34,12 @@ export const weekCreator = ({
       residueIsSpend: false,
     }
 
-    // splitBudget(lastWeekStore.publications, newWeek)
+    console.log(
+      "🚀 ~ file: create.ts:40 ~ stores.forEach ~ lastWeekStore:",
+      current(lastWeekStore)
+    )
+
+    // splitBudget(lastWeekStore.publications, newWeek) //
 
     if (store.active) {
       store.weeks.push(newWeek)

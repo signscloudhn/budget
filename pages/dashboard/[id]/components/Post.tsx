@@ -14,14 +14,6 @@ import { PostProps } from "../../../../interfaces/dashboard"
 const Post = ({ post, update }: PostProps) => {
   const dispatch = useDispatch()
 
-  const isDisabled = ()=>{
-            if(post?.equivalent){
-              return true
-            } else {
-              return false
-            }
-          }
-
   return (
     <div className={styles.post}>
       <h5>Post {post?.id}:</h5>

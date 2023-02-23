@@ -15,15 +15,16 @@ import DisabledStores from "./components/DisabledStores"
 
 const TiendasList = () => {
 
-
-
   const [datos, setDatos] = useState<stores>({
     stores: [],
     weeks: [],
   })
+  const [lastWeekId, setLastWeekId] = useState(0)
+  // console.log("🚀 ~ file: index.tsx:23 ~ TiendasList ~ lastWeekId:", lastWeekId)
+
 
   const state: stores = useSelector((state: state) => state.data)
-  const dispatch: any = useDispatch()
+  const dispatch = useDispatch()
 
   // useEffect(() => {
   //   dispatch(fetchThunk)
@@ -32,10 +33,10 @@ const TiendasList = () => {
   useEffect(() => {
     setDatos(state)
     setLastWeekId(datos.weeks[datos.weeks.length - 1]?.id)
-  }, [state])
+  }, [state, datos.weeks])
 
 
-  const [lastWeekId, setLastWeekId] = useState(0)
+  
   const [showModals, setShowModals] = useState({
     delete: false,
     disabled: false,
