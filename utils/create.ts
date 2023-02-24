@@ -1,8 +1,6 @@
 import { weekCreatorProps } from "../interfaces/crud"
-import { generateDate, splitBudget } from "./calculations"
+import { generateDate } from "./calculations"
 import { newStoreCreatorProps } from "../interfaces/crud"
-import { current } from "@reduxjs/toolkit"
-import { storeWeeks, weeks } from "../interfaces/store"
 
 const { nextWeek } = generateDate()
 
@@ -43,7 +41,6 @@ export const weekCreator = ({ weeks, stores, lastWeek }: weekCreatorProps) => {
       residue: 0,
       residueIsSpend: false,
     }
-    // splitBudget(lastWeekStore.publications, newWeek) //
     if (store.active) {
       store.weeks.push(newWeek)
 
@@ -53,9 +50,9 @@ export const weekCreator = ({ weeks, stores, lastWeek }: weekCreatorProps) => {
 }
 
 export const newStoreCreator = ({ stores, payload }: newStoreCreatorProps) => {
-  const storeExist = stores.filter((store) => store.name === payload.name)
+  const storeExist = stores.some((store) => store.name === payload.name)
 
-  if (storeExist.length === 0) {
+  if (!storeExist) {
     stores.push(payload)
   }
 }

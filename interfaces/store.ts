@@ -46,7 +46,8 @@ export interface stores {
 
 export interface state {
   data: stores
-  ui: {
-    loading: boolean
+  status: {
+    loading: string
+    error: string | null
   }
 }

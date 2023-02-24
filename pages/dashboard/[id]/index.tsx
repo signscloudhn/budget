@@ -35,7 +35,7 @@ const TiendasList = () => {
   }, [state, datos.weeks])
 
 
-  
+
   const [showModals, setShowModals] = useState({
     delete: false,
     disabled: false,

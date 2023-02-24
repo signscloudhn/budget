@@ -1,3 +1,4 @@
+import { Dispatch } from "redux"
 import { weeks, store } from "./store"
 export interface weekCreatorProps {
   weeks: Array<weeks>
@@ -8,6 +9,7 @@ export interface weekCreatorProps {
 export interface newStoreCreatorProps {
   stores: Array<store>
   payload: store
+  // dispatch: Dispatch
 }
 interface current {
   name: string

@@ -1,12 +1,17 @@
-import { Formik, Form, Field, ErrorMessage } from "formik"
+import { Formik, Form, Field, ErrorMessage, FormikValues } from "formik"
 import { useRouter } from "next/router"
 import { useSelector, useDispatch } from 'react-redux';
 import { useStores } from "../../hooks/useStores"
-import { state } from "../../interfaces/store"
+import { state } from '../../interfaces/store';
 import styles from "./styles/add-store.module.sass"
 import validations from "../../lib/validations"
 import * as yup from "yup"
+import { setError, setInitial, setPending, setSuccess } from "../../redux/slices/statusSlice";
 // import { postThunk } from '../../redux/store';
+import { useEffect } from 'react';
+
+
+
 
 const AddStore = () => {
   const lastWeekId: number = useSelector(
@@ -14,9 +19,36 @@ const AddStore = () => {
   )
   const router = useRouter()
 
+  const {status, data} = useSelector((state: state)=> state)
+
   const { createStore } = useStores()
 
-  // const dispatch: any = useDispatch()
+  const dispatch: any = useDispatch()
+
+
+  useEffect(()=>{
+    dispatch(setInitial())
+  },[])
+
+
+  const makeStore = (values: FormikValues)=>{
+
+  dispatch(setPending())
+
+  const { name, budget, publications }= values
+
+  const storeExist = data.stores.some(store => store.name === name)
+
+  if(!storeExist) {
+    createStore(name, budget, publications)
+    dispatch(setSuccess())
+    router.push(`/dashboard/${lastWeekId}`)
+  } else {
+    dispatch(setError("La tienda ya existe"))
+  }
+
+}
+
 
   return (
     <div className={styles.container}>
@@ -30,11 +62,8 @@ const AddStore = () => {
         }}
         validationSchema={yup.object(validations)}
         onSubmit={(values) => {
-          const { name, budget, publications }= values
-
-          createStore(name, budget, publications)
           // dispatch(postThunk)
-          router.push(`/dashboard/${lastWeekId}`)
+          makeStore(values)
         }}
       >
         {(formik) => (
@@ -46,6 +75,9 @@ const AddStore = () => {
               name="name"
               component="p"
             />
+            {status.loading === "rejected" && (
+              <p>{status.error}</p>
+            )}
             </div>
             <div className={styles.field}>
               <label htmlFor="budget">Presupuesto:</label>

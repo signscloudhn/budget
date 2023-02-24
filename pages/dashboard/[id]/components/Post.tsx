@@ -27,7 +27,6 @@ const Post = ({ post, update }: PostProps) => {
         type="number"
         value={post?.budget}
         min={0}
-        // max={}
         disabled={
           !post?.equivalent ? false : true
         }
@@ -47,7 +46,6 @@ const Post = ({ post, update }: PostProps) => {
         value={post?.distribution?.instagram?.in}
         className={styles.in}
         min={0}
-        // max={post?.budget}
         onChange={(e) => {
           dispatch(
             updateSocialMediaDist({

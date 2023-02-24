@@ -181,6 +181,7 @@ export const initialDataState: stores = {
   ],
 }
 
-export const initialUiState = {
-  loading: false,
+export const initialStatusState = {
+  loading: "idle",
+  error: null,
 }
