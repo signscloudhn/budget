@@ -116,7 +116,7 @@ export const recalculatePublications = (
       }
     })
   } else {
-    console.log("que pedo")
+    console.log("No te puedes pasar del presupuesto mi loco")
   }
 }
 
@@ -127,12 +127,12 @@ export const recalculateSocialMedia = (
 ) => {
   let surplus = division.budget - value
 
-  if (social === "instagram") {
+  if (social === "instagram" && value <= division.budget) {
     division.distribution.instagram.in = value
 
     division.distribution.facebook.in = surplus
   }
-  if (social === "facebook") {
+  if (social === "facebook" && value <= division.budget) {
     division.distribution.facebook.in = value
 
     division.distribution.instagram.in = surplus

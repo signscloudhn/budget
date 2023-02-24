@@ -47,7 +47,7 @@ const Post = ({ post, update }: PostProps) => {
         value={post?.distribution?.instagram?.in}
         className={styles.in}
         min={0}
-        max={post?.budget}
+        // max={post?.budget}
         onChange={(e) => {
           dispatch(
             updateSocialMediaDist({
