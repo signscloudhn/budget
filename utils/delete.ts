@@ -18,21 +18,23 @@ export const weekDeleter = ({ id, stores, weeks }: weekDeleterProps) => {
     })
 
     stores.forEach((store) => {
-      // TODO: Quitar el residuo anterior del residuo global
-
-      if (!store.weeks[store.weeks.length - 2].residueIsSpend) {
+      if (store.weeks.length > 1) {
         store.globalResidue =
           store.globalResidue - store.weeks[store.weeks.length - 2].residue
-        console.log("Borramos el residuo del global")
       }
 
-      // TODO: Devolver residuo global si lo gasto
-
-      const weekToDelete = store.weeks[store.weeks.length - 1]
+      const weekToDelete = store.weeks[store.weeks.length - 1] ?? {
+        id: 0,
+        division: [],
+        budgetInitial: 0,
+        budgetTotal: 0,
+        publications: 0,
+        date: undefined,
+        residue: 0,
+        residueIsSpend: false,
+      }
 
       if (weekToDelete.budgetTotal != weekToDelete.budgetInitial) {
-        console.log("se gasto el residuo")
-
         store.globalResidue =
           weekToDelete.budgetTotal -
           weekToDelete.budgetInitial -
@@ -45,9 +47,9 @@ export const weekDeleter = ({ id, stores, weeks }: weekDeleterProps) => {
     weeks.splice(weekIndex, 1)
 
     stores.forEach((store) => {
-      // if (store.weeks.length > 1) {
-      store.weeks[store.weeks.length - 1].residueIsSpend = false
-      // }
+      if (store.weeks.length > 1) {
+        store.weeks[store.weeks.length - 1].residueIsSpend = false
+      }
     })
   }
 }

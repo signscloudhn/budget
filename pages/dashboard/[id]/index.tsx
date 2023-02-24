@@ -20,7 +20,6 @@ const TiendasList = () => {
     weeks: [],
   })
   const [lastWeekId, setLastWeekId] = useState(0)
-  // console.log("🚀 ~ file: index.tsx:23 ~ TiendasList ~ lastWeekId:", lastWeekId)
 
 
   const state: stores = useSelector((state: state) => state.data)

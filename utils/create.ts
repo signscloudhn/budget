@@ -2,6 +2,7 @@ import { weekCreatorProps } from "../interfaces/crud"
 import { generateDate, splitBudget } from "./calculations"
 import { newStoreCreatorProps } from "../interfaces/crud"
 import { current } from "@reduxjs/toolkit"
+import { storeWeeks, weeks } from "../interfaces/store"
 
 const { nextWeek } = generateDate()
 
@@ -13,11 +14,20 @@ export const weekCreator = ({ weeks, stores, lastWeek }: weekCreatorProps) => {
   weeks.push({ id: newWeekId, date: `${startWeek} - ${endWeek}` })
 
   stores.forEach((store) => {
-    const lastWeekStore = store.weeks[store.weeks.length - 1]
+    const lastWeekStore = store.weeks[store.weeks.length - 1] ?? {
+      id: 0,
+      division: [],
+      budgetInitial: 0,
+      budgetTotal: 0,
+      publications: 0,
+      date: undefined,
+      residue: 0,
+      residueIsSpend: false,
+    }
 
-    const lastWeekStoreCopy = lastWeekStore.division.slice()
+    const lastDivisionCopy = lastWeekStore.division.slice()
 
-    lastWeekStoreCopy.forEach((post) => {
+    lastDivisionCopy.forEach((post) => {
       post.distribution.facebook.out = 0
       post.distribution.instagram.out = 0
       post.residue = 0
@@ -29,7 +39,7 @@ export const weekCreator = ({ weeks, stores, lastWeek }: weekCreatorProps) => {
       budgetInitial: lastWeekStore.budgetInitial,
       budgetTotal: lastWeekStore.budgetInitial,
       publications: lastWeekStore.publications,
-      division: lastWeekStoreCopy,
+      division: lastDivisionCopy,
       residue: 0,
       residueIsSpend: false,
     }

@@ -200,14 +200,17 @@ export const storeEnabler = ({ stores, weeks, name }: storeEnablerProps) => {
   const newWeek = {
     id: lastWeekId,
     date: undefined,
-    budgetInitial: lastWeek.budgetInitial,
-    budgetTotal: lastWeek.budgetInitial,
-    publications: lastWeek.publications,
+    budgetInitial: lastWeek?.budgetInitial ?? 0,
+    budgetTotal: lastWeek?.budgetInitial ?? 0,
+    publications: lastWeek?.publications ?? 0,
     division: [],
     residue: 0,
     residueIsSpend: false,
   }
-  splitBudget(lastWeek.publications, newWeek)
+
+  if (lastWeek !== undefined) {
+    splitBudget(lastWeek?.publications, newWeek)
+  }
 
   currentStore.weeks.push(newWeek)
 }
