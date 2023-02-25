@@ -36,6 +36,7 @@ export interface store {
 
 export interface weeks {
   id: number
+  number: number
   date: string | undefined
 }
 

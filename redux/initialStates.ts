@@ -5,7 +5,7 @@ const { startWeek, endWeek } = generateDate()
 
 export const initialDataState: stores = {
   weeks: [
-    { id: 1, date: `${startWeek} - ${endWeek}` },
+    { id: 1, date: `${startWeek} - ${endWeek}`, number: 1 },
 
     //  { id: 2 }, { id: 3 }
   ],

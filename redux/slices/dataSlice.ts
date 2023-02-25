@@ -8,6 +8,7 @@ import {
   storeEnabler,
 } from "../../utils/update"
 import { newStoreCreator } from "../../utils/create"
+import { findWeekIndexWithId } from "../../utils/indexFinder"
 import {
   SocialMediaDistUpdater,
   spentUpdater,
@@ -49,6 +50,14 @@ const dataSlice = createSlice({
       const { stores, weeks } = state
 
       weekDeleter({ id, stores, weeks })
+    },
+
+    updateWeekNumber: (state, action) => {
+      const weekIndex = state.weeks.findIndex(
+        (week) => week.id === action.payload.weekId
+      )
+
+      state.weeks[weekIndex].number = action.payload.value
     },
 
     addLastResidue: (state, action) => {
@@ -187,6 +196,7 @@ export const {
   setData,
   createNewStore,
   createWeek,
+  updateWeekNumber,
   addLastResidue,
   addGlobalResidue,
   updateMasterStore,

@@ -9,7 +9,11 @@ export const weekCreator = ({ weeks, stores, lastWeek }: weekCreatorProps) => {
   const newWeekId = lastWeek.id + 1
   const { startWeek, endWeek } = generateDate(nextWeek(date))
 
-  weeks.push({ id: newWeekId, date: `${startWeek} - ${endWeek}` })
+  weeks.push({
+    id: newWeekId,
+    date: `${startWeek} - ${endWeek}`,
+    number: lastWeek.number + 1,
+  })
 
   stores.forEach((store) => {
     const lastWeekStore = store.weeks[store.weeks.length - 1] ?? {
