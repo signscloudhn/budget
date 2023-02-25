@@ -11,6 +11,8 @@ import { useEffect, useState } from "react"
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
 import { Icon } from "@mui/material"
 import DisabledStores from "./components/DisabledStores"
+import DeleteModal from "./components/DeleteModal"
+import WeekDate from "./components/WeekDate"
 // import store , { fetchThunk, postThunk } from '../../../redux/store';
 
 const TiendasList = () => {
@@ -86,8 +88,13 @@ const TiendasList = () => {
         <h2>Week: </h2>
         <input
           type="number"
-          onChange={(e)=>{
-            dispatch(updateWeekNumber({weekId: currentWeek?.id, value: Number(e.target.value)}))
+          onChange={(e) => {
+            dispatch(
+              updateWeekNumber({
+                weekId: currentWeek?.id,
+                value: Number(e.target.value),
+              })
+            )
           }}
           value={currentWeek?.number}
         />
@@ -106,7 +113,9 @@ const TiendasList = () => {
         )}
       </div>
 
-      <p className={styles.date}>{currentWeek?.date}</p>
+      {/* <p className={styles.date}>{currentWeek?.date}</p> */}
+
+      <WeekDate weekId={currentWeek?.id} />
 
       {showModals.disabled && hasStoresDisabled() && (
         <DisabledStores
@@ -120,36 +129,25 @@ const TiendasList = () => {
       )}
 
       {showModals.delete && (
-        <div className={styles.delete_modal}>
-          <div className={styles.modal_container}>
-            <h4>Estas seguro de que quieres borrar la semana {id} ?</h4>
-            <div>
-              <button
-                onClick={() => {
-                  dispatch(deleteWeek({ id: id }))
+        <DeleteModal
+        done={()=>{
+          dispatch(deleteWeek({ id: id }))
                   setShowModals({
                     ...showModals,
                     delete: false,
                   })
-                  router.push(`/dashboard/${lastWeekId - 1}`)
-                }}
-              >
-                Si, estoy seguro
-              </button>
-
-              <button
-                onClick={() => {
+          router.push(`/dashboard/${lastWeekId - 1}`)
+        }}
+        undone={
+          () => {
                   setShowModals({
                     ...showModals,
                     delete: false,
                   })
-                }}
-              >
-                No
-              </button>
-            </div>
-          </div>
-        </div>
+                }
+        }
+        number={currentWeek?.number}
+        />
       )}
 
       <div className={styles.stores_lista}>

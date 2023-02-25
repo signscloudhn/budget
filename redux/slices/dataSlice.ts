@@ -9,6 +9,8 @@ import {
 } from "../../utils/update"
 import { newStoreCreator } from "../../utils/create"
 import { findWeekIndexWithId } from "../../utils/indexFinder"
+import { state } from "../../interfaces/store"
+import { weekDateUpdater } from "../../utils/update"
 import {
   SocialMediaDistUpdater,
   spentUpdater,
@@ -17,7 +19,7 @@ import {
   lastResidueAdder,
 } from "../../utils/update"
 import {
-  dateUpdater,
+  weekStoreDateUpdater,
   masterStoreUpdater,
   publicationDistUpdater,
 } from "../../utils/update"
@@ -60,6 +62,13 @@ const dataSlice = createSlice({
       state.weeks[weekIndex].number = action.payload.value
     },
 
+    updateWeekDate: (state, action) => {
+      const { weeks } = state
+      const { id, date } = action.payload
+
+      weekDateUpdater({ weeks, id, date })
+    },
+
     addLastResidue: (state, action) => {
       const name = action.payload.name
       const id = action.payload.id
@@ -76,13 +85,13 @@ const dataSlice = createSlice({
       globalResidueAdder({ name, id, stores })
     },
 
-    updateDate: (state, action) => {
+    updateWeekStoreDate: (state, action) => {
       const { stores } = state
       const id = action.payload.id
       const name = action.payload.name
       const value = action.payload.value
 
-      dateUpdater({ stores, id, name, value })
+      weekStoreDateUpdater({ stores, id, name, value })
     },
 
     updatePublicationsDist: (state, action) => {
@@ -197,10 +206,11 @@ export const {
   createNewStore,
   createWeek,
   updateWeekNumber,
+  updateWeekDate,
   addLastResidue,
   addGlobalResidue,
   updateMasterStore,
-  updateDate,
+  updateWeekStoreDate,
   updatePublicationsDist,
   updatePostBudget,
   updateEquivalent,

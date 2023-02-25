@@ -1,0 +1,16 @@
+.date_container {
+  p {
+    width: fit-content;
+    margin: 0 auto;
+    color: #ffffff;
+    border-bottom: solid 3px #33cfff;
+    margin-bottom: 5px;
+  }
+  svg {
+    color: #ffffff4d;
+    cursor: pointer;
+    &:hover {
+      color: #ffff;
+    }
+  }
+}

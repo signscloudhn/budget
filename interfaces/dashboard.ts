@@ -5,6 +5,11 @@ export interface DisabledStoresProps {
   func: () => void
 }
 
+export interface deleteModalProps {
+  done: () => void
+  undone: () => void
+  number: number | undefined
+}
 export interface TiendaProps {
   name: string
   globalResidue: number

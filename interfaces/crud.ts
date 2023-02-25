@@ -1,4 +1,3 @@
-import { Dispatch } from "redux"
 import { weeks, store } from "./store"
 export interface weekCreatorProps {
   weeks: Array<weeks>
@@ -28,13 +27,19 @@ export interface lastResidueAdderProps {
   // weeks: Array<weeks>
 }
 
+export interface weekDateUpdaterProps {
+  weeks: Array<weeks>
+  id: number
+  date: string
+}
+
 export interface globalResidueAdderProps {
   name: string
   id: number
   stores: Array<store>
 }
 
-export interface dateUpdaterProps {
+export interface weekStoreDateUpdaterProps {
   stores: Array<store>
   id: number
   name: string

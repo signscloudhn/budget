@@ -1,5 +1,5 @@
 import {
-  dateUpdaterProps,
+  weekStoreDateUpdaterProps,
   globalResidueAdderProps,
   lastResidueAdderProps,
   masterStoreUpdaterProps,
@@ -16,14 +16,32 @@ import {
   splitBudget,
 } from "./calculations"
 import { findStoreIndexWithName, findWeekIndexWithId } from "./indexFinder"
-import { SocialMediaDistUpdaterProps } from "../interfaces/crud"
+import { generateDate } from "./calculations"
+import {
+  SocialMediaDistUpdaterProps,
+  weekDateUpdaterProps,
+} from "../interfaces/crud"
 
-export const dateUpdater = ({ stores, id, name, value }: dateUpdaterProps) => {
+export const weekStoreDateUpdater = ({
+  stores,
+  id,
+  name,
+  value,
+}: weekStoreDateUpdaterProps) => {
   const storeIndex = findStoreIndexWithName(stores, name)
   const weekIndex = findWeekIndexWithId(stores[storeIndex], id)
 
   const currentWeek = stores[storeIndex].weeks[weekIndex]
   currentWeek.date = value
+}
+
+export const weekDateUpdater = ({ weeks, id, date }: weekDateUpdaterProps) => {
+  const weekIndex = weeks.findIndex((week) => week.id === id)
+  const currentWeek = weeks[weekIndex]
+
+  const { startWeek, endWeek } = generateDate(date)
+
+  currentWeek.date = `${startWeek} - ${endWeek}`
 }
 
 export const publicationDistUpdater = ({

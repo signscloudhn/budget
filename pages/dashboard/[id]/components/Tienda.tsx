@@ -9,7 +9,7 @@ import { useRouter } from "next/router"
 import { useDispatch, useSelector } from "react-redux"
 import {
   addGlobalResidue,
-  updateDate,
+  updateWeekStoreDate,
 } from "../../../../redux/slices/dataSlice"
 import { state } from "../../../../interfaces/store"
 
@@ -94,7 +94,7 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
             type="date"
             onChange={(e) => {
               dispatch(
-                updateDate({
+                updateWeekStoreDate({
                   name: name,
                   id: Number(id),
                   value: e.target.value,
