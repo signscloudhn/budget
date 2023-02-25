@@ -90,7 +90,7 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
         </div>
         <div className={styles.item_date}>
           <p>{current?.date}</p>
-          <input
+          {isLastWeek() && <input
             type="date"
             onChange={(e) => {
               dispatch(
@@ -102,10 +102,10 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
               )
             }}
             className={styles.date}
-          />
+          />}
         </div>
         <div className={styles.residue}>
-          {globalResidue > 0 ? (
+          {globalResidue > 0 && isLastWeek() ? (
             <Icon
               component={LanguageIcon}
               onClick={() => {

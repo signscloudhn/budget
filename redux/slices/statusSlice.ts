@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { initialStatusState as initialState } from "../initialStates"
-import { state } from "../../interfaces/store"
 
 const statusSlice = createSlice({
   name: "status",

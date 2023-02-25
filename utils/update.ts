@@ -157,23 +157,20 @@ export const spentUpdater = ({
     (publication) => publication.id === id
   )
 
-  if (social === "instagram") {
-    currentWeek.division[publicationIndex].distribution.instagram.out =
-      Number(value)
+  const { facebook, instagram } =
+    currentWeek.division[publicationIndex].distribution
+
+  if (social === "instagram" && Number(value) <= instagram.in) {
+    instagram.out = Number(value)
   }
 
-  if (social === "facebook") {
-    currentWeek.division[publicationIndex].distribution.facebook.out =
-      Number(value)
+  if (social === "facebook" && Number(value) <= facebook.in) {
+    facebook.out = Number(value)
   }
 
-  const dist = currentWeek.division[publicationIndex]
+  const residueFacebook = facebook.in - facebook.out
 
-  const residueFacebook =
-    dist.distribution.facebook.in - dist.distribution.facebook.out
-
-  const residueInstagram =
-    dist.distribution.instagram.in - dist.distribution.instagram.out
+  const residueInstagram = instagram.in - instagram.out
 
   const residueWithDecimals = residueFacebook + residueInstagram
 

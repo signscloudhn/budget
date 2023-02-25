@@ -8,8 +8,6 @@ import {
   storeEnabler,
 } from "../../utils/update"
 import { newStoreCreator } from "../../utils/create"
-import { findWeekIndexWithId } from "../../utils/indexFinder"
-import { state } from "../../interfaces/store"
 import { weekDateUpdater } from "../../utils/update"
 import {
   SocialMediaDistUpdater,

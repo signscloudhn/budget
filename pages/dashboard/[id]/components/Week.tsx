@@ -6,9 +6,9 @@ import PriceChangeIcon from "@mui/icons-material/PriceChange"
 import BurstModeIcon from "@mui/icons-material/BurstMode"
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange"
 import { useStores } from "../../../../hooks/useStores"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from 'react-redux';
 import { addLastResidue } from "../../../../redux/slices/dataSlice"
-import { storeWeeks } from "../../../../interfaces/store"
+import { storeWeeks, state } from '../../../../interfaces/store';
 import { useState } from 'react';
 
 const Week = ({ store, week, children }: WeekProps) => {
@@ -16,6 +16,8 @@ const Week = ({ store, week, children }: WeekProps) => {
   const [showModal, setShowModal] = useState({
     last: false,
   })
+
+  const {data} = useSelector((state: state)=> state)
 
   const handleLast = () => {
     setShowModal({
@@ -52,6 +54,14 @@ const Week = ({ store, week, children }: WeekProps) => {
 
   const dispatch = useDispatch()
 
+  const isLastWeek = () => {
+    if (data.weeks[data.weeks.length - 1].id === week?.id) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   return (
     <>
     {showModal.last && (
@@ -77,7 +87,7 @@ const Week = ({ store, week, children }: WeekProps) => {
         </div>
       )}
       <div className={styles.week_item}>
-        {residueLast() > 0 ? (
+        {residueLast() > 0 && isLastWeek() ? (
           <Icon
           component={KeyboardReturnIcon}
           className={styles.bottom}
@@ -105,6 +115,7 @@ const Week = ({ store, week, children }: WeekProps) => {
           type="number"
           min={1}
           value={week?.publications}
+          disabled={!isLastWeek() ? true : false}
           onChange={(e) => {
             updatePublications(store, week, +e.target.value)
           }}

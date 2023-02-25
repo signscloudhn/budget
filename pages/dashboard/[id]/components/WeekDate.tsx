@@ -20,10 +20,18 @@ const WeekDate = ({ weekId }: date) => {
 
   const currentWeek = weeks[weekIndex]
 
+   const isLastWeek = () => {
+    if (weeks[weeks.length - 1].id === weekId) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   return (
     <div className={styles.date_container}>
       <p>{currentWeek?.date}</p>
-      {showInput && (
+      {showInput && isLastWeek() && (
         <input
           type="date"
           onChange={(e) => {
@@ -34,7 +42,7 @@ const WeekDate = ({ weekId }: date) => {
           }}
         />
       )}
-      {!showInput && (
+      {!showInput && isLastWeek() && (
         <Icon
           component={DateRangeIcon}
           onClick={() => {

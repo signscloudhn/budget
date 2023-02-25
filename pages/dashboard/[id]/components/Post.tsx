@@ -2,7 +2,7 @@ import { Icon } from "@mui/material"
 import FacebookIcon from "@mui/icons-material/Facebook"
 import InstagramIcon from "@mui/icons-material/Instagram"
 import styles from "../styles/DivisionInfo.module.scss"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import {
   updateSpent,
   updateSocialMediaDist,
@@ -10,14 +10,25 @@ import {
   updatePostBudget,
 } from "../../../../redux/slices/dataSlice"
 import { PostProps } from "../../../../interfaces/dashboard"
+import { state } from '../../../../interfaces/store';
 
 const Post = ({ post, update }: PostProps) => {
   const dispatch = useDispatch()
 
+  const {data} = useSelector((state: state)=> state)
+
+  const isLastWeek = () => {
+    if (data.weeks[data.weeks.length - 1].id === update?.weekId) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   return (
     <div className={styles.post}>
       <h5>Post {post?.id}:</h5>
-      <input type="checkbox" checked={post?.equivalent} onChange={()=>{
+      <input type="checkbox" checked={post?.equivalent} disabled={isLastWeek() ? false : true} onChange={()=>{
         dispatch(updateEquivalent({
           current: update,
           id: post?.id
@@ -28,7 +39,7 @@ const Post = ({ post, update }: PostProps) => {
         value={post?.budget}
         min={0}
         disabled={
-          !post?.equivalent ? false : true
+          !post?.equivalent && isLastWeek() ? false : true
         }
         onChange={(e) => {
           dispatch(
@@ -46,6 +57,7 @@ const Post = ({ post, update }: PostProps) => {
         value={post?.distribution?.instagram?.in}
         className={styles.in}
         min={0}
+        disabled={isLastWeek() ? false : true}
         onChange={(e) => {
           dispatch(
             updateSocialMediaDist({
@@ -63,6 +75,7 @@ const Post = ({ post, update }: PostProps) => {
         className={styles.out}
         min={0}
         max={post?.distribution?.instagram?.in}
+        disabled={isLastWeek() ? false : true}
         onChange={(e) => {
           dispatch(
             updateSpent({
@@ -81,6 +94,7 @@ const Post = ({ post, update }: PostProps) => {
         className={styles.in}
         min={0}
         max={post?.budget}
+        disabled={isLastWeek() ? false : true}
         onChange={(e) => {
           dispatch(
             updateSocialMediaDist({
@@ -98,6 +112,7 @@ const Post = ({ post, update }: PostProps) => {
         className={styles.out}
         min={0}
         max={post?.distribution?.facebook?.in}
+        disabled={isLastWeek() ? false : true}
         onChange={(e) => {
           dispatch(
             updateSpent({

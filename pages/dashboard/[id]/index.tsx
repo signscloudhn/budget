@@ -64,6 +64,14 @@ const TiendasList = () => {
     } else false
   }
 
+  const isLastWeek = () => {
+    if (state.weeks[state.weeks.length - 1].id === Number(id)) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   const exportData = () => {
     const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
       JSON.stringify(datos)
@@ -88,6 +96,7 @@ const TiendasList = () => {
         <h2>Week: </h2>
         <input
           type="number"
+          disabled={!isLastWeek() ? true : false }
           onChange={(e) => {
             dispatch(
               updateWeekNumber({
@@ -98,7 +107,7 @@ const TiendasList = () => {
           }}
           value={currentWeek?.number}
         />
-        {lastWeekId === Number(id) && state.weeks.length > 1 && (
+        {isLastWeek() && state.weeks.length > 1 && (
           <Icon
             component={RemoveCircleOutlineIcon}
             fontSize="small"
@@ -112,8 +121,6 @@ const TiendasList = () => {
           />
         )}
       </div>
-
-      {/* <p className={styles.date}>{currentWeek?.date}</p> */}
 
       <WeekDate weekId={currentWeek?.id} />
 
@@ -176,7 +183,7 @@ const TiendasList = () => {
           }
         })}
 
-        <div className={styles.add_buttons}>
+        {isLastWeek() && <div className={styles.add_buttons}>
           <button
             onClick={() => {
               router.push("/add-store")
@@ -198,7 +205,8 @@ const TiendasList = () => {
               Activar tiendas
             </button>
           )}
-        </div>
+        </div>}
+
       </div>
       <WeeksBar weeks={datos.weeks} />
     </div>

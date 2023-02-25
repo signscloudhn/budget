@@ -72,7 +72,7 @@ export const recalculatePublications = (
 
   const availableBudget = week.budgetTotal - notEquivalentTotal
 
-  if (budget < availableBudget) {
+  if (budget <= availableBudget) {
     currentPublication.budget = budget
 
     const leftOverForEquivalents =
@@ -115,8 +115,6 @@ export const recalculatePublications = (
         }
       }
     })
-  } else {
-    console.log("No te puedes pasar del presupuesto mi loco")
   }
 }
 
