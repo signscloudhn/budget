@@ -6,10 +6,11 @@ import PriceChangeIcon from "@mui/icons-material/PriceChange"
 import BurstModeIcon from "@mui/icons-material/BurstMode"
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange"
 import { useStores } from "../../../../hooks/useStores"
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addLastResidue } from "../../../../redux/slices/dataSlice"
-import { storeWeeks, state } from '../../../../interfaces/store';
+import { storeWeeks } from '../../../../interfaces/store';
 import { useState } from 'react';
+import useLastWeek from '../../../../hooks/useLastWeek';
 
 const Week = ({ store, week, children }: WeekProps) => {
 
@@ -17,7 +18,7 @@ const Week = ({ store, week, children }: WeekProps) => {
     last: false,
   })
 
-  const {data} = useSelector((state: state)=> state)
+  const {isLastWeek} = useLastWeek()
 
   const handleLast = () => {
     setShowModal({
@@ -54,13 +55,6 @@ const Week = ({ store, week, children }: WeekProps) => {
 
   const dispatch = useDispatch()
 
-  const isLastWeek = () => {
-    if (data.weeks[data.weeks.length - 1].id === week?.id) {
-      return true
-    } else {
-      return false
-    }
-  }
 
   return (
     <>

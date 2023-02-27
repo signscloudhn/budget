@@ -14,6 +14,7 @@ import DisabledStores from "./components/DisabledStores"
 import DeleteModal from "./components/DeleteModal"
 import WeekDate from "./components/WeekDate"
 // import store , { fetchThunk, postThunk } from '../../../redux/store';
+import useLastWeek from "../../../hooks/useLastWeek"
 
 const TiendasList = () => {
   const router = useRouter()
@@ -24,62 +25,41 @@ const TiendasList = () => {
     weeks: [],
   })
   const { stores, weeks } = datos
-  const [lastWeekId, setLastWeekId] = useState(0)
-
-  const state: stores = useSelector((state: state) => state.data)
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    // dispatch(fetchThunk)
-    if (stores.length < 1 && weeks.length) {
-      router.push("/add-store")
-    }
-
-    const weekExist = weeks.find((week) => week.id === Number(id))
-    console.log(id, weeks.length, weekExist)
-    if (weeks.length > 0 && !weekExist) {
-      router.push(`/dashboard/${lastWeekId}`)
-    }
-  }, [datos, id])
-
-  useEffect(() => {
-    setDatos(state)
-    setLastWeekId(datos.weeks[datos.weeks.length - 1]?.id)
-  }, [state, datos.weeks])
 
   const [showModals, setShowModals] = useState({
     delete: false,
     disabled: false,
   })
 
-  const current = (store: mainStore) => {
+  const { lastWeekId, isLastWeek, hasStoresDisabled } = useLastWeek()
+
+  const state: stores = useSelector((state: state) => state.data)
+  const dispatch = useDispatch()
+
+  const currentWeek = weeks.find((week) => week.id === Number(id))
+
+  useEffect(() => {
+    setDatos(state)
+  }, [state, weeks])
+
+  useEffect(() => {
+    // dispatch(fetchThunk)
+    if (stores.length < 1 && weeks.length) {
+      router.push("/add-store")
+    }
+    const weekExist = weeks.some((week) => week.id === Number(id))
+    if (weeks.length > 0 && !weekExist) {
+      router.push(`/dashboard/${lastWeekId}`)
+    }
+  }, [datos, id])
+
+  const storeHasCurrentWeek = (store: mainStore) => {
     const weekIndex: number | undefined = store.weeks.findIndex(
       (week) => week.id === Number(id)
     )
-
     if (weekIndex === -1) {
       return false
     } else return true
-  }
-
-  const currentWeek = datos.weeks.find((week) => week.id === Number(id))
-
-  const hasStoresDisabled = () => {
-    if (
-      lastWeekId === Number(id) &&
-      state.weeks.length > 1 &&
-      datos.stores.some((store) => !store.active)
-    ) {
-      return true
-    } else false
-  }
-
-  const isLastWeek = () => {
-    if (state.weeks[state.weeks.length - 1].id === Number(id)) {
-      return true
-    } else {
-      return false
-    }
   }
 
   const exportData = () => {
@@ -166,8 +146,8 @@ const TiendasList = () => {
       )}
 
       <div className={styles.stores_lista}>
-        {datos.stores.map((store) => {
-          if (current(store)) {
+        {stores.map((store) => {
+          if (storeHasCurrentWeek(store)) {
             return (
               <Tienda
                 key={store.name}
@@ -175,7 +155,6 @@ const TiendasList = () => {
                 globalResidue={store.globalResidue}
               >
                 {store.weeks.map((week) => {
-                  // * Render
                   if (week.id.toString() === id)
                     return (
                       <Week key={store.name} store={store} week={week}>
@@ -217,7 +196,7 @@ const TiendasList = () => {
           </div>
         )}
       </div>
-      <WeeksBar weeks={datos.weeks} />
+      <WeeksBar weeks={weeks} />
     </div>
   )
 }

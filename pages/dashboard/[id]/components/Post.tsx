@@ -2,7 +2,7 @@ import { Icon } from "@mui/material"
 import FacebookIcon from "@mui/icons-material/Facebook"
 import InstagramIcon from "@mui/icons-material/Instagram"
 import styles from "../styles/DivisionInfo.module.scss"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch} from "react-redux"
 import {
   updateSpent,
   updateSocialMediaDist,
@@ -10,20 +10,13 @@ import {
   updatePostBudget,
 } from "../../../../redux/slices/dataSlice"
 import { PostProps } from "../../../../interfaces/dashboard"
-import { state } from '../../../../interfaces/store';
+
+import useLastWeek from '../../../../hooks/useLastWeek';
 
 const Post = ({ post, update }: PostProps) => {
   const dispatch = useDispatch()
 
-  const {data} = useSelector((state: state)=> state)
-
-  const isLastWeek = () => {
-    if (data.weeks[data.weeks.length - 1].id === update?.weekId) {
-      return true
-    } else {
-      return false
-    }
-  }
+  const {isLastWeek} = useLastWeek()
 
   return (
     <div className={styles.post}>

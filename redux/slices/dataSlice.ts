@@ -110,8 +110,8 @@ const dataSlice = createSlice({
       const { stores } = state
       const budgetInitial = action.payload.budgetInitial
       const globalResidue = action.payload.globalResidue
-      const currentStoreIndex = action.payload.currentStoreIndex
-      const currentWeekIndex = action.payload.currentWeekIndex
+      const currentStoreIndex = action.payload.storeIndex
+      const currentWeekIndex = action.payload.weekStoreIndex
 
       masterStoreUpdater({
         stores,

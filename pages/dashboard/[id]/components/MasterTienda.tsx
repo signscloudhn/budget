@@ -1,40 +1,36 @@
 import { Formik, Form, Field } from "formik"
 import { useRouter } from "next/router"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { deleteStore, disableStore } from "../../../../redux/slices/dataSlice"
-import { state } from "../../../../interfaces/store"
 import { updateMasterStore } from "../../../../redux/slices/dataSlice"
 import { MasterTienda } from "../../../../interfaces/dashboard"
 import styles from "../styles/MasterTienda.module.scss"
 import { useState, useEffect } from 'react';
-import { findStoreIndexWithName, findWeekIndexWithId } from "../../../../utils/indexFinder"
+import useFindIndex from '../../../../hooks/useFindIndex';
 
 const MasterTienda = ({ handle, name }: MasterTienda) => {
   const router = useRouter()
   const { id } = router.query
 
   const dispatch = useDispatch()
-  const stores = useSelector((state: state) => state.data.stores)
 
-  const currentStoreIndex = findStoreIndexWithName(stores, name)
-  const currentStore = stores[currentStoreIndex]
-  const currentWeekIndex = findWeekIndexWithId(currentStore, Number(id))
+  const {currentStore, weekStoreIndex, storeIndex} = useFindIndex(name, Number(id))
+
+    const initialValue = {
+    globalResidue: currentStore?.globalResidue,
+    budgetInitial: currentStore?.weeks[weekStoreIndex]?.budgetInitial,
+    sumarResiduoAnterior: false,
+  }
 
   const submit = (budgetInitial: number, globalResidue: number) => {
     dispatch(
       updateMasterStore({
         budgetInitial,
         globalResidue,
-        currentStoreIndex,
-        currentWeekIndex,
+        storeIndex,
+        weekStoreIndex,
       })
     )
-  }
-
-  const initialValue = {
-    globalResidue: currentStore?.globalResidue,
-    budgetInitial: currentStore?.weeks[currentWeekIndex]?.budgetInitial,
-    sumarResiduoAnterior: false,
   }
 
   const [show, setShow] = useState({

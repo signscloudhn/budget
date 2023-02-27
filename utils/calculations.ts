@@ -38,17 +38,6 @@ export const splitBudget = (publications: number, week: storeWeeks) => {
   }
 }
 
-// export const recalculateGlobalResidue = (store: store) => {
-//   let nuevoGlobalResidue = 0
-
-//   store.weeks.forEach((week) => {
-//     if (!week.residueIsSpend) {
-//       nuevoGlobalResidue = nuevoGlobalResidue + week.residue
-//     }
-//   })
-//   store.globalResidue = nuevoGlobalResidue
-// }
-
 export const recalculatePublications = (
   week: storeWeeks,
   budget: number,

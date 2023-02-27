@@ -6,14 +6,24 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle"
 import MasterTienda from "./MasterTienda"
 import { useState } from "react"
 import { useRouter } from "next/router"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import {
   addGlobalResidue,
   updateWeekStoreDate,
 } from "../../../../redux/slices/dataSlice"
-import { state } from "../../../../interfaces/store"
+import useLastWeek from "../../../../hooks/useLastWeek"
+import useFindIndex from "../../../../hooks/useFindIndex"
 
 const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
+  const router = useRouter()
+  const { id } = router.query
+  const idToNumber = Number(id)
+
+  const dispatch = useDispatch()
+
+  const { isLastWeek } = useLastWeek()
+  const { currentStoreWeek } = useFindIndex(name, idToNumber)
+
   const [showModal, setShowModal] = useState({
     master: false,
     global: false,
@@ -32,44 +42,19 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
     })
   }
 
-  const data = useSelector((state: state) => state.data)
-
-  const storeIndex = data.stores.findIndex((store) => store.name === name)
-
-  const router = useRouter()
-  const { id } = router.query
-
-  const idToNumber = Number(id)
-
-  const dispatch = useDispatch()
-
-  const weekIndex = data.stores[storeIndex]?.weeks.findIndex(
-    (week) => week.id === idToNumber
-  )
-
-  const current = data.stores[storeIndex]?.weeks[weekIndex]
-
   const hasResidue = () => {
-    const hasSpendingMoney = current?.division.some(
-      (publicacion) =>
-        publicacion.distribution.facebook.out !== 0 ||
-        publicacion.distribution.instagram.out !== 0
+    const hasSpendingMoney = currentStoreWeek?.division.some(
+      (post) =>
+        post.distribution.facebook.out !== 0 ||
+        post.distribution.instagram.out !== 0
     )
 
-    if (current?.residue > 0) {
+    if (currentStoreWeek?.residue > 0) {
       return "has residue"
     } else if (!hasSpendingMoney) {
       return "not touched"
     } else {
       return "clean"
-    }
-  }
-
-  const isLastWeek = () => {
-    if (data.weeks[data.weeks.length - 1].id === idToNumber) {
-      return true
-    } else {
-      return false
     }
   }
 
@@ -89,20 +74,22 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
           </h5>
         </div>
         <div className={styles.item_date}>
-          <p>{current?.date}</p>
-          {isLastWeek() && <input
-            type="date"
-            onChange={(e) => {
-              dispatch(
-                updateWeekStoreDate({
-                  name: name,
-                  id: Number(id),
-                  value: e.target.value,
-                })
-              )
-            }}
-            className={styles.date}
-          />}
+          <p>{currentStoreWeek?.date}</p>
+          {isLastWeek() && (
+            <input
+              type="date"
+              onChange={(e) => {
+                dispatch(
+                  updateWeekStoreDate({
+                    name: name,
+                    id: Number(id),
+                    value: e.target.value,
+                  })
+                )
+              }}
+              className={styles.date}
+            />
+          )}
         </div>
         <div className={styles.residue}>
           {globalResidue > 0 && isLastWeek() ? (
