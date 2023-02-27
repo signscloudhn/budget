@@ -16,18 +16,31 @@ import WeekDate from "./components/WeekDate"
 // import store , { fetchThunk, postThunk } from '../../../redux/store';
 
 const TiendasList = () => {
+  const router = useRouter()
+  const { id } = router.query
+
   const [datos, setDatos] = useState<stores>({
     stores: [],
     weeks: [],
   })
+  const { stores, weeks } = datos
   const [lastWeekId, setLastWeekId] = useState(0)
 
   const state: stores = useSelector((state: state) => state.data)
   const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   dispatch(fetchThunk)
-  // }, [])
+  useEffect(() => {
+    // dispatch(fetchThunk)
+    if (stores.length < 1 && weeks.length) {
+      router.push("/add-store")
+    }
+
+    const weekExist = weeks.find((week) => week.id === Number(id))
+    console.log(id, weeks.length, weekExist)
+    if (weeks.length > 0 && !weekExist) {
+      router.push(`/dashboard/${lastWeekId}`)
+    }
+  }, [datos, id])
 
   useEffect(() => {
     setDatos(state)
@@ -38,9 +51,6 @@ const TiendasList = () => {
     delete: false,
     disabled: false,
   })
-
-  const router = useRouter()
-  const { id } = router.query
 
   const current = (store: mainStore) => {
     const weekIndex: number | undefined = store.weeks.findIndex(
@@ -96,7 +106,7 @@ const TiendasList = () => {
         <h2>Week: </h2>
         <input
           type="number"
-          disabled={!isLastWeek() ? true : false }
+          disabled={!isLastWeek() ? true : false}
           onChange={(e) => {
             dispatch(
               updateWeekNumber({
@@ -105,7 +115,7 @@ const TiendasList = () => {
               })
             )
           }}
-          value={currentWeek?.number}
+          defaultValue={currentWeek?.number}
         />
         {isLastWeek() && state.weeks.length > 1 && (
           <Icon
@@ -137,23 +147,21 @@ const TiendasList = () => {
 
       {showModals.delete && (
         <DeleteModal
-        done={()=>{
-          dispatch(deleteWeek({ id: id }))
-                  setShowModals({
-                    ...showModals,
-                    delete: false,
-                  })
-          router.push(`/dashboard/${lastWeekId - 1}`)
-        }}
-        undone={
-          () => {
-                  setShowModals({
-                    ...showModals,
-                    delete: false,
-                  })
-                }
-        }
-        number={currentWeek?.number}
+          done={() => {
+            dispatch(deleteWeek({ id: id }))
+            setShowModals({
+              ...showModals,
+              delete: false,
+            })
+            router.push(`/dashboard/${lastWeekId - 1}`)
+          }}
+          undone={() => {
+            setShowModals({
+              ...showModals,
+              delete: false,
+            })
+          }}
+          number={currentWeek?.number}
         />
       )}
 
@@ -183,30 +191,31 @@ const TiendasList = () => {
           }
         })}
 
-        {isLastWeek() && <div className={styles.add_buttons}>
-          <button
-            onClick={() => {
-              router.push("/add-store")
-            }}
-            className={styles.new_btn}
-          >
-            Nueva Tienda
-          </button>
-
-          {hasStoresDisabled() && (
+        {isLastWeek() && (
+          <div className={styles.add_buttons}>
             <button
               onClick={() => {
-                setShowModals({
-                  ...showModals,
-                  disabled: true,
-                })
+                router.push("/add-store")
               }}
+              className={styles.new_btn}
             >
-              Activar tiendas
+              Nueva Tienda
             </button>
-          )}
-        </div>}
 
+            {hasStoresDisabled() && (
+              <button
+                onClick={() => {
+                  setShowModals({
+                    ...showModals,
+                    disabled: true,
+                  })
+                }}
+              >
+                Activar tiendas
+              </button>
+            )}
+          </div>
+        )}
       </div>
       <WeeksBar weeks={datos.weeks} />
     </div>
