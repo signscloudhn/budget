@@ -1,5 +1,4 @@
 import { storeWeeks, division } from "../interfaces/store"
-import { equivalentUpdater } from "./update"
 
 export const splitBudget = (publications: number, week: storeWeeks) => {
   week.division = []
@@ -149,7 +148,7 @@ export const generateDate = (date?: string | undefined) => {
   const daysToEndWeek = 6
 
   const getStartWeek = () => {
-    let dias = newDate.getDay() * 86400000
+    let dias = newDate.getDay() * milisecondsAt24Hours
 
     return new Date(newDate.getTime() - dias)
   }

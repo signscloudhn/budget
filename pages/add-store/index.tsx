@@ -46,10 +46,7 @@ const AddStore = () => {
   } else {
     dispatch(setError("La tienda ya existe"))
   }
-
 }
-
-
   return (
     <div className={styles.container}>
       <h2>Agregar nueva Tienda</h2>

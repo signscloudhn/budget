@@ -63,7 +63,7 @@ const MasterTienda = ({ handle, name }: MasterTienda) => {
   }
 
   useEffect(()=>{
-    if(show.deleteInput === "kato-delete"){
+    if(show.deleteInput === "store-delete"){
     setShow({
       ...show,
       enableDelete: true
@@ -156,7 +156,7 @@ const MasterTienda = ({ handle, name }: MasterTienda) => {
 
               {show.openDelete && (
               <>
-              <p className={styles.disclaimer}>Para borrar la tienda escribe la palabra {"'"}kato-delete{"'"} en el siguiente campo:</p>
+              <p className={styles.disclaimer}>Para borrar la tienda escribe la palabra {"'"}store-delete{"'"} en el siguiente campo:</p>
               <input type="text" onChange={e => {
                   captureInput(e.target.value)
               }} />

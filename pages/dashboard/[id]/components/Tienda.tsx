@@ -14,6 +14,7 @@ import {
 import useLastWeek from "../../../../hooks/useLastWeek"
 import useFindIndex from "../../../../hooks/useFindIndex"
 
+
 const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
   const router = useRouter()
   const { id } = router.query
