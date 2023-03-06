@@ -25,6 +25,9 @@
 
 .publications {
   display: flex;
+  input {
+    width: 60px;
+  }
   .post {
     margin: 5px;
     display: flex;
