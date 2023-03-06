@@ -116,12 +116,12 @@ export const recalculateSocialMedia = (
   if (social === "instagram" && value <= division.budget) {
     division.distribution.instagram.in = value
 
-    division.distribution.facebook.in = surplus
+    division.distribution.facebook.in = Number(surplus.toFixed(4))
   }
   if (social === "facebook" && value <= division.budget) {
     division.distribution.facebook.in = value
 
-    division.distribution.instagram.in = surplus
+    division.distribution.instagram.in = Number(surplus.toFixed(4))
   }
 }
 
