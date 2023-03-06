@@ -175,7 +175,7 @@ export const spentUpdater = ({
   const residueWithDecimals = residueFacebook + residueInstagram
 
   currentWeek.division[publicationIndex].residue = Number(
-    residueWithDecimals.toFixed(2)
+    residueWithDecimals.toFixed(4)
   )
 
   calculateCurrentResidue(currentWeek)

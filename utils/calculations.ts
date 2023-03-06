@@ -10,9 +10,9 @@ export const splitBudget = (publications: number, week: storeWeeks) => {
 
     const budgetSocialMedia = budgetPublication / 2
 
-    const budgetSocialMediaRounded = Number(budgetSocialMedia.toFixed(2))
+    const budgetSocialMediaRounded = Number(budgetSocialMedia.toFixed(4))
 
-    const budgetPublicationRounded = Number(budgetPublication.toFixed(2))
+    const budgetPublicationRounded = Number(budgetPublication.toFixed(4))
 
     idCounter = idCounter + 1
 
@@ -68,7 +68,7 @@ export const recalculatePublications = (
 
     const budgetSocialMedia = budget / 2
 
-    const budgetSocialMediaRounded = Number(budgetSocialMedia.toFixed(2))
+    const budgetSocialMediaRounded = Number(budgetSocialMedia.toFixed(4))
 
     currentPublication.distribution = {
       instagram: {
@@ -85,11 +85,11 @@ export const recalculatePublications = (
       if (post.equivalent) {
         const budgetToPost = leftOverForEquivalents / equivalentPosts.length
 
-        post.budget = budgetToPost
+        post.budget = Number(budgetToPost.toFixed(4))
 
         const budgetSocialMedia = budgetToPost / 2
 
-        const budgetSocialMediaRounded = Number(budgetSocialMedia.toFixed(2))
+        const budgetSocialMediaRounded = Number(budgetSocialMedia.toFixed(4))
 
         post.distribution = {
           instagram: {
@@ -129,10 +129,10 @@ export const calculateCurrentResidue = (week: storeWeeks) => {
   let residue = 0
 
   week.division.forEach((publication) => {
-    residue = residue + Number(publication.residue.toFixed(2))
+    residue = residue + Number(publication.residue.toFixed(4))
   })
 
-  week.residue = Number(residue.toFixed(2))
+  week.residue = Number(residue.toFixed(4))
 }
 
 export const generateDate = (date?: string | undefined) => {
