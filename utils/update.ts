@@ -263,7 +263,9 @@ export const globalResidueAdder = ({
   const currentStore = stores[storeIndex]
   const currentWeek = stores[storeIndex].weeks[weekIndex]
 
-  currentWeek.budgetTotal = currentWeek.budgetTotal + currentStore.globalResidue
+  const newBudgetTotal = currentWeek.budgetTotal + currentStore.globalResidue
+
+  currentWeek.budgetTotal = Number(newBudgetTotal.toFixed(4))
 
   currentStore.weeks.forEach((week) => {
     if (week.id !== currentWeek.id) week.residueIsSpend = true
