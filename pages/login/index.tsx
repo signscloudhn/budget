@@ -2,6 +2,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik"
 import styles from "./styles/login.module.scss"
 import { validationsLoginForm } from '../../utils/validations';
 import * as yup from 'yup';
+import Link from "next/link";
 
 const index = () => {
 
@@ -16,23 +17,24 @@ const index = () => {
           password: "",
         }}
         onSubmit={(values) => {
-          console.log(values)
+          //
         }}
         validationSchema={yup.object(validationsLoginForm)}
       >
         {() => (
           <Form>
             <div>
-              <label>Correo:</label>
+              <label htmlFor="email">Correo:</label>
               <Field type="email" name="email" />
             </div>
-            <ErrorMessage name="email" component="p" />
+            <ErrorMessage name="email" component="p" className={styles.error} />
             <div>
-              <label>Password:</label>
+              <label htmlFor="password" >Password:</label>
               <Field type="password" name="password" />
             </div>
-            <ErrorMessage name="password" component="p" />
+            <ErrorMessage name="password" component="p" className={styles.error} />
             <button type="submit" >Sign in</button>
+            <Link href={"login/recovery"} className={styles.recovery} >Olvide mi contraseña :D</Link>
           </Form>
         )}
       </Formik>
