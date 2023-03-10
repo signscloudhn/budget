@@ -1,6 +1,8 @@
 import { weekCreatorProps } from "../interfaces/crud"
 import { generateDate } from "./calculations"
 import { newStoreCreatorProps } from "../interfaces/crud"
+import { PostAddSharp } from "@mui/icons-material"
+import { division } from "../interfaces/store"
 
 const { nextWeek } = generateDate()
 
@@ -27,9 +29,9 @@ export const weekCreator = ({ weeks, stores, lastWeek }: weekCreatorProps) => {
       residueIsSpend: false,
     }
 
-    const lastDivisionCopy = lastWeekStore.division.slice()
-
-    lastDivisionCopy.forEach((post) => {
+    const newDivisionCopy: Array<division> = []
+    newDivisionCopy.concat(lastWeekStore.division)
+    newDivisionCopy.forEach((post) => {
       post.distribution.facebook.out = 0
       post.distribution.instagram.out = 0
       post.residue = 0
@@ -41,10 +43,11 @@ export const weekCreator = ({ weeks, stores, lastWeek }: weekCreatorProps) => {
       budgetInitial: lastWeekStore.budgetInitial,
       budgetTotal: lastWeekStore.budgetInitial,
       publications: lastWeekStore.publications,
-      division: lastDivisionCopy,
+      division: newDivisionCopy,
       residue: 0,
       residueIsSpend: false,
     }
+
     if (store.active) {
       store.weeks.push(newWeek)
 
