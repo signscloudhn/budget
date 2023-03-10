@@ -154,7 +154,7 @@ const TiendasList = () => {
                 name={store.name}
                 globalResidue={store.globalResidue}
               >
-                {store.weeks.map((week) => {
+                {/* {store.weeks.map((week) => {
                   if (week.id.toString() === id)
                     return (
                       <Week key={store.name} store={store} week={week}>
@@ -164,7 +164,7 @@ const TiendasList = () => {
                         />
                       </Week>
                     )
-                })}
+                })} */}
               </Tienda>
             )
           }

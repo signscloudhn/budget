@@ -18,10 +18,15 @@
     display: flex;
     align-items: center;
     padding: 0px 5px 0px 5px;
+    .open_master {
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
   .item {
     padding: 5px;
-    border-left: 2px #33cfff solid;
     display: flex;
     align-items: center;
   }
@@ -35,11 +40,13 @@
     // position: absolute;
     bottom: -19px;
     right: 10px;
-    background-color: #747474;
+    border-radius: 3px;
+    color: #515353;
+    background-color: none;
     border: none;
-    font-size: 9px;
+    font-size: 12px;
     color: #ffffff;
-    opacity: 0.2;
+    // opacity: 0.2;
     &:hover {
       opacity: 1;
       font-size: 12px;
@@ -50,10 +57,16 @@
     &:nth-child(2) {
       color: #ffffff;
     }
+    &::-webkit-calendar-picker-indicator {
+      // background-color: #ffffff;
+      display: block;
+      padding: 5px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
   }
   .residue {
     padding: 5px 5px 5px 5px;
-    border-left: 2px #33cfff solid;
     display: flex;
     align-items: center;
     .bottom {

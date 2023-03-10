@@ -14,7 +14,6 @@ import {
 import useLastWeek from "../../../../hooks/useLastWeek"
 import useFindIndex from "../../../../hooks/useFindIndex"
 
-
 const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
   const router = useRouter()
   const { id } = router.query
@@ -62,14 +61,12 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
   return (
     <>
       <div className={styles.container}>
-        <div
-          className={styles.title}
-          style={isLastWeek() ? { cursor: "pointer" } : { cursor: "auto" }}
-        >
+        <div className={styles.title}>
           <h5
             onClick={() => {
               isLastWeek() && handleMaster()
             }}
+            className={isLastWeek() ? styles.open_master : ``}
           >
             {name}
           </h5>
