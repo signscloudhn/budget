@@ -1,8 +1,8 @@
 import { weekCreatorProps } from "../interfaces/crud"
 import { generateDate } from "./calculations"
 import { newStoreCreatorProps } from "../interfaces/crud"
-import { PostAddSharp } from "@mui/icons-material"
-import { division } from "../interfaces/store"
+import { publicationDistUpdater } from "./update"
+import index from "../pages/login/index"
 
 const { nextWeek } = generateDate()
 
@@ -17,7 +17,7 @@ export const weekCreator = ({ weeks, stores, lastWeek }: weekCreatorProps) => {
     number: lastWeek.number + 1,
   })
 
-  stores.forEach((store) => {
+  stores.forEach((store, index) => {
     const lastWeekStore = store.weeks[store.weeks.length - 1] ?? {
       id: 0,
       division: [],
@@ -29,21 +29,13 @@ export const weekCreator = ({ weeks, stores, lastWeek }: weekCreatorProps) => {
       residueIsSpend: false,
     }
 
-    const newDivisionCopy: Array<division> = []
-    newDivisionCopy.concat(lastWeekStore.division)
-    newDivisionCopy.forEach((post) => {
-      post.distribution.facebook.out = 0
-      post.distribution.instagram.out = 0
-      post.residue = 0
-    })
-
     const newWeek = {
       id: newWeekId,
       date: undefined,
       budgetInitial: lastWeekStore.budgetInitial,
       budgetTotal: lastWeekStore.budgetInitial,
       publications: lastWeekStore.publications,
-      division: newDivisionCopy,
+      division: [],
       residue: 0,
       residueIsSpend: false,
     }
@@ -52,6 +44,14 @@ export const weekCreator = ({ weeks, stores, lastWeek }: weekCreatorProps) => {
       store.weeks.push(newWeek)
 
       store.globalResidue = store.globalResidue + lastWeekStore.residue
+
+      const lastIndex = store.weeks.length - 1
+      publicationDistUpdater({
+        stores: stores,
+        storeIndex: index,
+        weekIndex: lastIndex,
+        publications: store.weeks[lastIndex].publications,
+      })
     }
   })
 }
