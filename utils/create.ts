@@ -36,6 +36,7 @@ export const weekCreator = ({ weeks, stores, lastWeek }: weekCreatorProps) => {
       const newWeek: storeWeeks = {
         ...lastWeekCopy,
         id: newWeekId,
+        budgetTotal: lastWeekCopy.budgetInitial,
         date: undefined,
         residue: 0,
         residueIsSpend: false,
