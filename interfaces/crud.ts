@@ -82,6 +82,12 @@ export interface SocialMediaDistUpdaterProps {
   current: current
 }
 
+export interface fillSocialMediaProps {
+  stores: Array<store>
+  weekId: number
+  name: string
+}
+
 export interface residueUpdaterProps {
   stores: Array<store>
   id: number

@@ -8,6 +8,7 @@ import {
   updatePublicationDistProps,
   equivalentUpdaterProps,
   postUpdaterProps,
+  fillSocialMediaProps,
 } from "../interfaces/crud"
 import {
   calculateCurrentResidue,
@@ -179,6 +180,25 @@ export const spentUpdater = ({
   )
 
   calculateCurrentResidue(currentWeek)
+}
+
+export const fillSocialMedia = ({
+  stores,
+  weekId,
+  name,
+}: fillSocialMediaProps) => {
+  const storeIndex = findStoreIndexWithName(stores, name)
+  const weekIndex = findWeekIndexWithId(stores[storeIndex], weekId)
+  const currentWeek = stores[storeIndex].weeks[weekIndex]
+
+  currentWeek.division.forEach((post) => {
+    post.distribution.instagram.out = post.distribution.instagram.in
+    post.distribution.facebook.out = post.distribution.facebook.in
+    post.residue = 0
+
+    console.log(post.distribution.facebook)
+  })
+  currentWeek.residue = 0
 }
 
 export const storeDisabler = ({ name, stores }: storeUpdaterProps) => {

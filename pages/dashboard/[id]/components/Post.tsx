@@ -101,7 +101,7 @@ const Post = ({ post, update }: PostProps) => {
       />
       <input
         type="number"
-        defaultValue={post?.distribution?.facebook?.out}
+        value={post?.distribution?.facebook?.out}
         className={styles.out}
         min={0}
         max={post?.distribution?.facebook?.in}

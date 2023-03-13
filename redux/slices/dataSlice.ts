@@ -8,7 +8,8 @@ import {
   storeEnabler,
 } from "../../utils/update"
 import { newStoreCreator } from "../../utils/create"
-import { weekDateUpdater } from "../../utils/update"
+import { weekDateUpdater, fillSocialMedia } from "../../utils/update"
+import { state } from "../../interfaces/store"
 import {
   SocialMediaDistUpdater,
   spentUpdater,
@@ -160,6 +161,13 @@ const dataSlice = createSlice({
       })
     },
 
+    fillSocialMediaDist: (state, action) => {
+      const { stores } = state
+      const { name, weekId } = action.payload
+
+      fillSocialMedia({ stores, weekId, name })
+    },
+
     updateSpent: (state, action) => {
       const { stores } = state
       const id = action.payload.id
@@ -213,6 +221,7 @@ export const {
   updatePostBudget,
   updateEquivalent,
   updateSocialMediaDist,
+  fillSocialMediaDist,
   updateSpent,
   deleteWeek,
   deleteStore,
