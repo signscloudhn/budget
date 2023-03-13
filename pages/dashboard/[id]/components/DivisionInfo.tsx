@@ -4,9 +4,13 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import Icon from "@mui/material/Icon"
 import { useState, useEffect, useRef, RefObject } from "react"
 import Post from "./Post"
+import { useDispatch } from 'react-redux';
+import { fillSocialMediaDist } from "../../../../redux/slices/dataSlice"
 
 const DivisionInfo = ({ division, update }: DivisionProps) => {
   const [show, setShow] = useState(false)
+
+  const dispatch = useDispatch()
 
   const handleRotate = () => {
     if (show) {
@@ -52,7 +56,11 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
               <Post key={post.id} post={post} update={update} />
             ))}
           </div>
-          {/* <button>Save</button> */}
+          <button onClick={
+            ()=>{
+              dispatch(fillSocialMediaDist(update))
+            }
+          } >Fill</button>
         </div>
       )}
     </div>
