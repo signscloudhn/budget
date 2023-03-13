@@ -75,11 +75,11 @@ const TiendasList = () => {
 
   return (
     <div className={styles.container}>
-      {/* <button onClick={()=>{
-        dispatch(postThunk)
-        // exportData()
-      }} >Save</button>
-      <button onClick={()=> dispatch(fetchThunk)} >
+      <button onClick={()=>{
+        // dispatch(postThunk)
+        exportData()
+      }} >Export</button>
+      {/* <button onClick={()=> dispatch(fetchThunk)} >
         Fetch
       </button> */}
       <div className={styles.title}>
