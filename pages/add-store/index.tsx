@@ -27,7 +27,9 @@ const AddStore = () => {
 
 
   useEffect(()=>{
-    dispatch(setInitial())
+    return ()=>{
+      dispatch(setInitial())
+    }
   },[])
 
 
