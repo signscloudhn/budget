@@ -148,8 +148,7 @@ export const generateDate = (date?: string | undefined) => {
   const daysToEndWeek = 6
 
   const getStartWeek = () => {
-    let dias = newDate.getDay() * milisecondsAt24Hours
-
+    let dias = (newDate.getDay() + 2) * milisecondsAt24Hours
     return new Date(newDate.getTime() - dias)
   }
 
@@ -167,9 +166,9 @@ export const generateDate = (date?: string | undefined) => {
     let nextDay
 
     if (typeof date === "string") {
-      nextDay = new Date(date).getTime() + 1 * milisecondsAt24Hours
+      nextDay = new Date(date).getTime() + 3 * milisecondsAt24Hours
     } else {
-      nextDay = new Date().getTime() + 1 * milisecondsAt24Hours
+      nextDay = new Date().getTime() + 3 * milisecondsAt24Hours
     }
 
     return new Date(nextDay).toDateString()
