@@ -10,7 +10,6 @@ import {
   updatePostBudget,
 } from "../../../../redux/slices/dataSlice"
 import { PostProps } from "../../../../interfaces/dashboard"
-
 import useLastWeek from '../../../../hooks/useLastWeek';
 
 const Post = ({ post, update }: PostProps) => {

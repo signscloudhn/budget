@@ -33,10 +33,10 @@ const dataSlice = createSlice({
     },
 
     createNewStore: (state, action) => {
-      const { stores } = state
+      const { stores, weeks } = state
       const payload = action.payload
 
-      newStoreCreator({ stores, payload })
+      newStoreCreator({ stores, weeks, payload })
     },
 
     createWeek: (state) => {
@@ -95,14 +95,14 @@ const dataSlice = createSlice({
 
     updatePublicationsDist: (state, action) => {
       const { stores } = state
-      const storeIndex = action.payload.storeIndex
-      const weekIndex = action.payload.weekIndex
+      const name = action.payload.name
+      const weekId = action.payload.weekId
       const publications = action.payload.publications
 
       publicationDistUpdater({
         stores,
-        storeIndex,
-        weekIndex,
+        name,
+        weekId,
         publications,
       })
     },
