@@ -7,8 +7,12 @@ export interface weekCreatorProps {
 
 export interface newStoreCreatorProps {
   stores: Array<store>
-  payload: store
-  // dispatch: Dispatch
+  weeks: Array<weeks>
+  payload: {
+    name: string
+    budget: number
+    publications: number
+  }
 }
 interface current {
   name: string
@@ -52,10 +56,10 @@ export interface equivalentUpdaterProps {
   current: current
 }
 
-export interface updatePublicationDistProps {
+export interface publicationDistUpdaterProps {
   stores: Array<store>
-  storeIndex: number
-  weekIndex: number
+  name: string
+  weekId: number
   publications: number
 }
 
@@ -80,6 +84,12 @@ export interface SocialMediaDistUpdaterProps {
   value: number
   social: string
   current: current
+}
+
+export interface fillSocialMediaProps {
+  stores: Array<store>
+  weekId: number
+  name: string
 }
 
 export interface residueUpdaterProps {

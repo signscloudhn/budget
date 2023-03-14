@@ -5,9 +5,8 @@ import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn"
 import PriceChangeIcon from "@mui/icons-material/PriceChange"
 import BurstModeIcon from "@mui/icons-material/BurstMode"
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange"
-import { useStores } from "../../../../hooks/useStores"
 import { useDispatch } from 'react-redux';
-import { addLastResidue } from "../../../../redux/slices/dataSlice"
+import { addLastResidue, updatePublicationsDist } from "../../../../redux/slices/dataSlice"
 import { storeWeeks } from '../../../../interfaces/store';
 import { useState } from 'react';
 import useLastWeek from '../../../../hooks/useLastWeek';
@@ -50,8 +49,6 @@ const Week = ({ store, week, children }: WeekProps) => {
       return true
     }
   }
-
-  const { updatePublications } = useStores()
 
   const dispatch = useDispatch()
 
@@ -111,7 +108,7 @@ const Week = ({ store, week, children }: WeekProps) => {
           value={week?.publications}
           disabled={!isLastWeek() ? true : false}
           onChange={(e) => {
-            updatePublications(store, week, +e.target.value)
+            dispatch(updatePublicationsDist({name: store.name, weekId: week.id, publications: +e.target.value,}))
           }}
         />
         <div className={styles.publications}>{children}</div>

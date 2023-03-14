@@ -1,7 +1,6 @@
 import { Formik, Form, Field, ErrorMessage, FormikValues } from "formik"
 import { useRouter } from "next/router"
 import { useSelector, useDispatch } from 'react-redux';
-import { useStores } from "../../hooks/useStores"
 import { state } from '../../interfaces/store';
 import styles from "./styles/add-store.module.sass"
 import validations from "../../lib/validations"
@@ -9,6 +8,7 @@ import * as yup from "yup"
 import { setError, setInitial, setPending, setSuccess } from "../../redux/slices/statusSlice";
 // import { postThunk } from '../../redux/store';
 import { useEffect } from 'react';
+import { createNewStore } from "../../redux/slices/dataSlice";
 
 
 
@@ -21,13 +21,15 @@ const AddStore = () => {
 
   const {status, data} = useSelector((state: state)=> state)
 
-  const { createStore } = useStores()
+  // const { createStore } = useStores()
 
   const dispatch: any = useDispatch()
 
 
   useEffect(()=>{
-    dispatch(setInitial())
+    return ()=>{
+      dispatch(setInitial())
+    }
   },[])
 
 
@@ -40,7 +42,7 @@ const AddStore = () => {
   const storeExist = data.stores.some(store => store.name === name)
 
   if(!storeExist) {
-    createStore(name, budget, publications)
+    dispatch(createNewStore({name, budget, publications}))
     dispatch(setSuccess())
     router.push(`/dashboard/${lastWeekId}`)
   } else {

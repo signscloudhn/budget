@@ -10,7 +10,6 @@ import {
   updatePostBudget,
 } from "../../../../redux/slices/dataSlice"
 import { PostProps } from "../../../../interfaces/dashboard"
-
 import useLastWeek from '../../../../hooks/useLastWeek';
 
 const Post = ({ post, update }: PostProps) => {
@@ -101,7 +100,7 @@ const Post = ({ post, update }: PostProps) => {
       />
       <input
         type="number"
-        defaultValue={post?.distribution?.facebook?.out}
+        value={post?.distribution?.facebook?.out}
         className={styles.out}
         min={0}
         max={post?.distribution?.facebook?.in}
