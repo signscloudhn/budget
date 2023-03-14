@@ -1,7 +1,7 @@
 import { weekCreatorProps } from "../interfaces/crud"
-import { generateDate } from "./calculations"
+import { generateDate, splitBudget } from "./calculations"
 import { newStoreCreatorProps } from "../interfaces/crud"
-import { storeWeeks } from "../interfaces/store"
+import { store, storeWeeks } from "../interfaces/store"
 
 const { nextWeek } = generateDate()
 
@@ -53,10 +53,36 @@ export const weekCreator = ({ weeks, stores, lastWeek }: weekCreatorProps) => {
   })
 }
 
-export const newStoreCreator = ({ stores, payload }: newStoreCreatorProps) => {
+export const newStoreCreator = ({
+  stores,
+  weeks,
+  payload,
+}: newStoreCreatorProps) => {
   const storeExist = stores.some((store) => store.name === payload.name)
+  const { name, budget, publications } = payload
+  const lastWeekId = weeks[weeks.length - 1].id
+
+  const store: store = {
+    name: name,
+    active: true,
+    globalResidue: 0,
+    weeks: [
+      {
+        id: lastWeekId,
+        date: undefined,
+        budgetInitial: budget,
+        budgetTotal: budget,
+        publications: publications,
+        division: [],
+        residue: 0,
+        residueIsSpend: false,
+      },
+    ],
+  }
+
+  splitBudget(publications, store.weeks[0])
 
   if (!storeExist) {
-    stores.push(payload)
+    stores.push(store)
   }
 }
