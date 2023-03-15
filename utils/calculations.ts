@@ -187,8 +187,3 @@ export const generateDate = (date?: string | undefined) => {
     nextWeek: getNextStartWeek,
   }
 }
-
-const { startWeek, endWeek } = generateDate("03/17/23")
-
-console.log(startWeek)
-console.log(endWeek)
