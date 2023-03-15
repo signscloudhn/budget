@@ -1,5 +1,5 @@
 import { division } from "./store"
-import { storeWeeks, store } from "./store"
+import { storeWeeks, store, weeks } from "./store"
 
 export interface DisabledStoresProps {
   func: () => void
@@ -49,10 +49,12 @@ export interface WeekProps {
   children?: React.ReactNode
 }
 
-interface weeks {
-  id: number
+export interface WeekBarProps {
+  weeks: Array<weeks>
 }
 
-export interface WeekBarProps {
+export interface WeekHeaderProps {
+  deleteWeek: () => void
+  currentWeek: weeks | undefined
   weeks: Array<weeks>
 }

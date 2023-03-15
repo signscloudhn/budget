@@ -5,16 +5,17 @@ import Week from "./components/Week"
 import DivisionInfo from "./components/DivisionInfo"
 import styles from "./styles/index.module.scss"
 import { useSelector, useDispatch } from "react-redux"
-import { deleteWeek, updateWeekNumber } from "../../../redux/slices/dataSlice"
+import { deleteWeek } from "../../../redux/slices/dataSlice"
 import { state, store as mainStore, stores } from "../../../interfaces/store"
 import { useEffect, useState } from "react"
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
-import { Icon } from "@mui/material"
+
+
 import DisabledStores from "./components/DisabledStores"
 import DeleteModal from "./components/DeleteModal"
-import WeekDate from "./components/WeekDate"
+
 // import store , { fetchThunk, postThunk } from '../../../redux/store';
 import useLastWeek from "../../../hooks/useLastWeek"
+import WeekHeader from "./components/WeekHeader"
 
 const TiendasList = () => {
   const router = useRouter()
@@ -73,6 +74,13 @@ const TiendasList = () => {
     link.click()
   }
 
+  const deleteWeekFunc = () => {
+    setShowModals({
+                ...showModals,
+                delete: true,
+              })
+  }
+
   return (
     <div className={styles.container}>
       <button onClick={()=>{
@@ -82,37 +90,11 @@ const TiendasList = () => {
       {/* <button onClick={()=> dispatch(fetchThunk)} >
         Fetch
       </button> */}
-      <div className={styles.title}>
-        <h2>Week: </h2>
-        <input
-          type="number"
-          disabled={!isLastWeek() ? true : false}
-          onChange={(e) => {
-            dispatch(
-              updateWeekNumber({
-                weekId: currentWeek?.id,
-                value: Number(e.target.value),
-              })
-            )
-          }}
-          defaultValue={currentWeek?.number}
-        />
-        {isLastWeek() && state.weeks.length > 1 && (
-          <Icon
-            component={RemoveCircleOutlineIcon}
-            fontSize="small"
-            color="action"
-            onClick={() => {
-              setShowModals({
-                ...showModals,
-                delete: true,
-              })
-            }}
-          />
-        )}
-      </div>
-
-      <WeekDate weekId={currentWeek?.id} />
+      <WeekHeader
+        deleteWeek={deleteWeekFunc}
+        currentWeek={currentWeek}
+        weeks={weeks}
+      />
 
       {showModals.disabled && hasStoresDisabled() && (
         <DisabledStores
