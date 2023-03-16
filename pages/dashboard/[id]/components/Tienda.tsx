@@ -13,6 +13,8 @@ import {
 } from "../../../../redux/slices/dataSlice"
 import useLastWeek from "../../../../hooks/useLastWeek"
 import useFindIndex from "../../../../hooks/useFindIndex"
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
   const router = useRouter()
@@ -72,8 +74,6 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
           </h5>
         </div>
         <div className={styles.item_date}>
-          <p>{currentStoreWeek?.date}</p>
-          {isLastWeek() && (
             <input
               type="date"
               onChange={(e) => {
@@ -85,9 +85,9 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
                   })
                 )
               }}
+              value={currentStoreWeek?.date}
               className={styles.date}
             />
-          )}
         </div>
         <div className={styles.residue}>
           {globalResidue > 0 && isLastWeek() ? (

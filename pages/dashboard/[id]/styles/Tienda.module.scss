@@ -37,32 +37,26 @@
     justify-content: center;
   }
   .date {
-    // position: absolute;
     bottom: -19px;
     right: 10px;
     border-radius: 3px;
-    color: #515353;
-    background-color: none;
+    background-color: transparent;
     border: none;
     font-size: 12px;
-    color: #ffffff;
-    // opacity: 0.2;
+    color: #3a3939;
     &:hover {
       opacity: 1;
-      font-size: 12px;
     }
   }
   input[type="date" i] {
     cursor: pointer;
-    &:nth-child(2) {
-      color: #ffffff;
-    }
     &::-webkit-calendar-picker-indicator {
-      // background-color: #ffffff;
-      display: block;
-      padding: 5px;
+      background-color: #00000077;
       cursor: pointer;
       border-radius: 3px;
+      &svg {
+        color: #33cfff;
+      }
     }
   }
   .residue {
