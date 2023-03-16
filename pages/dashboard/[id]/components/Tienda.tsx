@@ -13,8 +13,6 @@ import {
 } from "../../../../redux/slices/dataSlice"
 import useLastWeek from "../../../../hooks/useLastWeek"
 import useFindIndex from "../../../../hooks/useFindIndex"
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
   const router = useRouter()
