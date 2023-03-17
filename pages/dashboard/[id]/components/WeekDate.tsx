@@ -20,7 +20,7 @@ const WeekDate = ({ weekId }: date) => {
 
   const currentWeek = weeks[weekIndex]
 
-   const isLastWeek = () => {
+  const isLastWeek = () => {
     if (weeks[weeks.length - 1].id === weekId) {
       return true
     } else {
