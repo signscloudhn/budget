@@ -40,7 +40,11 @@ export const weekDateUpdater = ({ weeks, id, date }: weekDateUpdaterProps) => {
   const weekIndex = weeks.findIndex((week) => week.id === id)
   const currentWeek = weeks[weekIndex]
 
-  const { startWeek, endWeek } = generateDate(date)
+  const dateDivided = date.split("-")
+
+  const dateFormatted = `${dateDivided[1]}-${dateDivided[2]}-${dateDivided[0]}`
+
+  const { startWeek, endWeek } = generateDate(dateFormatted)
 
   currentWeek.date = `${startWeek} - ${endWeek}`
 }

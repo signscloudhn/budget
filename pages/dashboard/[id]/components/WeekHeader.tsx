@@ -27,7 +27,6 @@ const WeekHeader = ({deleteWeek, currentWeek, weeks}: WeekHeaderProps) => {
               })
             )
           }}
-          value={currentWeek?.number}
         />
         {isLastWeek() && weeks.length > 1 && (
           <Icon
