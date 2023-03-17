@@ -1,8 +1,8 @@
 import { division } from "./store"
-import { storeWeeks, store, weeks } from "./store"
+import { weeks } from "./store"
 
 export interface DisabledStoresProps {
-  func: () => void
+  close: () => void
 }
 
 export interface deleteModalProps {
@@ -10,28 +10,19 @@ export interface deleteModalProps {
   undone: () => void
   number: number | undefined
 }
-export interface TiendaProps {
-  name: string
-  globalResidue: number
-  children?: React.ReactNode
-}
-
 export interface MasterTienda {
   handle: () => void
   name: string
 }
 
 export interface DivisionProps {
-  division: Array<division>
-  update: {
-    name: string
-    weekId: number
-  }
+  name: string
+  weekId: number
 }
 
 export interface PostProps {
   post: division
-  update: {
+  currentData: {
     name: string
     weekId: number
   }
@@ -39,13 +30,12 @@ export interface PostProps {
 
 export interface TiendaProps {
   name: string
-  globalResidue: number
   children?: React.ReactNode
 }
 
-export interface WeekProps {
-  store: store
-  week: storeWeeks
+export interface StoreWeekProps {
+  storeName: string
+  weekId: number
   children?: React.ReactNode
 }
 
@@ -57,4 +47,10 @@ export interface WeekHeaderProps {
   deleteWeek: () => void
   currentWeek: weeks | undefined
   weeks: Array<weeks>
+}
+
+export interface LastResidueModalProps {
+  handleModal: () => void
+  lastWeekResidue: () => number
+  sumLastResidue: () => void
 }

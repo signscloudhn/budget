@@ -14,7 +14,7 @@ import {
 import useLastWeek from "../../../../hooks/useLastWeek"
 import useFindIndex from "../../../../hooks/useFindIndex"
 
-const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
+const Tienda = ({ name, children }: TiendaProps) => {
   const router = useRouter()
   const { id } = router.query
   const idToNumber = Number(id)
@@ -22,7 +22,7 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
   const dispatch = useDispatch()
 
   const { isLastWeek } = useLastWeek()
-  const { currentStoreWeek } = useFindIndex(name, idToNumber)
+  const { currentStoreWeek, currentStore } = useFindIndex(name, idToNumber)
 
   const [showModal, setShowModal] = useState({
     master: false,
@@ -88,11 +88,11 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
             />
         </div>
         <div className={styles.residue}>
-          {globalResidue > 0 && isLastWeek() ? (
+          {currentStore.globalResidue > 0 && isLastWeek() ? (
             <Icon
               component={LanguageIcon}
               onClick={() => {
-                if (globalResidue > 0) handleGlobal()
+                if (currentStore.globalResidue > 0) handleGlobal()
               }}
               sx={{ color: "#16b0df" }}
               className={styles.bottom}
@@ -100,7 +100,7 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
           ) : (
             <Icon component={LanguageIcon} color="disabled" />
           )}
-          <p>{globalResidue}</p>
+          <p>{currentStore.globalResidue}</p>
         </div>
         {children}
         <div className={styles.item}>
@@ -124,13 +124,13 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
         <div className={styles.modal_container}>
           <div className={styles.modal}>
             <p>
-              Sumar el residuo global a esta semana: {globalResidue}
+              Sumar el residuo global a esta semana: {currentStore.globalResidue}
               <span>*Esta accion no se puede deshacer</span>
             </p>
             <div className={styles.buttons_container}>
               <button
                 onClick={() => {
-                  if (globalResidue > 0)
+                  if (currentStore.globalResidue > 0)
                     dispatch(addGlobalResidue({ name: name, id: idToNumber }))
                   handleGlobal()
                 }}

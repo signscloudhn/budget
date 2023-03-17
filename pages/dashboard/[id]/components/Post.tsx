@@ -12,7 +12,7 @@ import {
 import { PostProps } from "../../../../interfaces/dashboard"
 import useLastWeek from '../../../../hooks/useLastWeek';
 
-const Post = ({ post, update }: PostProps) => {
+const Post = ({ post, currentData }: PostProps) => {
   const dispatch = useDispatch()
 
   const {isLastWeek} = useLastWeek()
@@ -22,7 +22,7 @@ const Post = ({ post, update }: PostProps) => {
       <h5>Post {post?.id}:</h5>
       <input type="checkbox" checked={post?.equivalent} disabled={isLastWeek() ? false : true} onChange={()=>{
         dispatch(updateEquivalent({
-          current: update,
+          current: currentData,
           id: post?.id
         }))
       }} />
@@ -37,7 +37,7 @@ const Post = ({ post, update }: PostProps) => {
           dispatch(
             updatePostBudget({
               id: post?.id,
-              current: update,
+              current: currentData,
               value: Number(e.target.value),
             })
           )
@@ -54,7 +54,7 @@ const Post = ({ post, update }: PostProps) => {
           dispatch(
             updateSocialMediaDist({
               id: post?.id,
-              current: update,
+              current: currentData,
               value: Number(e.target.value),
               social: "instagram",
             })
@@ -72,7 +72,7 @@ const Post = ({ post, update }: PostProps) => {
           dispatch(
             updateSpent({
               id: post?.id,
-              current: update,
+              current: currentData,
               value: Number(e.target.value),
               social: "instagram",
             })
@@ -91,7 +91,7 @@ const Post = ({ post, update }: PostProps) => {
           dispatch(
             updateSocialMediaDist({
               id: post?.id,
-              current: update,
+              current: currentData,
               value: Number(e.target.value),
               social: "facebook",
             })
@@ -109,7 +109,7 @@ const Post = ({ post, update }: PostProps) => {
           dispatch(
             updateSpent({
               id: post?.id,
-              current: update,
+              current: currentData,
               value: Number(e.target.value),
               social: "facebook",
             })

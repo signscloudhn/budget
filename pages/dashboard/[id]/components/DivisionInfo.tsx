@@ -6,8 +6,9 @@ import { useState, useEffect, useRef, RefObject } from "react"
 import Post from "./Post"
 import { useDispatch } from 'react-redux';
 import { fillSocialMediaDist } from "../../../../redux/slices/dataSlice"
+import useFindIndex from '../../../../hooks/useFindIndex';
 
-const DivisionInfo = ({ division, update }: DivisionProps) => {
+const DivisionInfo = ({ name, weekId }: DivisionProps) => {
   const [show, setShow] = useState(false)
 
   const dispatch = useDispatch()
@@ -17,6 +18,8 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
       return { transform: "rotate(180deg)" }
     }
   }
+
+  const {currentStoreWeek} = useFindIndex(name, weekId)
 
   const handleShow = () => {
     setShow(!show)
@@ -52,13 +55,19 @@ const DivisionInfo = ({ division, update }: DivisionProps) => {
       {show && (
         <div className={styles.publications_container}>
           <div className={styles.publications}>
-            {division.map((post) => (
-              <Post key={post.id} post={post} update={update} />
+            {currentStoreWeek.division.map((post) => (
+              <Post key={post.id} post={post} currentData={{
+                name: name,
+                weekId: weekId
+              }} />
             ))}
           </div>
           <button onClick={
             ()=>{
-              dispatch(fillSocialMediaDist(update))
+              dispatch(fillSocialMediaDist({
+                name: name,
+                weekId: weekId
+              }))
             }
           } >Fill</button>
         </div>
