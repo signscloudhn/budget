@@ -45,7 +45,7 @@ export interface WeekBarProps {
 
 export interface WeekHeaderProps {
   deleteWeek: () => void
-  currentWeek: weeks | undefined
+  currentWeek: weeks
   weeks: Array<weeks>
 }
 
