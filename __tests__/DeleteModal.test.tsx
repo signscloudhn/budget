@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from "@testing-library/react"
 import DeleteModal from "../pages/dashboard/[id]/components/DeleteModal"
 import "@testing-library/jest-dom"
 
-describe("DeleteModal", () => {
+describe("DeleteModal.tsx", () => {
   it("Renderizar modal con el numero de la semana", () => {
     const number = 5
     const done = jest.fn()
