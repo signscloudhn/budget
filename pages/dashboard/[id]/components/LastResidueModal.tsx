@@ -6,8 +6,7 @@ const LastResidueModal = ({ handleModal, lastWeekResidue, sumLastResidue }: Last
     <div className={styles.modal_container}>
       <div className={styles.modal}>
         <p>
-          Sumar el residuo de la semana anterior a esta semana:{" "}
-          {lastWeekResidue()}$
+          Sumar el residuo de la semana anterior a esta semana: {lastWeekResidue}$
           <span>*Esta accion no se puede deshacer</span>
         </p>
         <div className={styles.buttons_container}>

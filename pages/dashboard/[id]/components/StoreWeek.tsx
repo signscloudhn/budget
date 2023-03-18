@@ -63,9 +63,9 @@ const StoreWeek = ({ storeName, weekId, children }: StoreWeekProps) => {
     <>
       {showModal && (
         <LastResidueModal
-          handleModal={()=> handleModal()}
-          lastWeekResidue={lastWeekResidue}
-          sumLastResidue={()=>sumLastResidue()}
+          handleModal={() => {handleModal()}}
+          lastWeekResidue={lastWeekResidue()}
+          sumLastResidue={() => sumLastResidue()}
         />
       )}
       <div className={styles.week_item}>

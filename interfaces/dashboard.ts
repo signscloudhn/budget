@@ -1,3 +1,4 @@
+import { ReactElement } from "react"
 import { division } from "./store"
 import { weeks } from "./store"
 
@@ -45,12 +46,25 @@ export interface WeekBarProps {
 
 export interface WeekHeaderProps {
   deleteWeek: () => void
-  currentWeek: weeks
+  currentWeek: weeks | undefined
   weeks: Array<weeks>
 }
 
 export interface LastResidueModalProps {
   handleModal: () => void
-  lastWeekResidue: () => number
+  lastWeekResidue: number
   sumLastResidue: () => void
+}
+
+export interface ResidueStateIconProps {
+  hasResidue: string
+  onClean: () => ReactElement<any, any>
+  onNotTouched: () => ReactElement<any, any>
+  onHasResidue: () => ReactElement<any, any>
+}
+
+export interface GlobalResidueModalProps {
+  globalResidue: number
+  sumar: () => ReactElement<any, any>
+  cancelar: () => ReactElement<any, any>
 }
