@@ -1,7 +1,6 @@
 import { useRouter } from "next/router"
 import WeeksBar from "./components/WeeksBar"
 import Tienda from "./components/Tienda"
-import Week from "./components/Week"
 import DivisionInfo from "./components/DivisionInfo"
 import styles from "./styles/index.module.scss"
 import { useSelector, useDispatch } from "react-redux"
@@ -9,38 +8,34 @@ import { deleteWeek } from "../../../redux/slices/dataSlice"
 import { state, store as mainStore, stores } from "../../../interfaces/store"
 import { useEffect, useState } from "react"
 
-
 import DisabledStores from "./components/DisabledStores"
 import DeleteModal from "./components/DeleteModal"
 
 // import store , { fetchThunk, postThunk } from '../../../redux/store';
 import useLastWeek from "../../../hooks/useLastWeek"
 import WeekHeader from "./components/WeekHeader"
+import StoreWeek from "./components/StoreWeek"
 
 const TiendasList = () => {
   const router = useRouter()
   const { id } = router.query
 
-  const [datos, setDatos] = useState<stores>({
+  const state: stores = useSelector((state: state) => state.data)
+  const dispatch = useDispatch()
+
+  const [storeData, setStoreData] = useState<stores>({
     stores: [],
     weeks: [],
   })
-  const { stores, weeks } = datos
+  const { stores, weeks } = storeData
 
   const [showModals, setShowModals] = useState({
     delete: false,
     disabled: false,
   })
 
-  const { lastWeekId, isLastWeek, hasStoresDisabled } = useLastWeek()
-
-  const state: stores = useSelector((state: state) => state.data)
-  const dispatch = useDispatch()
-
-  const currentWeek = weeks.find((week) => week.id === Number(id))
-
   useEffect(() => {
-    setDatos(state)
+    setStoreData(state)
   }, [state, weeks])
 
   useEffect(() => {
@@ -48,11 +43,16 @@ const TiendasList = () => {
     if (stores.length < 1 && weeks.length) {
       router.push("/add-store")
     }
+
     const weekExist = weeks.some((week) => week.id === Number(id))
     if (weeks.length > 0 && !weekExist) {
       router.push(`/dashboard/${lastWeekId}`)
     }
-  }, [datos, id])
+  }, [storeData, id])
+
+  const currentWeek = weeks.find((week) => week.id === Number(id))
+
+  const { lastWeekId, isLastWeek, hasStoresDisabled } = useLastWeek()
 
   const storeHasCurrentWeek = (store: mainStore) => {
     const weekIndex: number | undefined = store.weeks.findIndex(
@@ -65,7 +65,7 @@ const TiendasList = () => {
 
   const exportData = () => {
     const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-      JSON.stringify(datos)
+      JSON.stringify(storeData)
     )}`
     const link = document.createElement("a")
     link.href = jsonString
@@ -76,17 +76,21 @@ const TiendasList = () => {
 
   const deleteWeekFunc = () => {
     setShowModals({
-                ...showModals,
-                delete: true,
-              })
+      ...showModals,
+      delete: true,
+    })
   }
 
   return (
     <div className={styles.container}>
-      <button onClick={()=>{
-        // dispatch(postThunk)
-        exportData()
-      }} >Export</button>
+      <button
+        onClick={() => {
+          // dispatch(postThunk)
+          exportData()
+        }}
+      >
+        Export
+      </button>
 
       {/* <button onClick={()=> dispatch(fetchThunk)} >
         Fetch
@@ -100,7 +104,7 @@ const TiendasList = () => {
 
       {showModals.disabled && hasStoresDisabled() && (
         <DisabledStores
-          func={() => {
+          close={() => {
             setShowModals({
               ...showModals,
               disabled: false,
@@ -133,22 +137,18 @@ const TiendasList = () => {
         {stores.map((store) => {
           if (storeHasCurrentWeek(store)) {
             return (
-              <Tienda
-                key={store.name}
-                name={store.name}
-                globalResidue={store.globalResidue}
-              >
-                {store.weeks.map((week) => {
-                  if (week.id.toString() === id)
-                    return (
-                      <Week key={store.name} store={store} week={week}>
-                        <DivisionInfo
-                          division={week.division}
-                          update={{ name: store.name, weekId: week.id }}
-                        />
-                      </Week>
-                    )
-                })}
+              <Tienda key={store.name} name={store.name}>
+                {store.weeks
+                  .filter((week) => week.id.toString() === id)
+                  .map((week) => (
+                    <StoreWeek
+                      key={store.name}
+                      storeName={store.name}
+                      weekId={week.id}
+                    >
+                      <DivisionInfo name={store.name} weekId={week.id} />
+                    </StoreWeek>
+                  ))}
               </Tienda>
             )
           }

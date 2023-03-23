@@ -4,7 +4,7 @@ import { state } from "../../../../interfaces/store"
 import { DisabledStoresProps } from '../../../../interfaces/dashboard';
 import { enableStore } from "../../../../redux/slices/dataSlice";
 
-const DisabledStores = ({func}: DisabledStoresProps) => {
+const DisabledStores = ({close}: DisabledStoresProps) => {
   const stores = useSelector((state: state) => state.data.stores)
 
   const dispatch = useDispatch()
@@ -29,7 +29,7 @@ const DisabledStores = ({func}: DisabledStoresProps) => {
           )}
         </ul>
         <button onClick={
-          func
+          close
         } >Listo</button>
       </div>
     </div>

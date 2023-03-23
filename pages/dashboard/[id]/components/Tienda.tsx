@@ -13,8 +13,10 @@ import {
 } from "../../../../redux/slices/dataSlice"
 import useLastWeek from "../../../../hooks/useLastWeek"
 import useFindIndex from "../../../../hooks/useFindIndex"
+import ResidueStateIcon from "./common/ResidueStateIcon"
+import GlobalResidueModal from "./GlobalResidueModal"
 
-const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
+const Tienda = ({ name, children }: TiendaProps) => {
   const router = useRouter()
   const { id } = router.query
   const idToNumber = Number(id)
@@ -22,7 +24,7 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
   const dispatch = useDispatch()
 
   const { isLastWeek } = useLastWeek()
-  const { currentStoreWeek } = useFindIndex(name, idToNumber)
+  const { currentStoreWeek, currentStore } = useFindIndex(name, idToNumber)
 
   const [showModal, setShowModal] = useState({
     master: false,
@@ -58,6 +60,12 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
     }
   }
 
+  const DispatchAddGlobalResidue = () => {
+    if (currentStore?.globalResidue > 0)
+      dispatch(addGlobalResidue({ name: name, id: idToNumber }))
+    handleGlobal()
+  }
+
   return (
     <>
       <div className={styles.container}>
@@ -72,27 +80,27 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
           </h5>
         </div>
         <div className={styles.item_date}>
-            <input
-              type="date"
-              onChange={(e) => {
-                dispatch(
-                  updateWeekStoreDate({
-                    name: name,
-                    id: Number(id),
-                    value: e.target.value,
-                  })
-                )
-              }}
-              value={currentStoreWeek?.date}
-              className={styles.date}
-            />
+          <input
+            type="date"
+            onChange={(e) => {
+              dispatch(
+                updateWeekStoreDate({
+                  name: name,
+                  id: Number(id),
+                  value: e.target.value,
+                })
+              )
+            }}
+            value={currentStoreWeek?.date}
+            className={styles.date}
+          />
         </div>
         <div className={styles.residue}>
-          {globalResidue > 0 && isLastWeek() ? (
+          {currentStore?.globalResidue > 0 && isLastWeek() ? (
             <Icon
               component={LanguageIcon}
               onClick={() => {
-                if (globalResidue > 0) handleGlobal()
+                if (currentStore?.globalResidue > 0) handleGlobal()
               }}
               sx={{ color: "#16b0df" }}
               className={styles.bottom}
@@ -100,47 +108,31 @@ const Tienda = ({ name, globalResidue, children }: TiendaProps) => {
           ) : (
             <Icon component={LanguageIcon} color="disabled" />
           )}
-          <p>{globalResidue}</p>
+          <p>{currentStore?.globalResidue}</p>
         </div>
-        {children}
-        <div className={styles.item}>
-          {hasResidue() === "clean" && (
-            <Icon component={CheckCircleIcon} color="success" />
-          )}
 
-          {hasResidue() === "not touched" && (
+        {children}
+
+        <ResidueStateIcon
+          hasResidue={hasResidue()}
+          onClean={() => <Icon component={CheckCircleIcon} color="success" />}
+          onNotTouched={() => (
             <Icon component={CheckCircleIcon} color="disabled" />
           )}
-
-          {hasResidue() === "has residue" && (
+          onHasResidue={() => (
             <Icon component={CheckCircleIcon} color="warning" />
           )}
-        </div>
+        />
       </div>
       {showModal.master && isLastWeek() && (
         <MasterTienda handle={handleMaster} name={name} />
       )}
       {showModal.global && (
-        <div className={styles.modal_container}>
-          <div className={styles.modal}>
-            <p>
-              Sumar el residuo global a esta semana: {globalResidue}
-              <span>*Esta accion no se puede deshacer</span>
-            </p>
-            <div className={styles.buttons_container}>
-              <button
-                onClick={() => {
-                  if (globalResidue > 0)
-                    dispatch(addGlobalResidue({ name: name, id: idToNumber }))
-                  handleGlobal()
-                }}
-              >
-                Sumar
-              </button>
-              <button onClick={handleGlobal}>Cancelar</button>
-            </div>
-          </div>
-        </div>
+        <GlobalResidueModal
+          globalResidue={currentStore?.globalResidue}
+          sumar={() => <button onClick={DispatchAddGlobalResidue}>Sumar</button>}
+          cancelar={() => <button onClick={handleGlobal}>Cancelar</button>}
+        />
       )}
     </>
   )

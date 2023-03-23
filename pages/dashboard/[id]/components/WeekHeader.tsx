@@ -12,6 +12,8 @@ const WeekHeader = ({deleteWeek, currentWeek, weeks}: WeekHeaderProps) => {
 
   const dispatch = useDispatch()
 
+  const weekNumber = currentWeek?.number ?? 0
+
   return (
     <>
       <div className={styles.title}>
@@ -19,6 +21,7 @@ const WeekHeader = ({deleteWeek, currentWeek, weeks}: WeekHeaderProps) => {
         <input
           type="number"
           disabled={!isLastWeek() ? true : false}
+          value={weekNumber}
           onChange={(e) => {
             dispatch(
               updateWeekNumber({

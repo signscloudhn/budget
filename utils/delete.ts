@@ -37,10 +37,12 @@ export const weekDeleter = ({ id, stores, weeks }: weekDeleterProps) => {
       }
 
       if (weekToDelete.budgetTotal != weekToDelete.budgetInitial) {
+        const lastWeekResidue = store.weeks[store.weeks.length - 2].residue ?? 0
+
         const toSubstract =
           weekToDelete.budgetTotal -
           weekToDelete.budgetInitial -
-          store.weeks[store.weeks.length - 2].residue
+          lastWeekResidue
 
         store.globalResidue = Number(toSubstract.toFixed(4))
       }
@@ -51,7 +53,7 @@ export const weekDeleter = ({ id, stores, weeks }: weekDeleterProps) => {
     weeks.splice(weekIndex, 1)
 
     stores.forEach((store) => {
-      if (store.weeks.length > 1) {
+      if (store.weeks.length >= 1) {
         store.weeks[store.weeks.length - 1].residueIsSpend = false
       }
     })
