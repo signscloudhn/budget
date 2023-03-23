@@ -68,3 +68,13 @@ export interface GlobalResidueModalProps {
   sumar: () => ReactElement<any, any>
   cancelar: () => ReactElement<any, any>
 }
+
+export interface PostInputProps {
+  post: division
+  postIn?: "" | "instagram" | "facebook"
+  postOut?: "" | "instagram" | "facebook"
+  currentData: {
+    name: string
+    weekId: number
+  }
+}

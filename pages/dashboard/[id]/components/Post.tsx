@@ -2,120 +2,47 @@ import { Icon } from "@mui/material"
 import FacebookIcon from "@mui/icons-material/Facebook"
 import InstagramIcon from "@mui/icons-material/Instagram"
 import styles from "../styles/DivisionInfo.module.scss"
-import { useDispatch} from "react-redux"
+import { useDispatch } from "react-redux"
 import {
-  updateSpent,
-  updateSocialMediaDist,
   updateEquivalent,
-  updatePostBudget,
 } from "../../../../redux/slices/dataSlice"
 import { PostProps } from "../../../../interfaces/dashboard"
-import useLastWeek from '../../../../hooks/useLastWeek';
+import useLastWeek from "../../../../hooks/useLastWeek"
+import PostInput from "./common/PostInput"
 
 const Post = ({ post, currentData }: PostProps) => {
   const dispatch = useDispatch()
 
-  const {isLastWeek} = useLastWeek()
+  const { isLastWeek } = useLastWeek()
 
   return (
     <div className={styles.post}>
       <h5>Post {post?.id}:</h5>
-      <input type="checkbox" checked={post?.equivalent} disabled={isLastWeek() ? false : true} onChange={()=>{
-        dispatch(updateEquivalent({
-          current: currentData,
-          id: post?.id
-        }))
-      }} />
       <input
-        type="number"
-        value={post?.budget}
-        min={0}
-        disabled={
-          !post?.equivalent && isLastWeek() ? false : true
-        }
-        onChange={(e) => {
+        type="checkbox"
+        checked={post?.equivalent}
+        disabled={isLastWeek() ? false : true}
+        onChange={() => {
           dispatch(
-            updatePostBudget({
-              id: post?.id,
+            updateEquivalent({
               current: currentData,
-              value: Number(e.target.value),
+              id: post?.id,
             })
           )
         }}
       />
+      <PostInput currentData={currentData} post={post} />
+
       <Icon component={InstagramIcon} />
-      <input
-        type="number"
-        value={post?.distribution?.instagram?.in}
-        className={styles.in}
-        min={0}
-        disabled={isLastWeek() ? false : true}
-        onChange={(e) => {
-          dispatch(
-            updateSocialMediaDist({
-              id: post?.id,
-              current: currentData,
-              value: Number(e.target.value),
-              social: "instagram",
-            })
-          )
-        }}
-      />
-      <input
-        type="number"
-        value={post?.distribution?.instagram?.out}
-        className={styles.out}
-        min={0}
-        max={post?.distribution?.instagram?.in}
-        disabled={isLastWeek() ? false : true}
-        onChange={(e) => {
-          dispatch(
-            updateSpent({
-              id: post?.id,
-              current: currentData,
-              value: Number(e.target.value),
-              social: "instagram",
-            })
-          )
-        }}
-      />
+
+      <PostInput currentData={currentData} post={post} postIn="instagram" />
+      <PostInput currentData={currentData} post={post} postOut="instagram" />
+
       <Icon component={FacebookIcon} />
-      <input
-        type="number"
-        value={post?.distribution?.facebook?.in}
-        className={styles.in}
-        min={0}
-        max={post?.budget}
-        disabled={isLastWeek() ? false : true}
-        onChange={(e) => {
-          dispatch(
-            updateSocialMediaDist({
-              id: post?.id,
-              current: currentData,
-              value: Number(e.target.value),
-              social: "facebook",
-            })
-          )
-        }}
-      />
-      <input
-        type="number"
-        value={post?.distribution?.facebook?.out}
-        className={styles.out}
-        min={0}
-        max={post?.distribution?.facebook?.in}
-        disabled={isLastWeek() ? false : true}
-        onChange={(e) => {
-          dispatch(
-            updateSpent({
-              id: post?.id,
-              current: currentData,
-              value: Number(e.target.value),
-              social: "facebook",
-            })
-          )
-        }}
-      />
+
+      <PostInput currentData={currentData} post={post} postIn="facebook" />
+      <PostInput currentData={currentData} post={post} postOut="facebook" />
+
       <p className={styles.residue}>res: {post?.residue}</p>
     </div>
   )

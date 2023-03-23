@@ -91,6 +91,7 @@ const StoreWeek = ({ storeName, weekId, children }: StoreWeekProps) => {
       >
         <Icon component={BurstModeIcon} />
         <input
+          className={styles.input}
           type="number"
           min={1}
           value={currentStoreWeek?.publications}
@@ -105,7 +106,9 @@ const StoreWeek = ({ storeName, weekId, children }: StoreWeekProps) => {
             )
           }}
         />
-        <div className={styles.publications}>{children}</div>
+        <div className={styles.publications}>
+          {children}
+        </div>
       </div>
       <div className={styles.week_item}>
         {isResidueSpend() ? (
