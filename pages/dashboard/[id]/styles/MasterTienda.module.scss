@@ -63,23 +63,6 @@
         color: red;
         border-color: red;
       }
-      .content {
-        padding: 3px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        width: 100%;
-        p {
-          text-align: left;
-          font-size: 14px;
-          line-height: 14px;
-          color: gray;
-        }
-        button {
-          margin: 10px 0px 0px;
-          cursor: pointer;
-        }
-      }
 
       .open_zone_btn {
         align-self: flex-start;
@@ -92,9 +75,7 @@
           color: red;
         }
       }
-      .disclaimer {
-        margin: 10px 0px;
-      }
+
       .red {
         color: red;
       }
